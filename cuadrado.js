@@ -38,10 +38,30 @@ function sequenceLayout() {
     var curX = ((frameWidth * (frames.length - 0.5)) + (space * (frames.length - 1)))  / -2;
     for (var i=0; i<frames.length; i++) {
         frames[i].position.x = curX;
+        frames[i].position.y = 0;
+        frames[i].position.z = 0;
+        frames[i].position.z = 0;
+        frames[i].element.style.opacity = 0.8;
+
         curX += frameWidth + space;
     };
+
+    camera.position.z = 350;
 }
 
+function stackLayout() {
+    var curZ = 0;
+    for (var i=0; i<frames.length; i++) {
+        frames[i].position.x = 0;
+        frames[i].position.y = 0;
+        frames[i].position.z = curZ;
+        frames[i].element.style.opacity = 0.2;
+
+        curZ -= space / 10;
+    };
+
+    camera.position.z = 100;
+}
 
 function render() {
     requestAnimationFrame(render);
@@ -54,6 +74,7 @@ function render() {
 function main() {
     frames = createFramesList(7);
     sequenceLayout();
+//    stackLayout();
     render();
 }
 
