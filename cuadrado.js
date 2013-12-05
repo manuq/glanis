@@ -1,26 +1,60 @@
 var scene = new THREE.Scene();
 
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 350;
 
 var renderer = new THREE.CSS3DRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-var element = document.createElement( 'div' );
-element.style.width = '100px';
-element.style.height = '100px';
-element.style.background = "#ffff00";
+var frames;
+var frameWidth = 100;
+var frameHeight = 130;
+var space = 20;
 
-var plane = new THREE.CSS3DObject( element );
-scene.add( plane );
+function createFrame() {
+    var frameElem = document.createElement('div');
+    frameElem.classList.add('frame');
+
+    var frame = new THREE.CSS3DObject(frameElem);
+    scene.add(frame);
+
+    return frame;
+}
+
+function createFramesList(amount) {
+    var frames = [];
+
+    for (var i=0; i<amount; i++) {
+        var frame = createFrame();
+        frames.push(frame);
+    };
+
+    return frames;
+}
+
+
+function sequenceLayout() {
+    var curX = ((frameWidth * (frames.length - 0.5)) + (space * (frames.length - 1)))  / -2;
+    for (var i=0; i<frames.length; i++) {
+        frames[i].position.x = curX;
+        curX += frameWidth + space;
+    };
+}
+
 
 function render() {
     requestAnimationFrame(render);
 
-    plane.rotation.x += 0.1;
-    plane.rotation.y += 0.01;
+    // Update objects here
 
     renderer.render(scene, camera);
 }
-render();
+
+function main() {
+    frames = createFramesList(7);
+    sequenceLayout();
+    render();
+}
+
+main();
