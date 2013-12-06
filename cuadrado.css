@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  background-color: #ffff00;
 }
 
 canvas {
@@ -8,8 +9,30 @@ canvas {
 }
 
 .frame {
-  width: 100px;
-  height: 130px;
-  background: #ffff00;
-  opacity: 0.8;
+  width: 300px;
+  height: 390px;
+  background-color: #ffffff;
+  opacity: 1.0;
+}
+
+.frame.frame-01 {
+  background-image: url("images/test/frame-01.png");
+}
+.frame.frame-02 {
+  background-image: url("images/test/frame-02.png");
+}
+.frame.frame-03 {
+  background-image: url("images/test/frame-03.png");
+}
+.frame.frame-04 {
+  background-image: url("images/test/frame-04.png");
+}
+.frame.frame-05 {
+  background-image: url("images/test/frame-05.png");
+}
+.frame.frame-06 {
+  background-image: url("images/test/frame-06.png");
+}
+.frame.frame-07 {
+  background-image: url("images/test/frame-07.png");
 }

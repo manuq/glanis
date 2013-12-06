@@ -10,15 +10,16 @@ document.body.appendChild(renderer.domElement);
 var keyboard = new THREEx.KeyboardState();
 
 var frames;
-var frameWidth = 100;
-var frameHeight = 130;
+var frameWidth = 300;
+var frameHeight = 390;
 var space = 20;
 var currentLayout;
 var currentTweens = [];
 
-function createFrame() {
+function createFrame(frameName) {
     var frameElem = document.createElement('div');
     frameElem.classList.add('frame');
+    frameElem.classList.add(frameName);
 
     var frame = new THREE.CSS3DObject(frameElem);
     scene.add(frame);
@@ -26,11 +27,22 @@ function createFrame() {
     return frame;
 }
 
+function zeroFill(number, width)
+{
+    width -= number.toString().length;
+    if (width > 0)
+    {
+        return new Array(width + (/\./.test(number) ? 2 : 1)).join('0') + number;
+    }
+    return number + ""; // always return a string
+}
+
 function createFramesList(amount) {
     var frames = [];
 
     for (var i=0; i<amount; i++) {
-        var frame = createFrame();
+        var frameName = "frame-" + zeroFill(i+1, 2);
+        var frame = createFrame(frameName);
         frames.push(frame);
     };
 
@@ -58,7 +70,7 @@ function sequenceLayout(callback) {
         tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
         tweenPosition.start();
 
-        var targetStyle = {opacity: 0.8};
+        var targetStyle = {opacity: 1.0};
         var tweenOpacity = new TWEEN.Tween(frame.element.style).to(targetStyle, 2000);
         currentTweens.push(tweenOpacity);
         tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
@@ -67,7 +79,7 @@ function sequenceLayout(callback) {
         curX += frameWidth + space;
     };
 
-    var targetCameraPosition = {x: 0, y: 0, z: 350};
+    var targetCameraPosition = {x: 0, y: 0, z: 1000};
     var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
     currentTweens.push(tweenCameraPosition);
     tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
@@ -88,7 +100,7 @@ function stackLayout(callback) {
         tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
         tweenPosition.start();
 
-        var targetStyle = {opacity: 0.2};
+        var targetStyle = {opacity: 0.6};
         var tweenOpacity = new TWEEN.Tween(frame.element.style).to(targetStyle, 2000);
         currentTweens.push(tweenOpacity);
         tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
@@ -97,7 +109,7 @@ function stackLayout(callback) {
         curZ -= space / 10;
     };
 
-    var targetCameraPosition = {x: 0, y: 0, z: 100};
+    var targetCameraPosition = {x: 0, y: 0, z: 300};
     var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
     currentTweens.push(tweenCameraPosition);
     tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
