@@ -15,6 +15,7 @@ var frameHeight = 402; // 390px width + 2*6px border
 var space = 60;
 var currentLayout;
 var currentTweens = [];
+var changingFrames = false;
 
 function createFrame(frameName) {
     var frameElem = document.createElement('div');
@@ -112,7 +113,7 @@ function stackLayout(callback) {
         tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
         tweenOpacity.start();
 
-        curZ -= space;
+        curZ -= space * 2;
     };
 
     var targetCameraPosition = {x: 400, y: 250, z: 600};
@@ -164,16 +165,49 @@ function lightBoxLayout(callback) {
     tweenCameraRotation.start().onComplete(callback);
 }
 
-function nextFrame() {
+function nextFrameInstant() {
     var currentPositions = [];
     for (var i=0; i<frames.length; i++) {
         currentPositions.push(frames[i].position.clone());
     };
 
-    frames[0].position = currentPositions[frames.length-1];
     for (var i=1; i<frames.length; i++) {
         frames[i].position = currentPositions[i-1];
     };
+
+    frames[0].position = currentPositions[frames.length-1];
+
+    var firstFrame = frames.shift();
+    frames.push(firstFrame);
+}
+
+function nextFrame() {
+    changingFrames = true;
+
+    var currentPositions = [];
+    for (var i=0; i<frames.length; i++) {
+        currentPositions.push(frames[i].position.clone());
+    };
+
+    for (var i=1; i<frames.length; i++) {
+        var frame = frames[i];
+        var targetPosition = currentPositions[i-1];
+
+        var tweenPosition = new TWEEN.Tween(frame.position).to(targetPosition, 200);
+        tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenPosition.start();
+    };
+
+    var frame = frames[0];
+    var targetPosition = currentPositions[frames.length-1];
+    var tweenPosition = new TWEEN.Tween(frame.position).to(targetPosition, 200);
+    tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
+    tweenPosition.start().onComplete(function () {
+        var firstFrame = frames.shift();
+        frames.push(firstFrame);
+
+        changingFrames = false;
+    });
 }
 
 function render() {
@@ -194,7 +228,8 @@ function checkEvents() {
     if (keyboard.pressed("3") && currentLayout != lightBoxLayout) {
         lightBoxLayout(function () {});
     };
-    if (keyboard.pressed("s")) {
+    if (keyboard.pressed("s") && !changingFrames) {
+//        nextFrameInstant();
         nextFrame();
     };
 }
