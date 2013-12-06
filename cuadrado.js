@@ -200,9 +200,20 @@ function nextFrame() {
 
     var frame = frames[0];
     var targetPosition = currentPositions[frames.length-1];
-    var tweenPosition = new TWEEN.Tween(frame.position).to(targetPosition, 200);
-    tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
-    tweenPosition.start().onComplete(function () {
+
+    var targetMiddle = {x: frame.position.x + ((targetPosition.x - frame.position.x) / 2),
+                        y: frame.position.y + ((targetPosition.y - frame.position.y) / 2) + (frameHeight*2),
+                        z: frame.position.z + ((targetPosition.z - frame.position.z) / 2)};
+
+    var tweenPositionA = new TWEEN.Tween(frame.position).to(targetMiddle, 500);
+    tweenPositionA.easing(TWEEN.Easing.Circular.Out);
+
+    var tweenPositionB = new TWEEN.Tween(frame.position).to(targetPosition, 500);
+    tweenPositionB.easing(TWEEN.Easing.Circular.In);
+
+    tweenPositionA.chain(tweenPositionB);
+    tweenPositionA.start();
+    tweenPositionB.onComplete(function () {
         var firstFrame = frames.shift();
         frames.push(firstFrame);
 
