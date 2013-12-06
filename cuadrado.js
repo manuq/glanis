@@ -201,19 +201,22 @@ function nextFrame() {
     var frame = frames[0];
     var targetPosition = currentPositions[frames.length-1];
 
-    var targetMiddle = {x: frame.position.x + ((targetPosition.x - frame.position.x) / 2),
-                        y: frame.position.y + ((targetPosition.y - frame.position.y) / 2) + (frameHeight*2),
-                        z: frame.position.z + ((targetPosition.z - frame.position.z) / 2)};
+    var targetYAxisMiddle = {y: frame.position.y + ((targetPosition.y - frame.position.y) / 2) + (frameHeight*2)};
+    var targetYAxisEnd = {y: targetPosition.y};
 
-    var tweenPositionA = new TWEEN.Tween(frame.position).to(targetMiddle, 500);
-    tweenPositionA.easing(TWEEN.Easing.Circular.Out);
+    var tweenYAxisA = new TWEEN.Tween(frame.position).to(targetYAxisMiddle, 150);
+    tweenYAxisA.easing(TWEEN.Easing.Circular.Out);
 
-    var tweenPositionB = new TWEEN.Tween(frame.position).to(targetPosition, 500);
-    tweenPositionB.easing(TWEEN.Easing.Circular.In);
+    var tweenYAxisB = new TWEEN.Tween(frame.position).to(targetYAxisEnd, 150);
+    tweenYAxisB.easing(TWEEN.Easing.Circular.In);
 
-    tweenPositionA.chain(tweenPositionB);
-    tweenPositionA.start();
-    tweenPositionB.onComplete(function () {
+    tweenYAxisA.chain(tweenYAxisB);
+
+    var targetOtherAxis = {x: targetPosition.x, z: targetPosition.z};
+    var tweenOtherAxis = new TWEEN.Tween(frame.position).to(targetOtherAxis, 300);
+
+    tweenYAxisA.start();
+    tweenOtherAxis.start().onComplete(function () {
         var firstFrame = frames.shift();
         frames.push(firstFrame);
 
