@@ -89,6 +89,11 @@ function sequenceLayout(callback) {
 function stackLayout(callback) {
     stopCurrentTweens();
     currentLayout = arguments.callee;
+}
+
+function lightBoxLayout(callback) {
+    stopCurrentTweens();
+    currentLayout = arguments.callee;
 
     var curZ = 0;
     for (var i=0; i<frames.length; i++) {
@@ -121,7 +126,6 @@ function render() {
 
     checkEvents();
     TWEEN.update();
-
     renderer.render(scene, camera);
 }
 
@@ -131,6 +135,9 @@ function checkEvents() {
     };
     if (keyboard.pressed("2") && currentLayout != stackLayout) {
         stackLayout(function () {});
+    };
+    if (keyboard.pressed("3") && currentLayout != lightBoxLayout) {
+        lightBoxLayout(function () {});
     };
 }
 
