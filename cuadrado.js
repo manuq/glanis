@@ -164,6 +164,18 @@ function lightBoxLayout(callback) {
     tweenCameraRotation.start().onComplete(callback);
 }
 
+function nextFrame() {
+    var currentPositions = [];
+    for (var i=0; i<frames.length; i++) {
+        currentPositions.push(frames[i].position.clone());
+    };
+
+    frames[0].position = currentPositions[frames.length-1];
+    for (var i=1; i<frames.length; i++) {
+        frames[i].position = currentPositions[i-1];
+    };
+}
+
 function render() {
     requestAnimationFrame(render);
 
@@ -181,6 +193,9 @@ function checkEvents() {
     };
     if (keyboard.pressed("3") && currentLayout != lightBoxLayout) {
         lightBoxLayout(function () {});
+    };
+    if (keyboard.pressed("s")) {
+        nextFrame();
     };
 }
 
