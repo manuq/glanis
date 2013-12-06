@@ -10,9 +10,9 @@ document.body.appendChild(renderer.domElement);
 var keyboard = new THREEx.KeyboardState();
 
 var frames;
-var frameWidth = 300;
-var frameHeight = 390;
-var space = 20;
+var frameWidth = 312; // 300px width + 2*6px border
+var frameHeight = 402; // 390px width + 2*6px border
+var space = 60;
 var currentLayout;
 var currentTweens = [];
 
@@ -83,12 +83,49 @@ function sequenceLayout(callback) {
     var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
     currentTweens.push(tweenCameraPosition);
     tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
-    tweenCameraPosition.start().onComplete(callback);
+    tweenCameraPosition.start();
+
+    var targetCameraRotation = {x: 0, y: 0, z: 0};
+    var tweenCameraRotation = new TWEEN.Tween(camera.rotation).to(targetCameraRotation, 2500);
+    currentTweens.push(tweenCameraRotation);
+    tweenCameraRotation.easing(TWEEN.Easing.Quadratic.InOut);
+    tweenCameraRotation.start().onComplete(callback);
 }
 
 function stackLayout(callback) {
     stopCurrentTweens();
     currentLayout = arguments.callee;
+
+    var curZ = 0;
+    for (var i=0; i<frames.length; i++) {
+        var frame = frames[i];
+
+        var targetPosition = {x: 0, y: 0, z: curZ};
+        var tweenPosition = new TWEEN.Tween(frame.position).to(targetPosition, 500);
+        currentTweens.push(tweenPosition);
+        tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenPosition.start();
+
+        var targetStyle = {opacity: 0.9};
+        var tweenOpacity = new TWEEN.Tween(frame.element.style).to(targetStyle, 2000);
+        currentTweens.push(tweenOpacity);
+        tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenOpacity.start();
+
+        curZ -= space;
+    };
+
+    var targetCameraPosition = {x: 400, y: 250, z: 600};
+    var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
+    currentTweens.push(tweenCameraPosition);
+    tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
+    tweenCameraPosition.start().onComplete(callback);
+
+    var targetCameraRotation = {x: -0.1, y: 0.5, z: 0};
+    var tweenCameraRotation = new TWEEN.Tween(camera.rotation).to(targetCameraRotation, 2500);
+    currentTweens.push(tweenCameraRotation);
+    tweenCameraRotation.easing(TWEEN.Easing.Quadratic.InOut);
+    tweenCameraRotation.start();
 }
 
 function lightBoxLayout(callback) {
@@ -118,7 +155,13 @@ function lightBoxLayout(callback) {
     var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
     currentTweens.push(tweenCameraPosition);
     tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
-    tweenCameraPosition.start().onComplete(callback);
+    tweenCameraPosition.start();
+
+    var targetCameraRotation = {x: 0, y: 0, z: 0};
+    var tweenCameraRotation = new TWEEN.Tween(camera.rotation).to(targetCameraRotation, 2500);
+    currentTweens.push(tweenCameraRotation);
+    tweenCameraRotation.easing(TWEEN.Easing.Quadratic.InOut);
+    tweenCameraRotation.start().onComplete(callback);
 }
 
 function render() {

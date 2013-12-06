@@ -9,6 +9,7 @@ canvas {
 }
 
 .frame {
+  border: 6px solid #eee;
   width: 300px;
   height: 390px;
   background-color: #ffffff;
