@@ -229,8 +229,10 @@ function checkEvents() {
         lightBoxLayout(function () {});
     };
     if (keyboard.pressed("s") && !changingFrames) {
-//        nextFrameInstant();
         nextFrame();
+    };
+    if (keyboard.pressed("w") && !changingFrames) {
+        nextFrameInstant();
     };
 }
 
