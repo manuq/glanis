@@ -179,6 +179,8 @@ function lightBoxLayout(callback) {
 }
 
 function nextFrameInstant() {
+    changingFrames = true;
+
     var currentPositions = [];
     for (var i=0; i<frames.length; i++) {
         currentPositions.push(frames[i].position.clone());
@@ -190,8 +192,15 @@ function nextFrameInstant() {
 
     frames[0].position = currentPositions[frames.length-1];
 
-    var firstFrame = frames.shift();
-    frames.push(firstFrame);
+    var t = 0;
+    var tweenNextFrame = new TWEEN.Tween(t).to(0, 40); // 40 miliseconds for 25 FPS
+
+    tweenNextFrame.start().onComplete(function () {
+        var firstFrame = frames.shift();
+        frames.push(firstFrame);
+
+        changingFrames = false;
+    });
 }
 
 function nextFrame() {
