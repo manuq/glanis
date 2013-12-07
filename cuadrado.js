@@ -74,7 +74,7 @@ function sequenceLayout(callback) {
     stopCurrentTweens();
     currentLayout = arguments.callee;
 
-    var curX = ((frameWidth * (frames.length - 0.5)) + (space * (frames.length - 1)))  / -2;
+    var curX = ((frameWidth * (frames.length - 1)) + (space * (frames.length - 1)))  / -2;
     for (var i=0; i<frames.length; i++) {
         var frame = frames[i];
 
@@ -110,7 +110,7 @@ function stackLayout(callback) {
     stopCurrentTweens();
     currentLayout = arguments.callee;
 
-    var curZ = 0;
+    var curZ = (space * (frames.length - 1)) / -2;
     for (var i=0; i<frames.length; i++) {
         var frame = frames[i];
 
@@ -126,10 +126,10 @@ function stackLayout(callback) {
         tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
         tweenOpacity.start();
 
-        curZ -= space * 2;
+        curZ += space;
     };
 
-    var targetCameraPosition = {x: 400, y: 250, z: 600};
+    var targetCameraPosition = {x: 400, y: 250, z: 700};
     var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
     currentTweens.push(tweenCameraPosition);
     tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
@@ -146,7 +146,7 @@ function lightBoxLayout(callback) {
     stopCurrentTweens();
     currentLayout = arguments.callee;
 
-    var curZ = 0;
+    var curZ = (space / 10 * (frames.length - 1)) / -2;
     for (var i=0; i<frames.length; i++) {
         var frame = frames[i];
 
@@ -162,7 +162,7 @@ function lightBoxLayout(callback) {
         tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
         tweenOpacity.start();
 
-        curZ -= space / 10;
+        curZ += space / 10;
     };
 
     var targetCameraPosition = {x: 0, y: 0, z: 300};
