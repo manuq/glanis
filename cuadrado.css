@@ -37,3 +37,11 @@ canvas {
 .frame.frame-07 {
   background-image: url("images/test/frame-07.png");
 }
+
+.shadow {
+  width: 500px;
+  height: 300px;
+  background: url("images/shadow.png") no-repeat center center;
+  background-size: 100% 100%;
+  opacity: 0.15;
+}

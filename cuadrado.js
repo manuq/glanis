@@ -12,6 +12,7 @@ var keyboard = new THREEx.KeyboardState();
 var frames;
 var frameWidth = 312; // 300px width + 2*6px border
 var frameHeight = 402; // 390px width + 2*6px border
+var shadow;
 var space = 60;
 var currentLayout;
 var currentTweens = [];
@@ -26,6 +27,18 @@ function createFrame(frameName) {
     scene.add(frame);
 
     return frame;
+}
+
+function createShadow() {
+    var shadowElem = document.createElement('div');
+    shadowElem.classList.add('shadow');
+
+    var shadow = new THREE.CSS3DObject(shadowElem);
+    shadow.rotation.x = Math.PI / 2;
+    shadow.position.y -= frameHeight / 2;
+    scene.add(shadow);
+
+    return shadow;
 }
 
 function zeroFill(number, width)
@@ -252,6 +265,7 @@ function checkEvents() {
 
 function main() {
     frames = createFramesList(7);
+    shadow = createShadow();
     sequenceLayout(function () {});
     render();
 }
