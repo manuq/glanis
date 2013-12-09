@@ -3,6 +3,8 @@ var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 350;
 
+var projector = new THREE.Projector();
+
 var renderer = new THREE.CSS3DRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -19,9 +21,11 @@ var currentTweens = [];
 var changingFrames = false;
 
 function createFrame(frameName) {
-    var frameElem = document.createElement('div');
+    var frameElem = document.createElement('canvas');
     frameElem.classList.add('frame');
     frameElem.classList.add(frameName);
+
+    var drawing = new CanvasDrawing(frameElem, camera, projector);
 
     var frame = new THREE.CSS3DObject(frameElem);
     scene.add(frame);
