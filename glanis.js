@@ -47,14 +47,19 @@ function createShadow() {
     return shadow;
 }
 
-function zeroFill(number, width)
-{
+function zeroFill(number, width) {
     width -= number.toString().length;
-    if (width > 0)
-    {
+
+    if (width > 0) {
         return new Array(width + (/\./.test(number) ? 2 : 1)).join('0') + number;
-    }
+    };
+
     return number + ""; // always return a string
+}
+
+function pxToInt(cssString) {
+    return parseInt(
+        cssString.substring(0, cssString.length - 2)); // 2 is the length of 'px'
 }
 
 function createFramesList(amount) {
@@ -74,6 +79,23 @@ function stopCurrentTweens() {
         currentTweens[i].stop();
     };
     currentTweens = [];
+}
+
+function createShadowTween(targetShadow) {
+    var shadowAni = {elem: shadow.element,
+                     width: pxToInt(shadow.element.style.width),
+                     height: pxToInt(shadow.element.style.height),
+                     opacity: shadow.element.style.opacity};
+
+    var shadowTween = new TWEEN.Tween(shadowAni).to(targetShadow, 500);
+    shadowTween.onUpdate(function () {
+        this.elem.style.width = this.width + 'px';
+        this.elem.style.height = this.height + 'px';
+        this.elem.style.opacity = this.opacity;
+    });
+
+    shadowTween.easing(TWEEN.Easing.Quadratic.InOut);
+    return shadowTween;
 }
 
 function sequenceLayout(callback) {
@@ -99,9 +121,9 @@ function sequenceLayout(callback) {
         curX += frameWidth + space;
     };
 
-    shadow.element.style.width = "3200px";
-    shadow.element.style.height = "300px";
-    shadow.element.style.opacity = 0.1;
+    shadowTween = createShadowTween({width: 3200, height: 300, opacity: 0.1});
+    currentTweens.push(shadowTween);
+    shadowTween.start();
 
     var targetCameraPosition = {x: 0, y: 0, z: 1000};
     var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
@@ -139,9 +161,9 @@ function stackLayout(callback) {
         curZ += space;
     };
 
-    shadow.element.style.width = "550px";
-    shadow.element.style.height = "800px";
-    shadow.element.style.opacity = 0.15;
+    shadowTween = createShadowTween({width: 550, height: 800, opacity: 0.15});
+    currentTweens.push(shadowTween);
+    shadowTween.start();
 
     var targetCameraPosition = {x: 400, y: 250, z: 700};
     var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
@@ -179,9 +201,9 @@ function lightBoxLayout(callback) {
         curZ += space / 10;
     };
 
-    shadow.element.style.width = "500px";
-    shadow.element.style.height = "300px";
-    shadow.element.style.opacity = 0.15;
+    shadowTween = createShadowTween({width: 500, height: 300, opacity: 0.15});
+    currentTweens.push(shadowTween);
+    shadowTween.start();
 
     var targetCameraPosition = {x: 0, y: 0, z: 300};
     var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
