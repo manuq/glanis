@@ -27,10 +27,10 @@ function createFrame(frameName) {
     frameElem.classList.add('frame');
     frameElem.classList.add(frameName);
 
-    var drawing = new CanvasDrawing(frameElem, camera, projector);
-
     var frame = new THREE.CSS3DObject(frameElem);
     scene.add(frame);
+
+    var drawing = new CanvasDrawing(frameElem, frame, camera, projector);
 
     return frame;
 }
