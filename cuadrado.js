@@ -22,6 +22,8 @@ var changingFrames = false;
 
 function createFrame(frameName) {
     var frameElem = document.createElement('canvas');
+    frameElem.width = 300;
+    frameElem.height = 390;
     frameElem.classList.add('frame');
     frameElem.classList.add(frameName);
 
