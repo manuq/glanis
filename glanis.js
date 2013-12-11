@@ -19,6 +19,7 @@ var space = 60;
 var currentLayout;
 var currentTweens = [];
 var changingFrames = false;
+var changingLayout = false;
 
 function createFrame(frameName) {
     var frameElem = document.createElement('canvas');
@@ -99,6 +100,7 @@ function createShadowTween(targetShadow) {
 }
 
 function sequenceLayout(callback) {
+    changingLayout = true;
     stopCurrentTweens();
     currentLayout = arguments.callee;
 
@@ -135,10 +137,14 @@ function sequenceLayout(callback) {
     var tweenCameraRotation = new TWEEN.Tween(camera.rotation).to(targetCameraRotation, 2500);
     currentTweens.push(tweenCameraRotation);
     tweenCameraRotation.easing(TWEEN.Easing.Quadratic.InOut);
-    tweenCameraRotation.start().onComplete(callback);
+    tweenCameraRotation.start().onComplete(function () {
+        changingLayout = false;
+        callback();
+    });
 }
 
 function stackLayout(callback) {
+    changingLayout = true;
     stopCurrentTweens();
     currentLayout = arguments.callee;
 
@@ -169,7 +175,10 @@ function stackLayout(callback) {
     var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
     currentTweens.push(tweenCameraPosition);
     tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
-    tweenCameraPosition.start().onComplete(callback);
+    tweenCameraPosition.start().onComplete(function () {
+        changingLayout = false;
+        callback();
+    });
 
     var targetCameraRotation = {x: -0.1, y: 0.5, z: 0};
     var tweenCameraRotation = new TWEEN.Tween(camera.rotation).to(targetCameraRotation, 2500);
@@ -179,6 +188,7 @@ function stackLayout(callback) {
 }
 
 function lightBoxLayout(callback) {
+    changingLayout = true;
     stopCurrentTweens();
     currentLayout = arguments.callee;
 
@@ -215,7 +225,10 @@ function lightBoxLayout(callback) {
     var tweenCameraRotation = new TWEEN.Tween(camera.rotation).to(targetCameraRotation, 2500);
     currentTweens.push(tweenCameraRotation);
     tweenCameraRotation.easing(TWEEN.Easing.Quadratic.InOut);
-    tweenCameraRotation.start().onComplete(callback);
+    tweenCameraRotation.start().onComplete(function () {
+        changingLayout = false;
+        callback();
+    });
 }
 
 function nextFrameInstant() {
@@ -295,19 +308,19 @@ function render() {
 }
 
 function checkEvents() {
-    if (keyboard.pressed("1") && currentLayout != sequenceLayout) {
+    if (keyboard.pressed("1") && currentLayout != sequenceLayout && !changingFrames) {
         sequenceLayout(function () {});
     };
-    if (keyboard.pressed("2") && currentLayout != stackLayout) {
+    if (keyboard.pressed("2") && currentLayout != stackLayout && !changingFrames) {
         stackLayout(function () {});
     };
-    if (keyboard.pressed("3") && currentLayout != lightBoxLayout) {
+    if (keyboard.pressed("3") && currentLayout != lightBoxLayout && !changingFrames) {
         lightBoxLayout(function () {});
     };
-    if (keyboard.pressed("s") && !changingFrames) {
+    if (keyboard.pressed("s") && !changingLayout && !changingFrames) {
         nextFrame();
     };
-    if (keyboard.pressed("w") && !changingFrames) {
+    if (keyboard.pressed("w") && !changingLayout && !changingFrames) {
         nextFrameInstant();
     };
 }
