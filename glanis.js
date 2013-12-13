@@ -100,6 +100,10 @@ function createShadowTween(targetShadow) {
 }
 
 function sequenceLayout(callback) {
+    if (currentLayout == arguments.callee || changingFrames) {
+        return;
+    }
+
     changingLayout = true;
     stopCurrentTweens();
     currentLayout = arguments.callee;
@@ -144,6 +148,10 @@ function sequenceLayout(callback) {
 }
 
 function stackLayout(callback) {
+    if (currentLayout == arguments.callee || changingFrames) {
+        return;
+    }
+
     changingLayout = true;
     stopCurrentTweens();
     currentLayout = arguments.callee;
@@ -188,6 +196,10 @@ function stackLayout(callback) {
 }
 
 function lightBoxLayout(callback) {
+    if (currentLayout == arguments.callee || changingFrames) {
+        return;
+    }
+
     changingLayout = true;
     stopCurrentTweens();
     currentLayout = arguments.callee;
@@ -308,13 +320,13 @@ function render() {
 }
 
 function checkEvents() {
-    if (keyboard.pressed("1") && currentLayout != sequenceLayout && !changingFrames) {
+    if (keyboard.pressed("1")) {
         sequenceLayout(function () {});
     };
-    if (keyboard.pressed("2") && currentLayout != stackLayout && !changingFrames) {
+    if (keyboard.pressed("2")) {
         stackLayout(function () {});
     };
-    if (keyboard.pressed("3") && currentLayout != lightBoxLayout && !changingFrames) {
+    if (keyboard.pressed("3")) {
         lightBoxLayout(function () {});
     };
     if (keyboard.pressed("s") && !changingLayout && !changingFrames) {
@@ -324,6 +336,11 @@ function checkEvents() {
         nextFrameInstant();
     };
 }
+
+// FIXME: modularize
+window.sequenceLayout = sequenceLayout;
+window.stackLayout = stackLayout;
+window.lightBoxLayout = lightBoxLayout;
 
 function main() {
     frames = createFramesList(7);
