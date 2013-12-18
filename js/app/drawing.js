@@ -1,7 +1,5 @@
 define([], function() {
 
-    var drawing = {};
-
     var Drawing = function (canvas, object, camera, projector) {
         this.canvas = canvas;
         this.object = object;
