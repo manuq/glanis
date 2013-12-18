@@ -1,3 +1,9 @@
+define(["domReady!", "three", "tween", "THREEx.KeyboardState",
+        "app/drawing", "app/ui",
+        "CSS3DRenderer"],
+function(doc, THREE, TWEEN, THREEx,
+         Drawing, ui) {
+
 var scene = new THREE.Scene();
 
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -31,7 +37,7 @@ function createFrame(frameName) {
     var frame = new THREE.CSS3DObject(frameElem);
     scene.add(frame);
 
-    var drawing = new CanvasDrawing(frameElem, frame, camera, projector);
+    var drawing = new Drawing(frameElem, frame, camera, projector);
 
     return frame;
 }
@@ -337,12 +343,8 @@ function checkEvents() {
     };
 }
 
-// FIXME: modularize
-window.sequenceLayout = sequenceLayout;
-window.stackLayout = stackLayout;
-window.lightBoxLayout = lightBoxLayout;
-
 function main() {
+    ui.initUi(sequenceLayout, stackLayout, lightBoxLayout);
     frames = createFramesList(7);
     shadow = createShadow();
     sequenceLayout(function () {});
@@ -350,3 +352,5 @@ function main() {
 }
 
 main();
+
+});
