@@ -250,6 +250,10 @@ function lightBoxLayout(callback) {
 }
 
 function nextFrameInstant() {
+    if (changingLayout || changingFrames) {
+        return;
+    }
+
     changingFrames = true;
 
     var currentPositions = [];
@@ -275,6 +279,10 @@ function nextFrameInstant() {
 }
 
 function nextFrame() {
+    if (changingLayout || changingFrames) {
+        return;
+    }
+
     changingFrames = true;
 
     var currentPositions = [];
@@ -335,10 +343,10 @@ function checkEvents() {
     if (keyboard.pressed("3")) {
         lightBoxLayout(function () {});
     };
-    if (keyboard.pressed("s") && !changingLayout && !changingFrames) {
+    if (keyboard.pressed("s")) {
         nextFrame();
     };
-    if (keyboard.pressed("w") && !changingLayout && !changingFrames) {
+    if (keyboard.pressed("w")) {
         nextFrameInstant();
     };
 }
@@ -346,13 +354,20 @@ function checkEvents() {
 function createUi() {
     ui.init();
 
-    var options = [
+    var optionsLayout = [
         {'text': "1", 'action': sequenceLayout},
         {'text': "2", 'action': stackLayout},
         {'text': "3", 'action': lightBoxLayout},
     ];
-    var radioLayouts = new RadioButton("radio-layout", options);
+    var radioLayouts = new RadioButton("radio-layout", optionsLayout);
     ui.add(radioLayouts.domElement);
+
+    var optionsFrame = [
+        {'text': "s", 'action': nextFrame},
+        {'text': "w", 'action': nextFrameInstant},
+    ];
+    var radioFrames = new RadioButton("radio-layout", optionsFrame);
+    ui.add(radioFrames.domElement);
 }
 
 function main() {
