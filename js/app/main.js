@@ -343,10 +343,10 @@ function checkEvents() {
     if (keyboard.pressed("3")) {
         lightBoxLayout(function () {});
     };
-    if (keyboard.pressed("s")) {
+    if (ui.pressed("next-frame") || keyboard.pressed("s")) {
         nextFrame();
     };
-    if (keyboard.pressed("w")) {
+    if (ui.pressed("next-frame-instant") || keyboard.pressed("w")) {
         nextFrameInstant();
     };
 }
@@ -362,12 +362,8 @@ function createUi() {
     var radioLayouts = new RadioButton("radio-layout", optionsLayout);
     ui.add(radioLayouts.domElement);
 
-    var optionsFrame = [
-        {'text': "s", 'action': nextFrame},
-        {'text': "w", 'action': nextFrameInstant},
-    ];
-    var radioFrames = new RadioButton("radio-layout", optionsFrame);
-    ui.add(radioFrames.domElement);
+    ui.addButton("next-frame", "s");
+    ui.addButton("next-frame-instant", "w");
 }
 
 function main() {

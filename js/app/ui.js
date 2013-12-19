@@ -1,8 +1,8 @@
 define(["domReady!"], function(doc) {
 
     var ui = {};
-
     var domElement;
+    var widgets = {};
 
     ui.init = function () {
         domElement = document.createElement('div');
@@ -12,6 +12,29 @@ define(["domReady!"], function(doc) {
 
     ui.add = function (elem) {
         domElement.appendChild(elem);
+    }
+
+    ui.addButton = function (name, text) {
+        elem = document.createElement('div');
+        domElement.appendChild(elem);
+        var button = document.createElement('button');
+        elem.appendChild(button);
+        widgets[name] = button;
+        button.innerText = text;
+        button.addEventListener("mousedown", function (event) {
+            this.pressed = true;
+            this.classList.toggle('active');
+        });
+        button.addEventListener("mouseup", function (event) {
+            this.pressed = false;
+            this.classList.toggle('active');
+        });
+    }
+
+    ui.pressed = function (name) {
+        if (name in widgets) {
+            return widgets[name].pressed;
+        }
     }
 
     return ui;
