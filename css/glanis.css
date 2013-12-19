@@ -60,6 +60,7 @@ canvas {
   height: 50px;
   border-radius: 25px;
   margin: 3px;
+  outline: none;
 }
 
 #ui button.active {
