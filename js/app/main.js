@@ -336,12 +336,15 @@ function render() {
 function checkEvents() {
     if (keyboard.pressed("1")) {
         sequenceLayout(function () {});
+        ui.setRadioActive("radio-layout", "sequence");
     };
     if (keyboard.pressed("2")) {
         stackLayout(function () {});
+        ui.setRadioActive("radio-layout", "stack");
     };
     if (keyboard.pressed("3")) {
         lightBoxLayout(function () {});
+        ui.setRadioActive("radio-layout", "lightbox");
     };
     if (ui.pressed("next-frame") || keyboard.pressed("s")) {
         nextFrame();
@@ -355,9 +358,9 @@ function createUi() {
     ui.init();
 
     var optionsLayout = [
-        {'text': "1", 'action': sequenceLayout},
-        {'text': "2", 'action': stackLayout},
-        {'text': "3", 'action': lightBoxLayout},
+        {"name": "sequence", 'text': "1", 'action': sequenceLayout},
+        {"name": "stack", 'text': "2", 'action': stackLayout},
+        {"name": "lightbox", 'text': "3", 'action': lightBoxLayout},
     ];
     ui.addRadioButtons("radio-layout", optionsLayout);
 

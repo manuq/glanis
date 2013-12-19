@@ -31,7 +31,14 @@ function(doc, RadioButton) {
 
     ui.addRadioButtons = function (name, options) {
         var radio = new RadioButton(name, options);
+        widgets[name] = radio;
         domElement.appendChild(radio.domElement);
+    }
+
+    ui.setRadioActive = function (radioName, butName) {
+        if (radioName in widgets) {
+            widgets[radioName].setActive(butName);
+        }
     }
 
     ui.pressed = function (name) {
