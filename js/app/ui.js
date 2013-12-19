@@ -1,4 +1,6 @@
-define(["domReady!"], function(doc) {
+define(["domReady!",
+        "app/ui/radiobutton"],
+function(doc, RadioButton) {
 
     var ui = {};
     var domElement;
@@ -8,10 +10,6 @@ define(["domReady!"], function(doc) {
         domElement = document.createElement('div');
         document.body.appendChild(domElement);
         domElement.id = "ui";
-    }
-
-    ui.add = function (elem) {
-        domElement.appendChild(elem);
     }
 
     ui.addButton = function (name, text) {
@@ -29,6 +27,11 @@ define(["domReady!"], function(doc) {
             this.pressed = false;
             this.classList.toggle('active');
         });
+    }
+
+    ui.addRadioButtons = function (name, options) {
+        var radio = new RadioButton(name, options);
+        domElement.appendChild(radio.domElement);
     }
 
     ui.pressed = function (name) {

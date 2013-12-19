@@ -1,8 +1,8 @@
 define(["domReady!", "three", "tween", "THREEx.KeyboardState",
-        "app/drawing", "app/ui", "app/ui/radiobutton",
+        "app/drawing", "app/ui",
         "CSS3DRenderer"],
 function(doc, THREE, TWEEN, THREEx,
-         Drawing, ui, RadioButton) {
+         Drawing, ui) {
 
 var scene = new THREE.Scene();
 
@@ -359,8 +359,7 @@ function createUi() {
         {'text': "2", 'action': stackLayout},
         {'text': "3", 'action': lightBoxLayout},
     ];
-    var radioLayouts = new RadioButton("radio-layout", optionsLayout);
-    ui.add(radioLayouts.domElement);
+    ui.addRadioButtons("radio-layout", optionsLayout);
 
     ui.addButton("next-frame", "s");
     ui.addButton("next-frame-instant", "w");
