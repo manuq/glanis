@@ -318,6 +318,9 @@ function nextFrame() {
 
     tweenYAxisA.start();
     tweenOtherAxis.start().onComplete(function () {
+        tweenYAxisB.stop();
+        frame.position.y = targetYAxisEnd.y;
+
         var firstFrame = frames.shift();
         frames.push(firstFrame);
 
