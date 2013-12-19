@@ -27,6 +27,7 @@ var currentTweens = [];
 var changingFrames = false;
 var changingLayout = false;
 var changingOpacities = false;
+var frameTransitionDuration = 300;
 
 function createFrame(frameName) {
     var frameElem = document.createElement('canvas');
@@ -295,7 +296,8 @@ function nextFrame() {
         var frame = frames[i];
         var targetPosition = currentPositions[i-1];
 
-        var tweenPosition = new TWEEN.Tween(frame.position).to(targetPosition, 200);
+        var tweenPosition = new TWEEN.Tween(frame.position).to(targetPosition,
+                                                               frameTransitionDuration / 2);
         tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
         tweenPosition.start();
     };
@@ -306,16 +308,19 @@ function nextFrame() {
     var targetYAxisMiddle = {y: frame.position.y + ((targetPosition.y - frame.position.y) / 2) + (frameHeight*2)};
     var targetYAxisEnd = {y: targetPosition.y};
 
-    var tweenYAxisA = new TWEEN.Tween(frame.position).to(targetYAxisMiddle, 150);
+    var tweenYAxisA = new TWEEN.Tween(frame.position).to(targetYAxisMiddle,
+                                                         frameTransitionDuration / 2);
     tweenYAxisA.easing(TWEEN.Easing.Circular.Out);
 
-    var tweenYAxisB = new TWEEN.Tween(frame.position).to(targetYAxisEnd, 150);
+    var tweenYAxisB = new TWEEN.Tween(frame.position).to(targetYAxisEnd,
+                                                         frameTransitionDuration / 2);
     tweenYAxisB.easing(TWEEN.Easing.Circular.In);
 
     tweenYAxisA.chain(tweenYAxisB);
 
     var targetOtherAxis = {x: targetPosition.x, z: targetPosition.z};
-    var tweenOtherAxis = new TWEEN.Tween(frame.position).to(targetOtherAxis, 300);
+    var tweenOtherAxis = new TWEEN.Tween(frame.position).to(targetOtherAxis,
+                                                            frameTransitionDuration);
 
     tweenYAxisA.start();
     tweenOtherAxis.start().onComplete(function () {
@@ -329,25 +334,16 @@ function nextFrame() {
     });
 }
 
-function updateOpacities(opacity, callback) {
-    frames.forEach(function (frame) {
-        frame.element.style.opacity = opacity;
-    });
-
-    callback();
-}
-
 function addOpacity(sum) {
     changingOpacities = true;
-
+p
     var opacity = parseFloat(frames[0].element.style.opacity) + sum;
     if ((sum < 0 && opacity >= 0.1) || (sum > 0 && opacity < 1)) {
-        updateOpacities(opacity, function () {
-            changingOpacities = false;
+        frames.forEach(function (frame) {
+            frame.element.style.opacity = opacity;
         });
-    } else {
-        changingOpacities = false;
     }
+    changingOpacities = false;
 }
 
 function lessOpacity() {
@@ -364,6 +360,20 @@ function moreOpacity() {
     }
 
     addOpacity(0.01);
+}
+
+function lessVelocity() {
+    frameTransitionDuration += 5;
+    console.log(frameTransitionDuration);
+}
+
+function moreVelocity() {
+    if (frameTransitionDuration - 5 > 40) {
+        frameTransitionDuration -= 5;
+    } else {
+        frameTransitionDuration = 40;
+    }
+    console.log(frameTransitionDuration);
 }
 
 function render() {
@@ -398,6 +408,12 @@ function checkEvents() {
     };
     if (keyboard.pressed("x")) {
         moreOpacity();
+    };
+    if (keyboard.pressed("c")) {
+        lessVelocity();
+    };
+    if (keyboard.pressed("v")) {
+        moreVelocity();
     };
 }
 
