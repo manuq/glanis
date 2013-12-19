@@ -336,7 +336,7 @@ function nextFrame() {
 
 function addOpacity(sum) {
     changingOpacities = true;
-p
+
     var opacity = parseFloat(frames[0].element.style.opacity) + sum;
     if ((sum < 0 && opacity >= 0.1) || (sum > 0 && opacity < 1)) {
         frames.forEach(function (frame) {
