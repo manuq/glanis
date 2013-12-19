@@ -5,6 +5,7 @@ define(["domReady!"], function(doc) {
         this.domElement = document.createElement('div');
         var that = this;
 
+        var activeSet = false;
         options.forEach(function (opt, i) {
             var name = opt['name'];
             var text = opt['text'];
@@ -18,11 +19,15 @@ define(["domReady!"], function(doc) {
             button.addEventListener('click',
                                     function () { that.onButtonPress(button, action) });
 
-            if (i == 0) {
+            if (!(activeSet) && 'active' in opt) {
                 button.classList.add('active');
+                activeSet = true
             }
-
         });
+
+        if (!(activeSet)) {
+            this.domElement.children[0].classList.add('active');
+        }
     }
 
     RadioButton.prototype.onButtonPress = function (button, action) {

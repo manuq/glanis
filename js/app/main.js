@@ -107,6 +107,69 @@ function createShadowTween(targetShadow) {
     return shadowTween;
 }
 
+function zoetropeLayout(callback) {
+    if (currentLayout == arguments.callee || changingFrames) {
+        return;
+    }
+
+    changingLayout = true;
+    stopCurrentTweens();
+    currentLayout = arguments.callee;
+
+    var radius = 500;
+    var angle = Math.PI * 2 / frames.length;
+    var curAngle = 0;
+    frames.forEach(function (frame, i) {
+
+        var targetPosition = {x: Math.sin(curAngle) * radius, y: 0, z: Math.cos(curAngle) * radius};
+        var tweenPosition = new TWEEN.Tween(frame.position).to(targetPosition, 500);
+        currentTweens.push(tweenPosition);
+        tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenPosition.start();
+
+        tweenPosition.onComplete(function () {
+            var v = new THREE.Object3D();
+            v.x = 0;
+            v.y = 0;
+            v.z = 0;
+            frame.lookAt(v);
+        });
+
+        // var targetRotation = {x: 0, y: Math.tan(curAngle - Math.PI) * radius, z: 0};
+        // var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, 500);
+        // currentTweens.push(tweenRotation);
+        // tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
+        // tweenRotation.start();
+
+        var targetStyle = {opacity: 1.0};
+        var tweenOpacity = new TWEEN.Tween(frame.element.style).to(targetStyle, 2000);
+        currentTweens.push(tweenOpacity);
+        tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenOpacity.start();
+
+        curAngle += angle;
+    });
+
+    shadowTween = createShadowTween({width: 3200, height: 300, opacity: 0.1});
+    currentTweens.push(shadowTween);
+    shadowTween.start();
+
+    var targetCameraPosition = {x: 0, y: 1000, z: 1500};
+    var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
+    currentTweens.push(tweenCameraPosition);
+    tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
+    tweenCameraPosition.start();
+
+    var targetCameraRotation = {x: -0.5, y: 0.0, z: 0};
+    var tweenCameraRotation = new TWEEN.Tween(camera.rotation).to(targetCameraRotation, 2500);
+    currentTweens.push(tweenCameraRotation);
+    tweenCameraRotation.easing(TWEEN.Easing.Quadratic.InOut);
+    tweenCameraRotation.start().onComplete(function () {
+        changingLayout = false;
+        callback();
+    });
+}
+
 function sequenceLayout(callback) {
     if (currentLayout == arguments.callee || changingFrames) {
         return;
@@ -125,6 +188,12 @@ function sequenceLayout(callback) {
         currentTweens.push(tweenPosition);
         tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
         tweenPosition.start();
+
+        var targetRotation = {x: 0, y: 0, z: 0};
+        var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, 500);
+        currentTweens.push(tweenRotation);
+        tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenRotation.start();
 
         var targetStyle = {opacity: 1.0};
         var tweenOpacity = new TWEEN.Tween(frame.element.style).to(targetStyle, 2000);
@@ -174,6 +243,12 @@ function stackLayout(callback) {
         tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
         tweenPosition.start();
 
+        var targetRotation = {x: 0, y: 0, z: 0};
+        var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, 500);
+        currentTweens.push(tweenRotation);
+        tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenRotation.start();
+
         var targetStyle = {opacity: 0.9};
         var tweenOpacity = new TWEEN.Tween(frame.element.style).to(targetStyle, 2000);
         currentTweens.push(tweenOpacity);
@@ -221,6 +296,12 @@ function lightBoxLayout(callback) {
         currentTweens.push(tweenPosition);
         tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
         tweenPosition.start();
+
+        var targetRotation = {x: 0, y: 0, z: 0};
+        var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, 500);
+        currentTweens.push(tweenRotation);
+        tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenRotation.start();
 
         var targetStyle = {opacity: 0.6};
         var tweenOpacity = new TWEEN.Tween(frame.element.style).to(targetStyle, 2000);
@@ -305,27 +386,31 @@ function nextFrame() {
     var frame = frames[0];
     var targetPosition = currentPositions[frames.length-1];
 
-    var targetYAxisMiddle = {y: frame.position.y + ((targetPosition.y - frame.position.y) / 2) + (frameHeight*2)};
-    var targetYAxisEnd = {y: targetPosition.y};
+    if (currentLayout != zoetropeLayout) {
+        var targetYAxisMiddle = {y: frame.position.y + ((targetPosition.y - frame.position.y) / 2) + (frameHeight*2)};
+        var targetYAxisEnd = {y: targetPosition.y};
 
-    var tweenYAxisA = new TWEEN.Tween(frame.position).to(targetYAxisMiddle,
-                                                         frameTransitionDuration / 2);
-    tweenYAxisA.easing(TWEEN.Easing.Circular.Out);
+        var tweenYAxisA = new TWEEN.Tween(frame.position).to(targetYAxisMiddle,
+                                                             frameTransitionDuration / 2);
+        tweenYAxisA.easing(TWEEN.Easing.Circular.Out);
 
-    var tweenYAxisB = new TWEEN.Tween(frame.position).to(targetYAxisEnd,
-                                                         frameTransitionDuration / 2);
-    tweenYAxisB.easing(TWEEN.Easing.Circular.In);
+        var tweenYAxisB = new TWEEN.Tween(frame.position).to(targetYAxisEnd,
+                                                             frameTransitionDuration / 2);
+        tweenYAxisB.easing(TWEEN.Easing.Circular.In);
 
-    tweenYAxisA.chain(tweenYAxisB);
+        tweenYAxisA.chain(tweenYAxisB);
+        tweenYAxisA.start();
+    }
 
     var targetOtherAxis = {x: targetPosition.x, z: targetPosition.z};
     var tweenOtherAxis = new TWEEN.Tween(frame.position).to(targetOtherAxis,
                                                             frameTransitionDuration);
 
-    tweenYAxisA.start();
     tweenOtherAxis.start().onComplete(function () {
-        tweenYAxisB.stop();
-        frame.position.y = targetYAxisEnd.y;
+        if (tweenYAxisB != null) {
+            tweenYAxisB.stop();
+            frame.position.y = targetYAxisEnd.y;
+        }
 
         var firstFrame = frames.shift();
         frames.push(firstFrame);
@@ -386,14 +471,18 @@ function render() {
 
 function checkEvents() {
     if (keyboard.pressed("1")) {
+        zoetropeLayout(function () {});
+        ui.setRadioActive("radio-layout", "zoetrope");
+    };
+    if (keyboard.pressed("2")) {
         sequenceLayout(function () {});
         ui.setRadioActive("radio-layout", "sequence");
     };
-    if (keyboard.pressed("2")) {
+    if (keyboard.pressed("3")) {
         stackLayout(function () {});
         ui.setRadioActive("radio-layout", "stack");
     };
-    if (keyboard.pressed("3")) {
+    if (keyboard.pressed("4")) {
         lightBoxLayout(function () {});
         ui.setRadioActive("radio-layout", "lightbox");
     };
@@ -421,9 +510,10 @@ function createUi() {
     ui.init();
 
     var optionsLayout = [
-        {"name": "sequence", 'text': "1", 'action': sequenceLayout},
-        {"name": "stack", 'text': "2", 'action': stackLayout},
-        {"name": "lightbox", 'text': "3", 'action': lightBoxLayout},
+        {"name": "zoetrope", 'text': "1", 'action': zoetropeLayout},
+        {"name": "sequence", 'text': "2", 'action': sequenceLayout, 'active': true},
+        {"name": "stack", 'text': "3", 'action': stackLayout},
+        {"name": "lightbox", 'text': "4", 'action': lightBoxLayout},
     ];
     ui.addRadioButtons("radio-layout", optionsLayout);
 
