@@ -27,6 +27,10 @@ function(doc, RadioButton) {
             this.pressed = false;
             this.classList.toggle('active');
         });
+        button.addEventListener("mouseout", function (event) {
+            this.pressed = false;
+            this.classList.remove('active');
+        });
     }
 
     ui.addRadioButtons = function (name, options) {
