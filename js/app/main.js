@@ -26,6 +26,7 @@ var currentLayout;
 var currentTweens = [];
 var changingFrames = false;
 var changingLayout = false;
+var changingOpacities = false;
 
 function createFrame(frameName) {
     var frameElem = document.createElement('canvas');
@@ -328,6 +329,43 @@ function nextFrame() {
     });
 }
 
+function updateOpacities(opacity, callback) {
+    frames.forEach(function (frame) {
+        frame.element.style.opacity = opacity;
+    });
+
+    callback();
+}
+
+function addOpacity(sum) {
+    changingOpacities = true;
+
+    var opacity = parseFloat(frames[0].element.style.opacity) + sum;
+    if ((sum < 0 && opacity >= 0.1) || (sum > 0 && opacity < 1)) {
+        updateOpacities(opacity, function () {
+            changingOpacities = false;
+        });
+    } else {
+        changingOpacities = false;
+    }
+}
+
+function lessOpacity() {
+    if (changingLayout || changingFrames || changingOpacities) {
+        return;
+    }
+
+    addOpacity(-0.01);
+}
+
+function moreOpacity() {
+    if (changingLayout || changingFrames || changingOpacities) {
+        return;
+    }
+
+    addOpacity(0.01);
+}
+
 function render() {
     requestAnimationFrame(render);
 
@@ -354,6 +392,12 @@ function checkEvents() {
     };
     if (ui.pressed("next-frame-instant") || keyboard.pressed("w")) {
         nextFrameInstant();
+    };
+    if (keyboard.pressed("z")) {
+        lessOpacity();
+    };
+    if (keyboard.pressed("x")) {
+        moreOpacity();
     };
 }
 
