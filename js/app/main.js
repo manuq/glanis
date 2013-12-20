@@ -150,7 +150,7 @@ function zoetropeLayout(callback) {
         curAngle += angle;
     });
 
-    shadowTween = createShadowTween({width: 3200, height: 300, opacity: 0.1});
+    shadowTween = createShadowTween({width: 1800, height: 1800, opacity: 0.15});
     currentTweens.push(shadowTween);
     shadowTween.start();
 
