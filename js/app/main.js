@@ -1,8 +1,8 @@
 define(["domReady!", "three", "tween", "THREEx.KeyboardState",
-        "app/drawing", "app/ui",
+        "app/drawing", "app/ui", "app/layouts",
         "CSS3DRenderer"],
 function(doc, THREE, TWEEN, THREEx,
-         Drawing, ui) {
+         Drawing, ui, layouts) {
 
 var scene = new THREE.Scene();
 
@@ -179,37 +179,31 @@ function sequenceLayout(callback) {
     stopCurrentTweens();
     currentLayout = arguments.callee;
 
-    var curX = ((frameWidth * (frames.length - 1)) + (space * (frames.length - 1)))  / -2;
     for (var i=0; i<frames.length; i++) {
         var frame = frames[i];
+        var target = layouts.sequence.frameTargets[i];
 
-        var targetPosition = {x: curX, y: 0, z: 0};
-        var tweenPosition = new TWEEN.Tween(frame.position).to(targetPosition, 500);
+        var tweenPosition = new TWEEN.Tween(frame.position).to(target.position, 500);
         currentTweens.push(tweenPosition);
         tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
         tweenPosition.start();
 
-        var targetRotation = {x: 0, y: 0, z: 0};
-        var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, 500);
+        var tweenRotation = new TWEEN.Tween(frame.rotation).to(target.rotation, 500);
         currentTweens.push(tweenRotation);
         tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
         tweenRotation.start();
 
-        var targetStyle = {opacity: 1.0};
-        var tweenOpacity = new TWEEN.Tween(frame.element.style).to(targetStyle, 2000);
+        var tweenOpacity = new TWEEN.Tween(frame.element.style).to(layouts.sequence.frameStyleTarget, 2000);
         currentTweens.push(tweenOpacity);
         tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
         tweenOpacity.start();
-
-        curX += frameWidth + space;
     };
 
-    shadowTween = createShadowTween({width: 3200, height: 300, opacity: 0.1});
+    shadowTween = createShadowTween(layouts.sequence.shadowStyleTarget);
     currentTweens.push(shadowTween);
     shadowTween.start();
 
-    var targetCameraPosition = {x: 0, y: 0, z: 1000};
-    var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
+    var tweenCameraPosition = new TWEEN.Tween(camera.position).to(layouts.sequence.cameraTarget.position, 2500);
     currentTweens.push(tweenCameraPosition);
     tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
     tweenCameraPosition.start();
@@ -524,6 +518,7 @@ function createUi() {
 function main() {
     createUi();
     frames = createFramesList(7);
+    layouts.update(frames);
     shadow = createShadow();
     sequenceLayout(function () {});
     render();
