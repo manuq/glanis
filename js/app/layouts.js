@@ -71,9 +71,72 @@ function(THREE, config) {
         });
     };
 
+    // stack
+
+    var StackLayout = function () {
+        this.frameTargets = [];
+        this.frameStyleTarget = {opacity: 0.9};
+        this.shadowStyleTarget = {width: 550, height: 800, opacity: 0.15};
+
+        this.cameraTarget = new THREE.Object3D();
+        this.cameraTarget.position.x = 400;
+        this.cameraTarget.position.y = 250;
+        this.cameraTarget.position.z = 700;
+
+        this.cameraTarget.rotation.x = -0.1;
+        this.cameraTarget.rotation.y = 0.5;
+    };
+
+    layouts.stack = new StackLayout();
+
+    StackLayout.prototype.calculate = function (frames) {
+        this.frameTargets = [];
+        var that = this;
+
+        var curZ = (config.space * (frames.length - 1)) / -2;
+
+        frames.forEach(function (frame) {
+            target = new THREE.Object3D();
+            target.position.z = curZ;
+            that.frameTargets.push(target);
+
+            curZ += config.space;
+        });
+    };
+
+    // lightbox
+
+    var LightboxLayout = function () {
+        this.frameTargets = [];
+        this.frameStyleTarget = {opacity: 0.9};
+        this.shadowStyleTarget = {width: 500, height: 300, opacity: 0.15};
+
+        this.cameraTarget = new THREE.Object3D();
+        this.cameraTarget.position.z = 300;
+    };
+
+    layouts.lightbox = new LightboxLayout();
+
+    LightboxLayout.prototype.calculate = function (frames) {
+        this.frameTargets = [];
+        var that = this;
+
+        var curZ = (config.space / 10 * (frames.length - 1)) / -2;
+
+        frames.forEach(function (frame) {
+            target = new THREE.Object3D();
+            target.position.z = curZ;
+            that.frameTargets.push(target);
+
+            curZ += config.space / 10;
+        });
+    };
+
     layouts.update = function (frames) {
         layouts.zoetrope.calculate(frames);
         layouts.sequence.calculate(frames);
+        layouts.stack.calculate(frames);
+        layouts.lightbox.calculate(frames);
     };
 
     return layouts;
