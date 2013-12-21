@@ -107,60 +107,48 @@ function createShadowTween(targetShadow) {
     return shadowTween;
 }
 
-function zoetropeLayout(callback) {
-    if (currentLayout == arguments.callee || changingFrames) {
-        return;
-    }
-
+function transform(layout, callback) {
     changingLayout = true;
     stopCurrentTweens();
-    currentLayout = arguments.callee;
 
-    var radius = 500;
-    var angle = Math.PI * 2 / frames.length;
-    var curAngle = 0;
     frames.forEach(function (frame, i) {
+        var target = layout.frameTargets[i];
 
-        var targetPosition = {x: Math.sin(curAngle) * radius, y: 0, z: Math.cos(curAngle) * radius};
-        var tweenPosition = new TWEEN.Tween(frame.position).to(targetPosition, 500);
+        var tweenPosition = new TWEEN.Tween(frame.position).to(target.position, 500);
         currentTweens.push(tweenPosition);
         tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
         tweenPosition.start();
 
-        tweenPosition.onComplete(function () {
-            var v = new THREE.Object3D();
-            v.x = 0;
-            v.y = 0;
-            v.z = 0;
-            frame.lookAt(v);
-        });
+        var targetRotation = {
+            x: target.rotation.x,
+            y: target.rotation.y,
+            z: target.rotation.z
+        };
+        var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, 500);
+        currentTweens.push(tweenRotation);
+        tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenRotation.start();
 
-        // var targetRotation = {x: 0, y: Math.tan(curAngle - Math.PI) * radius, z: 0};
-        // var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, 500);
-        // currentTweens.push(tweenRotation);
-        // tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
-        // tweenRotation.start();
-
-        var targetStyle = {opacity: 1.0};
-        var tweenOpacity = new TWEEN.Tween(frame.element.style).to(targetStyle, 2000);
+        var tweenOpacity = new TWEEN.Tween(frame.element.style).to(layouts.sequence.frameStyleTarget, 2000);
         currentTweens.push(tweenOpacity);
         tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
         tweenOpacity.start();
-
-        curAngle += angle;
     });
 
-    shadowTween = createShadowTween({width: 1800, height: 1800, opacity: 0.15});
+    shadowTween = createShadowTween(layout.shadowStyleTarget);
     currentTweens.push(shadowTween);
     shadowTween.start();
 
-    var targetCameraPosition = {x: 0, y: 1000, z: 1500};
-    var tweenCameraPosition = new TWEEN.Tween(camera.position).to(targetCameraPosition, 2500);
+    var tweenCameraPosition = new TWEEN.Tween(camera.position).to(layout.cameraTarget.position, 2500);
     currentTweens.push(tweenCameraPosition);
     tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
     tweenCameraPosition.start();
 
-    var targetCameraRotation = {x: -0.5, y: 0.0, z: 0};
+    var targetCameraRotation = {
+        x: layout.cameraTarget.rotation.x,
+        y: layout.cameraTarget.rotation.y,
+        z: layout.cameraTarget.rotation.z
+    };
     var tweenCameraRotation = new TWEEN.Tween(camera.rotation).to(targetCameraRotation, 2500);
     currentTweens.push(tweenCameraRotation);
     tweenCameraRotation.easing(TWEEN.Easing.Quadratic.InOut);
@@ -170,52 +158,22 @@ function zoetropeLayout(callback) {
     });
 }
 
+function zoetropeLayout(callback) {
+    if (currentLayout == arguments.callee || changingFrames) {
+        return;
+    }
+
+    currentLayout = arguments.callee;
+    transform(layouts.zoetrope, callback);
+}
+
 function sequenceLayout(callback) {
     if (currentLayout == arguments.callee || changingFrames) {
         return;
     }
 
-    changingLayout = true;
-    stopCurrentTweens();
     currentLayout = arguments.callee;
-
-    for (var i=0; i<frames.length; i++) {
-        var frame = frames[i];
-        var target = layouts.sequence.frameTargets[i];
-
-        var tweenPosition = new TWEEN.Tween(frame.position).to(target.position, 500);
-        currentTweens.push(tweenPosition);
-        tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
-        tweenPosition.start();
-
-        var tweenRotation = new TWEEN.Tween(frame.rotation).to(target.rotation, 500);
-        currentTweens.push(tweenRotation);
-        tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
-        tweenRotation.start();
-
-        var tweenOpacity = new TWEEN.Tween(frame.element.style).to(layouts.sequence.frameStyleTarget, 2000);
-        currentTweens.push(tweenOpacity);
-        tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
-        tweenOpacity.start();
-    };
-
-    shadowTween = createShadowTween(layouts.sequence.shadowStyleTarget);
-    currentTweens.push(shadowTween);
-    shadowTween.start();
-
-    var tweenCameraPosition = new TWEEN.Tween(camera.position).to(layouts.sequence.cameraTarget.position, 2500);
-    currentTweens.push(tweenCameraPosition);
-    tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
-    tweenCameraPosition.start();
-
-    var targetCameraRotation = {x: 0, y: 0, z: 0};
-    var tweenCameraRotation = new TWEEN.Tween(camera.rotation).to(targetCameraRotation, 2500);
-    currentTweens.push(tweenCameraRotation);
-    tweenCameraRotation.easing(TWEEN.Easing.Quadratic.InOut);
-    tweenCameraRotation.start().onComplete(function () {
-        changingLayout = false;
-        callback();
-    });
+    transform(layouts.sequence, callback);
 }
 
 function stackLayout(callback) {
