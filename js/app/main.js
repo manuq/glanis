@@ -21,7 +21,6 @@ var frames;
 var frameWidth = 312; // 300px width + 2*6px border
 var frameHeight = 402; // 390px width + 2*6px border
 var shadow;
-var space = 60;
 var currentLayout;
 var currentTweens = [];
 var changingFrames = false;
@@ -107,7 +106,12 @@ function createShadowTween(targetShadow) {
     return shadowTween;
 }
 
-function transform(layout, callback) {
+function changeLayout(layout, callback) {
+    if (currentLayout == layout || changingFrames) {
+        return;
+    }
+
+    currentLayout = layout;
     changingLayout = true;
     stopCurrentTweens();
 
@@ -156,42 +160,6 @@ function transform(layout, callback) {
         changingLayout = false;
         callback();
     });
-}
-
-function zoetropeLayout(callback) {
-    if (currentLayout == arguments.callee || changingFrames) {
-        return;
-    }
-
-    currentLayout = arguments.callee;
-    transform(layouts.zoetrope, callback);
-}
-
-function sequenceLayout(callback) {
-    if (currentLayout == arguments.callee || changingFrames) {
-        return;
-    }
-
-    currentLayout = arguments.callee;
-    transform(layouts.sequence, callback);
-}
-
-function stackLayout(callback) {
-    if (currentLayout == arguments.callee || changingFrames) {
-        return;
-    }
-
-    currentLayout = arguments.callee;
-    transform(layouts.stack, callback);
-}
-
-function lightBoxLayout(callback) {
-    if (currentLayout == arguments.callee || changingFrames) {
-        return;
-    }
-
-    currentLayout = arguments.callee;
-    transform(layouts.lightbox, callback);
 }
 
 function nextFrameInstant() {
@@ -248,7 +216,7 @@ function nextFrame() {
     var frame = frames[0];
     var targetPosition = currentPositions[frames.length-1];
 
-    if (currentLayout != zoetropeLayout) {
+    if (currentLayout != layouts.zoetrope) {
         var targetYAxisMiddle = {y: frame.position.y + ((targetPosition.y - frame.position.y) / 2) + (frameHeight*2)};
         var targetYAxisEnd = {y: targetPosition.y};
 
@@ -333,19 +301,19 @@ function render() {
 
 function checkEvents() {
     if (keyboard.pressed("1")) {
-        zoetropeLayout(function () {});
+        changeLayout(layouts.zoetrope, function () {});
         ui.setRadioActive("radio-layout", "zoetrope");
     };
     if (keyboard.pressed("2")) {
-        sequenceLayout(function () {});
+        changeLayout(layouts.sequence, function () {});
         ui.setRadioActive("radio-layout", "sequence");
     };
     if (keyboard.pressed("3")) {
-        stackLayout(function () {});
+        changeLayout(layouts.stack, function () {});
         ui.setRadioActive("radio-layout", "stack");
     };
     if (keyboard.pressed("4")) {
-        lightBoxLayout(function () {});
+        changeLayout(layouts.lightbox, function () {});
         ui.setRadioActive("radio-layout", "lightbox");
     };
     if (ui.pressed("next-frame") || keyboard.pressed("s")) {
@@ -372,10 +340,10 @@ function createUi() {
     ui.init();
 
     var optionsLayout = [
-        {"name": "zoetrope", 'text': "1", 'action': zoetropeLayout},
-        {"name": "sequence", 'text': "2", 'action': sequenceLayout, 'active': true},
-        {"name": "stack", 'text': "3", 'action': stackLayout},
-        {"name": "lightbox", 'text': "4", 'action': lightBoxLayout},
+        {"name": "zoetrope", 'text': "1", 'action': function () { changeLayout(layouts.zoetrope, function () {}) }},
+        {"name": "sequence", 'text': "2", 'action': function () { changeLayout(layouts.sequence, function () {}) }, 'active': true},
+        {"name": "stack", 'text': "3", 'action': function () { changeLayout(layouts.stack, function () {}) }},
+        {"name": "lightbox", 'text': "4", 'action': function () { changeLayout(layouts.lightbox, function () {}) }},
     ];
     ui.addRadioButtons("radio-layout", optionsLayout);
 
@@ -388,7 +356,7 @@ function main() {
     frames = createFramesList(7);
     layouts.update(frames);
     shadow = createShadow();
-    sequenceLayout(function () {});
+    changeLayout(layouts.sequence, function () {});
     render();
 }
 
