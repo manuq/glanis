@@ -195,7 +195,7 @@ function nextFrameInstant() {
     frames[0].rotation = lastRotation.clone();
 
     var t = 0;
-    var tweenNextFrame = new TWEEN.Tween(t).to(0, 40); // 40 miliseconds for 25 FPS
+    var tweenNextFrame = new TWEEN.Tween(t).to(0, frameTransitionDuration);
 
     tweenNextFrame.start().onComplete(function () {
         var firstFrame = frames.shift();
@@ -359,16 +359,14 @@ function moreOpacity() {
 
 function lessVelocity() {
     frameTransitionDuration += 5;
-    console.log(frameTransitionDuration);
 }
 
 function moreVelocity() {
-    if (frameTransitionDuration - 5 > 40) {
+    if (frameTransitionDuration - 5 > 40) {  // 40 miliseconds for 25 FPS
         frameTransitionDuration -= 5;
     } else {
         frameTransitionDuration = 40;
     }
-    console.log(frameTransitionDuration);
 }
 
 function render() {
