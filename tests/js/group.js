@@ -10,9 +10,7 @@ function(doc, THREE) {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    var groupElem = document.createElement('div');
-    var groupObj = new THREE.CSS3DObject(groupElem);
-    window.groupObj = groupObj;
+    var groupObj = new THREE.Object3D();
     scene.add(groupObj);
 
     var elem1 = document.createElement('div');

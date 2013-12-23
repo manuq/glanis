@@ -18,6 +18,7 @@ document.body.appendChild(renderer.domElement);
 var keyboard = new THREEx.KeyboardState();
 
 var frames;
+var framesGroup;
 var shadow;
 var currentLayout;
 var currentTweens = [];
@@ -34,7 +35,6 @@ function createFrame(frameName) {
     frameElem.classList.add(frameName);
 
     var frame = new THREE.CSS3DObject(frameElem);
-    scene.add(frame);
 
     var drawing = new Drawing(frameElem, frame, camera, projector);
 
@@ -70,10 +70,13 @@ function pxToInt(cssString) {
 
 function createFramesList(amount) {
     var frames = [];
+    framesGroup = new THREE.Object3D();
+    scene.add(framesGroup);
 
     for (var i=0; i<amount; i++) {
         var frameName = "frame-" + zeroFill(i+1, 2);
         var frame = createFrame(frameName);
+        framesGroup.add(frame);
         frames.push(frame);
     };
 
@@ -209,6 +212,53 @@ function nextFrame() {
 
     changingFrames = true;
 
+    if (currentLayout == layouts.zoetrope) {
+        var angle = 2 * Math.PI / frames.length;
+
+        var targetRotation = {
+            x: framesGroup.rotation.x,
+            y: framesGroup.rotation.y + angle,
+            z: framesGroup.rotation.z
+        };
+
+        var tweenRotation = new TWEEN.Tween(framesGroup.rotation).to(targetRotation, frameTransitionDuration);
+        tweenRotation.start().onComplete(function () {
+            framesGroup.rotation.y -= angle;
+
+            var firstFrame = frames.shift();
+            frames.push(firstFrame);
+
+            var firstFrame = frames[0];
+            firstPosition = firstFrame.position.clone();
+            firstRotation = firstFrame.rotation.clone();
+
+            var targets = [];
+            for (var i=0; i<frames.length-1; i++) {
+                var frame = frames[i+1];
+                var target = new THREE.Object3D();
+                target.position = frame.position.clone();
+                target.rotation = frame.rotation.clone();
+                targets.push(target);
+            };
+
+            for (var i=0; i<frames.length-1; i++) {
+                var frame = frames[i];
+                target = targets[i];
+                frame.position = target.position.clone();
+                frame.rotation = target.rotation.clone();
+                targets.push(target);
+            };
+
+            var lastFrame = frames[frames.length-1];
+            lastFrame.position = firstPosition.clone();
+            lastFrame.rotation = firstRotation.clone();
+
+            changingFrames = false;
+        });
+
+        return;
+    }
+
     for (var i=1; i<frames.length; i++) {
         var frame = frames[i];
         var nextFrame = frames[i-1];
@@ -228,7 +278,6 @@ function nextFrame() {
         };
 
         var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, frameTransitionDuration / 2);
-        currentTweens.push(tweenRotation);
         tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
         tweenRotation.start();
     };
@@ -239,21 +288,19 @@ function nextFrame() {
     target.position = lastFrame.position.clone();
     target.rotation = lastFrame.rotation.clone();
 
-    if (currentLayout != layouts.zoetrope) {
-        var targetYAxisMiddle = {y: frame.position.y + ((target.position.y - frame.position.y) / 2) + (config.frameHeight*2)};
-        var targetYAxisEnd = {y: target.position.y};
+    var targetYAxisMiddle = {y: frame.position.y + ((target.position.y - frame.position.y) / 2) + (config.frameHeight*2)};
+    var targetYAxisEnd = {y: target.position.y};
 
-        var tweenYAxisA = new TWEEN.Tween(frame.position).to(targetYAxisMiddle,
-                                                             frameTransitionDuration / 2);
-        tweenYAxisA.easing(TWEEN.Easing.Circular.Out);
+    var tweenYAxisA = new TWEEN.Tween(frame.position).to(targetYAxisMiddle,
+                                                         frameTransitionDuration / 2);
+    tweenYAxisA.easing(TWEEN.Easing.Circular.Out);
 
-        var tweenYAxisB = new TWEEN.Tween(frame.position).to(targetYAxisEnd,
-                                                             frameTransitionDuration / 2);
-        tweenYAxisB.easing(TWEEN.Easing.Circular.In);
+    var tweenYAxisB = new TWEEN.Tween(frame.position).to(targetYAxisEnd,
+                                                         frameTransitionDuration / 2);
+    tweenYAxisB.easing(TWEEN.Easing.Circular.In);
 
-        tweenYAxisA.chain(tweenYAxisB);
-        tweenYAxisA.start();
-    }
+    tweenYAxisA.chain(tweenYAxisB);
+    tweenYAxisA.start();
 
     var targetRotation = {
         x: target.rotation.x,
@@ -262,7 +309,6 @@ function nextFrame() {
     };
 
     var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, frameTransitionDuration / 2);
-    currentTweens.push(tweenRotation);
     tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
     tweenRotation.start();
 
