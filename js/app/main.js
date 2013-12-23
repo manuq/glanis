@@ -169,16 +169,29 @@ function nextFrameInstant() {
 
     changingFrames = true;
 
-    var currentPositions = [];
-    for (var i=0; i<frames.length; i++) {
-        currentPositions.push(frames[i].position.clone());
+    var lastFrame = frames[frames.length-1];
+    lastPosition = lastFrame.position.clone();
+    lastRotation = lastFrame.rotation.clone();
+
+    var targets = [];
+    for (var i=1; i<frames.length; i++) {
+        var frame = frames[i-1];
+        var target = new THREE.Object3D();
+        target.position = frame.position.clone();
+        target.rotation = frame.rotation.clone();
+        targets.push(target);
     };
 
     for (var i=1; i<frames.length; i++) {
-        frames[i].position = currentPositions[i-1];
+        var frame = frames[i];
+        target = targets[i-1];
+        frame.position = target.position.clone();
+        frame.rotation = target.rotation.clone();
+        targets.push(target);
     };
 
-    frames[0].position = currentPositions[frames.length-1];
+    frames[0].position = lastPosition.clone();
+    frames[0].rotation = lastRotation.clone();
 
     var t = 0;
     var tweenNextFrame = new TWEEN.Tween(t).to(0, 40); // 40 miliseconds for 25 FPS
@@ -198,27 +211,39 @@ function nextFrame() {
 
     changingFrames = true;
 
-    var currentPositions = [];
-    for (var i=0; i<frames.length; i++) {
-        currentPositions.push(frames[i].position.clone());
-    };
-
     for (var i=1; i<frames.length; i++) {
         var frame = frames[i];
-        var targetPosition = currentPositions[i-1];
+        var nextFrame = frames[i-1];
+        var target = new THREE.Object3D();
+        target.position = nextFrame.position.clone();
+        target.rotation = nextFrame.rotation.clone();
 
-        var tweenPosition = new TWEEN.Tween(frame.position).to(targetPosition,
+        var tweenPosition = new TWEEN.Tween(frame.position).to(target.position,
                                                                frameTransitionDuration / 2);
         tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
         tweenPosition.start();
+
+        var targetRotation = {
+            x: target.rotation.x,
+            y: target.rotation.y,
+            z: target.rotation.z
+        };
+
+        var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, frameTransitionDuration / 2);
+        currentTweens.push(tweenRotation);
+        tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenRotation.start();
     };
 
     var frame = frames[0];
-    var targetPosition = currentPositions[frames.length-1];
+    var lastFrame = frames[frames.length-1];
+    var target = new THREE.Object3D();
+    target.position = lastFrame.position.clone();
+    target.rotation = lastFrame.rotation.clone();
 
     if (currentLayout != layouts.zoetrope) {
-        var targetYAxisMiddle = {y: frame.position.y + ((targetPosition.y - frame.position.y) / 2) + (frameHeight*2)};
-        var targetYAxisEnd = {y: targetPosition.y};
+        var targetYAxisMiddle = {y: frame.position.y + ((target.position.y - frame.position.y) / 2) + (frameHeight*2)};
+        var targetYAxisEnd = {y: target.position.y};
 
         var tweenYAxisA = new TWEEN.Tween(frame.position).to(targetYAxisMiddle,
                                                              frameTransitionDuration / 2);
@@ -232,7 +257,18 @@ function nextFrame() {
         tweenYAxisA.start();
     }
 
-    var targetOtherAxis = {x: targetPosition.x, z: targetPosition.z};
+    var targetRotation = {
+        x: target.rotation.x,
+        y: target.rotation.y,
+        z: target.rotation.z
+    };
+
+    var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, frameTransitionDuration / 2);
+    currentTweens.push(tweenRotation);
+    tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
+    tweenRotation.start();
+
+    var targetOtherAxis = {x: target.position.x, z: target.position.z};
     var tweenOtherAxis = new TWEEN.Tween(frame.position).to(targetOtherAxis,
                                                             frameTransitionDuration);
 
