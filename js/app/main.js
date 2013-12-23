@@ -1,8 +1,8 @@
 define(["domReady!", "three", "tween", "THREEx.KeyboardState",
-        "app/drawing", "app/ui", "app/layouts",
+        "app/drawing", "app/config", "app/ui", "app/layouts",
         "CSS3DRenderer"],
 function(doc, THREE, TWEEN, THREEx,
-         Drawing, ui, layouts) {
+         Drawing, config, ui, layouts) {
 
 var scene = new THREE.Scene();
 
@@ -18,8 +18,6 @@ document.body.appendChild(renderer.domElement);
 var keyboard = new THREEx.KeyboardState();
 
 var frames;
-var frameWidth = 312; // 300px width + 2*6px border
-var frameHeight = 402; // 390px width + 2*6px border
 var shadow;
 var currentLayout;
 var currentTweens = [];
@@ -49,7 +47,7 @@ function createShadow() {
 
     var shadow = new THREE.CSS3DObject(shadowElem);
     shadow.rotation.x = Math.PI / 2;
-    shadow.position.y -= frameHeight / 2;
+    shadow.position.y -= config.frameHeight / 2;
     scene.add(shadow);
 
     return shadow;
@@ -242,7 +240,7 @@ function nextFrame() {
     target.rotation = lastFrame.rotation.clone();
 
     if (currentLayout != layouts.zoetrope) {
-        var targetYAxisMiddle = {y: frame.position.y + ((target.position.y - frame.position.y) / 2) + (frameHeight*2)};
+        var targetYAxisMiddle = {y: frame.position.y + ((target.position.y - frame.position.y) / 2) + (config.frameHeight*2)};
         var targetYAxisEnd = {y: target.position.y};
 
         var tweenYAxisA = new TWEEN.Tween(frame.position).to(targetYAxisMiddle,
