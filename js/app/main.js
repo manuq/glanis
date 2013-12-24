@@ -371,6 +371,15 @@ function moreVelocity() {
     }
 }
 
+function setVelocityProportional(value) {
+    duration = 300 - ((300 - 40) * value);
+    if (duration < 40) {
+        duration = 40;
+    }
+
+    frameTransitionDuration = duration;
+}
+
 function setPencil() {
     drawings.forEach(function (drawing) {
         drawing.setColor("black");
@@ -409,9 +418,11 @@ function checkEvents() {
         ui.setRadioActive("radio-layout", "lightbox");
     };
     if (ui.pressed("next-frame") || keyboard.pressed("s")) {
+        setVelocityProportional(ui.pullValue("next-frame"));
         nextFrame();
     };
     if (ui.pressed("next-frame-instant") || keyboard.pressed("w")) {
+        setVelocityProportional(ui.pullValue("next-frame-instant"));
         nextFrameInstant();
     };
     if (keyboard.pressed("z")) {
@@ -428,9 +439,11 @@ function checkEvents() {
     };
     if (keyboard.pressed("b")) {
         setPencil();
+        ui.setRadioActive("radio-draw", "pencil");
     };
     if (keyboard.pressed("n")) {
         setEraser();
+        ui.setRadioActive("radio-draw", "eraser");
     };
 }
 
@@ -441,12 +454,18 @@ function createUi() {
         {"name": "zoetrope", 'text': "1", 'action': function () { changeLayout(layouts.zoetrope, function () {}) }},
         {"name": "sequence", 'text': "2", 'action': function () { changeLayout(layouts.sequence, function () {}) }, 'active': true},
         {"name": "stack", 'text': "3", 'action': function () { changeLayout(layouts.stack, function () {}) }},
-        {"name": "lightbox", 'text': "4", 'action': function () { changeLayout(layouts.lightbox, function () {}) }},
+        {"name": "lightbox", 'text': "4", 'action': function () { changeLayout(layouts.lightbox, function () {}) }}
     ];
     ui.addRadioButtons("radio-layout", optionsLayout);
 
-    ui.addButton("next-frame", "s");
-    ui.addButton("next-frame-instant", "w");
+    var optionsDraw = [
+        {"name": "pencil", 'text': "b", 'action': setPencil},
+        {"name": "eraser", 'text': "n", 'action': setEraser}
+    ];
+    ui.addRadioButtons("radio-draw", optionsDraw);
+
+    ui.addPullButton({"name": "next-frame", "text": "s"});
+    ui.addPullButton({"name": "next-frame-instant", "text": "w"});
 }
 
 function main() {

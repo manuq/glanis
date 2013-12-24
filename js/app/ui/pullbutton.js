@@ -1,0 +1,62 @@
+define(["domReady!"], function(doc) {
+
+    var pullRadius = 150;
+
+    var PullButton = function (options) {
+        text = options['text'];
+
+        this.domElement = document.createElement('div');
+        this.button = document.createElement('button');
+        this.button.innerText = text;
+        this.domElement.appendChild(this.button);
+
+        this.pressed = false;
+        this.initialCoords;
+        this.curCoords;
+        this.pullValue = 0;
+
+        var that = this;
+
+        this.button.addEventListener("mousedown", function (event) {
+            that.initialCoords = [event.screenX, event.screenY];
+            that.curCoords = that.initialCoords.slice(0);
+            that.pressed = true;
+            that.button.classList.toggle('active');
+        });
+
+        document.documentElement.addEventListener('mousemove', function (event) {
+            if (that.pressed) {
+                that.curCoords = [event.screenX, event.screenY];
+                that.updatePullValue();
+            }
+        });
+
+        this.button.addEventListener("mouseup", function (event) {
+            that.pressed = false;
+            that.button.classList.toggle('active');
+        });
+
+        document.documentElement.addEventListener('mouseup', function (event) {
+            if (that.pressed) {
+                that.pressed = false;
+                that.button.classList.toggle('active');
+            }
+        });
+    }
+
+    PullButton.prototype.updatePullValue = function () {
+        var dx = this.curCoords[0] - this.initialCoords[0];
+        var dy = this.curCoords[1] - this.initialCoords[1];
+        var value = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+
+        value = value / pullRadius;
+        if (value > 1) {
+            value = 1;
+        }
+
+        this.pullValue = value;
+    }
+
+    return PullButton;
+
+});

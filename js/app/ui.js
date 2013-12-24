@@ -1,6 +1,6 @@
 define(["domReady!",
-        "app/ui/radiobutton"],
-function(doc, RadioButton) {
+        "app/ui/pullbutton", "app/ui/radiobutton"],
+function(doc, PullButton, RadioButton) {
 
     var ui = {};
     var domElement;
@@ -12,7 +12,9 @@ function(doc, RadioButton) {
         domElement.id = "ui";
     }
 
-    ui.addButton = function (name, text) {
+    ui.addButton = function (options) {
+        name = options['name'];
+        text = options['text'];
         elem = document.createElement('div');
         domElement.appendChild(elem);
         var button = document.createElement('button');
@@ -33,6 +35,13 @@ function(doc, RadioButton) {
         });
     }
 
+    ui.addPullButton = function (options) {
+        var pull = new PullButton(options);
+        name = options['name'];
+        widgets[name] = pull;
+        domElement.appendChild(pull.domElement);
+    }
+
     ui.addRadioButtons = function (name, options) {
         var radio = new RadioButton(name, options);
         widgets[name] = radio;
@@ -48,6 +57,12 @@ function(doc, RadioButton) {
     ui.pressed = function (name) {
         if (name in widgets) {
             return widgets[name].pressed;
+        }
+    }
+
+    ui.pullValue = function (name) {
+        if (name in widgets) {
+            return widgets[name].pullValue;
         }
     }
 
