@@ -33,7 +33,7 @@ define([], function() {
         this.brushColor = colorName;
 
         if (this.brushColor == "white") {
-            this.brushSize = 15;
+            this.brushSize = 24;
         } else {
             this.brushSize = 8;
         };

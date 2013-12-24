@@ -17,7 +17,7 @@ document.body.appendChild(renderer.domElement);
 
 var keyboard = new THREEx.KeyboardState();
 
-var frames;
+var frames = [];
 var framesGroup;
 var shadow;
 var currentLayout;
@@ -26,6 +26,7 @@ var changingFrames = false;
 var changingLayout = false;
 var changingOpacities = false;
 var frameTransitionDuration = 300;
+var drawings = [];
 
 function createFrame(frameName) {
     var frameElem = document.createElement('canvas');
@@ -36,6 +37,7 @@ function createFrame(frameName) {
     var frame = new THREE.CSS3DObject(frameElem);
 
     var drawing = new Drawing(frameElem, frame, camera, projector);
+    drawings.push(drawing);
     drawing.load('images/test/' + frameName + '.png')
 
     return frame;
@@ -369,6 +371,18 @@ function moreVelocity() {
     }
 }
 
+function setPencil() {
+    drawings.forEach(function (drawing) {
+        drawing.setColor("black");
+    });
+}
+
+function setEraser() {
+    drawings.forEach(function (drawing) {
+        drawing.setColor("white");
+    });
+}
+
 function render() {
     requestAnimationFrame(render);
 
@@ -411,6 +425,12 @@ function checkEvents() {
     };
     if (keyboard.pressed("v")) {
         moreVelocity();
+    };
+    if (keyboard.pressed("b")) {
+        setPencil();
+    };
+    if (keyboard.pressed("n")) {
+        setEraser();
     };
 }
 
