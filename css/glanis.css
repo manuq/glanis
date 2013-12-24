@@ -29,6 +29,7 @@ canvas {
   top: 0;
   left: 0;
   padding: 15px;
+  pointer-events: none;
 }
 
 #ui button {
@@ -39,6 +40,7 @@ canvas {
   border-radius: 25px;
   margin: 3px;
   outline: none;
+  pointer-events: auto;
 }
 
 #ui button.active {
