@@ -32,11 +32,11 @@ function createFrame(frameName) {
     frameElem.width = 300;
     frameElem.height = 390;
     frameElem.classList.add('frame');
-    frameElem.classList.add(frameName);
 
     var frame = new THREE.CSS3DObject(frameElem);
 
     var drawing = new Drawing(frameElem, frame, camera, projector);
+    drawing.load('images/test/' + frameName + '.png')
 
     return frame;
 }

@@ -40,6 +40,15 @@ define([], function() {
 
     }
 
+    Drawing.prototype.load = function (imageSrc) {
+        var image = new Image();
+        image.src = imageSrc;
+        var that = this;
+        image.onload = function(){
+            that.ctx.drawImage(image, 0, 0);
+        };
+    }
+
     Drawing.prototype.draw = function () {
         this.ctx.beginPath();
         this.ctx.moveTo(this.prevX, this.prevY);

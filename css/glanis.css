@@ -16,28 +16,6 @@ canvas {
   opacity: 1.0;
 }
 
-.frame.frame-01 {
-  background-image: url("../images/test/frame-01.png");
-}
-.frame.frame-02 {
-  background-image: url("../images/test/frame-02.png");
-}
-.frame.frame-03 {
-  background-image: url("../images/test/frame-03.png");
-}
-.frame.frame-04 {
-  background-image: url("../images/test/frame-04.png");
-}
-.frame.frame-05 {
-  background-image: url("../images/test/frame-05.png");
-}
-.frame.frame-06 {
-  background-image: url("../images/test/frame-06.png");
-}
-.frame.frame-07 {
-  background-image: url("../images/test/frame-07.png");
-}
-
 .shadow {
   width: 500px;
   height: 300px;
