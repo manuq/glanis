@@ -359,6 +359,14 @@ function moreOpacity() {
     addOpacity(0.01);
 }
 
+function setOpacityProportional(value) {
+    var opacity = 0.1 + value * 0.9;
+
+    frames.forEach(function (frame) {
+        frame.element.style.opacity = opacity;
+    });
+}
+
 function lessVelocity() {
     frameTransitionDuration += 5;
 }
@@ -425,6 +433,9 @@ function checkEvents() {
         setVelocityProportional(ui.pullValue("next-frame-instant"));
         nextFrameInstant();
     };
+    if (ui.pressed("opacity")) {
+        setOpacityProportional(ui.pullValue("opacity"));
+    };
     if (keyboard.pressed("z")) {
         lessOpacity();
     };
@@ -466,6 +477,7 @@ function createUi() {
 
     ui.addPullButton({"name": "next-frame", "text": "s"});
     ui.addPullButton({"name": "next-frame-instant", "text": "w"});
+    ui.addPullButton({"name": "opacity", "text": "o"});
 }
 
 function main() {
