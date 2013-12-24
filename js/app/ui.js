@@ -66,6 +66,12 @@ function(doc, PullButton, RadioButton) {
         }
     }
 
+    ui.setPullValue = function (name, value) {
+        if (name in widgets) {
+            widgets[name].pullValue = value;
+        }
+    }
+
     return ui;
 
 });

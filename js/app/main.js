@@ -139,7 +139,10 @@ function changeLayout(layout, callback) {
         var tweenOpacity = new TWEEN.Tween(frame.element.style).to(layout.frameStyleTarget, 2000);
         currentTweens.push(tweenOpacity);
         tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
-        tweenOpacity.start();
+        tweenOpacity.start().onComplete(function () {
+            var value = (frame.element.style.opacity - 0.1) / 0.9;
+            ui.setPullValue('opacity', value);
+        });
     });
 
     shadowTween = createShadowTween(layout.shadowStyleTarget);
@@ -340,6 +343,9 @@ function addOpacity(sum) {
             frame.element.style.opacity = opacity;
         });
     }
+    var value = (opacity - 0.1) / 0.9;
+    ui.setPullValue('opacity', value);
+
     changingOpacities = false;
 }
 
@@ -369,6 +375,13 @@ function setOpacityProportional(value) {
 
 function lessVelocity() {
     frameTransitionDuration += 5;
+
+    var value = (300 - frameTransitionDuration) / (300 - 40);
+    if (value < 0) {
+        value = 0;
+    }
+    ui.setPullValue('next-frame', value);
+    ui.setPullValue('next-frame-instant', value);
 }
 
 function moreVelocity() {
@@ -377,10 +390,17 @@ function moreVelocity() {
     } else {
         frameTransitionDuration = 40;
     }
+
+    var value = (300 - frameTransitionDuration) / (300 - 40);
+    if (value < 0) {
+        value = 0;
+    }
+    ui.setPullValue('next-frame', value);
+    ui.setPullValue('next-frame-instant', value);
 }
 
 function setVelocityProportional(value) {
-    duration = 300 - ((300 - 40) * value);
+    var duration = 300 - ((300 - 40) * value);
     if (duration < 40) {
         duration = 40;
     }
@@ -425,12 +445,20 @@ function checkEvents() {
         changeLayout(layouts.lightbox, function () {});
         ui.setRadioActive("radio-layout", "lightbox");
     };
-    if (ui.pressed("next-frame") || keyboard.pressed("s")) {
+    if (ui.pressed("next-frame")) {
         setVelocityProportional(ui.pullValue("next-frame"));
+        ui.setPullValue('next-frame-instant', ui.pullValue("next-frame"));
         nextFrame();
     };
-    if (ui.pressed("next-frame-instant") || keyboard.pressed("w")) {
+    if (keyboard.pressed("s")) {
+        nextFrame();
+    };
+    if (ui.pressed("next-frame-instant")) {
         setVelocityProportional(ui.pullValue("next-frame-instant"));
+        ui.setPullValue('next-frame', ui.pullValue("next-frame-instant"));
+        nextFrameInstant();
+    };
+    if (keyboard.pressed("w")) {
         nextFrameInstant();
     };
     if (ui.pressed("opacity")) {
@@ -477,7 +505,7 @@ function createUi() {
 
     ui.addPullButton({"name": "next-frame", "text": "s"});
     ui.addPullButton({"name": "next-frame-instant", "text": "w"});
-    ui.addPullButton({"name": "opacity", "text": "o"});
+    ui.addPullButton({"name": "opacity", "text": "o", "initial": 1});
 }
 
 function main() {

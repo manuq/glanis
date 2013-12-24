@@ -14,7 +14,11 @@ define(["domReady!"], function(doc) {
         this.initialCoords;
         this.curCoords;
         this.initialValue;
+
         this.pullValue = 0;
+        if ("initial" in options) {
+            this.pullValue = options["initial"];
+        };
 
         var that = this;
 
@@ -67,7 +71,6 @@ define(["domReady!"], function(doc) {
         }
 
         this.pullValue = value;
-        console.log([magnitude, this.pullValue]);
     }
 
     return PullButton;
