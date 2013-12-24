@@ -13,13 +13,16 @@ define(["domReady!"], function(doc) {
         this.pressed = false;
         this.initialCoords;
         this.curCoords;
+        this.initialValue;
         this.pullValue = 0;
 
         var that = this;
 
         this.button.addEventListener("mousedown", function (event) {
+            that.initialValue = that.pullValue;
             that.initialCoords = [event.screenX, event.screenY];
             that.curCoords = that.initialCoords.slice(0);
+
             that.pressed = true;
             that.button.classList.toggle('active');
         });
@@ -47,14 +50,24 @@ define(["domReady!"], function(doc) {
     PullButton.prototype.updatePullValue = function () {
         var dx = this.curCoords[0] - this.initialCoords[0];
         var dy = this.curCoords[1] - this.initialCoords[1];
-        var value = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+        var magnitude = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
-        value = value / pullRadius;
-        if (value > 1) {
-            value = 1;
+        value = this.initialValue + magnitude / pullRadius;
+
+        if (value > 1 && value < this.initialValue + 1) {
+            value = this.initialValue - 1 + magnitude / pullRadius;
+        } else {
+            if (value > this.initialValue + 1) {
+                if (this.initialValue == 0) {
+                    value = 1;
+                } else {
+                    value = this.initialValue;
+                }
+            }
         }
 
         this.pullValue = value;
+        console.log([magnitude, this.pullValue]);
     }
 
     return PullButton;
