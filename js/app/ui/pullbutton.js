@@ -1,4 +1,4 @@
-define(["domReady!"], function(doc) {
+define(["domReady!", "app/ui/bg"], function(doc, bg) {
 
     var pullRadius = 150;
 
@@ -21,6 +21,8 @@ define(["domReady!"], function(doc) {
             this.pullValue = options["initial"];
         };
 
+        this.controls = new bg.PullControls(this);
+
         var that = this;
 
         this.button.addEventListener("mousedown", function (event) {
@@ -30,6 +32,7 @@ define(["domReady!"], function(doc) {
 
             that.pressed = true;
             that.button.classList.toggle('active');
+            that.controls.show();
         });
 
         document.documentElement.addEventListener('mousemove', function (event) {
@@ -42,12 +45,14 @@ define(["domReady!"], function(doc) {
         this.button.addEventListener("mouseup", function (event) {
             that.pressed = false;
             that.button.classList.toggle('active');
+            that.controls.hide();
         });
 
         document.documentElement.addEventListener('mouseup', function (event) {
             if (that.pressed) {
                 that.pressed = false;
                 that.button.classList.toggle('active');
+                that.controls.hide();
             }
         });
     }

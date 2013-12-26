@@ -1,11 +1,10 @@
-define(["domReady!", "paper",
-        "app/ui/pullbutton", "app/ui/radiobutton"],
-function(doc, paper,
-         PullButton, RadioButton) {
+define(["domReady!",
+        "app/ui/bg", "app/ui/pullbutton", "app/ui/radiobutton"],
+function(doc,
+         bg, PullButton, RadioButton) {
 
     var ui = {};
     var domElement;
-    var bgCanvas;
     var widgets = {};
 
     ui.init = function () {
@@ -13,19 +12,8 @@ function(doc, paper,
         document.body.appendChild(domElement);
         domElement.id = "ui";
 
-        bgCanvas = document.createElement('canvas');
+        var bgCanvas = bg.init();
         domElement.appendChild(bgCanvas);
-        bgCanvas.id = "bg-ui";
-        bgCanvas.width = window.innerWidth;
-        bgCanvas.height = window.innerHeight;
-        paper.setup(bgCanvas);
-        paper.view.viewSize = [window.innerWidth, window.innerHeight];
-
-        var path = new paper.Path.Circle(new paper.Point(120, 150), 30);
-        path.strokeColor = '#0ff';
-        path.strokeWidth = 3;
-        path.dashArray = [4, 3];
-        paper.view.draw();
     }
 
     ui.addButton = function (options) {
