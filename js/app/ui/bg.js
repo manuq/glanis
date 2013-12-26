@@ -5,7 +5,6 @@ function(doc, paper) {
     var bgCanvas;
 
     function getPos(elem) {
-        window.elem = elem;
         return [elem.offsetLeft + 28, elem.offsetTop + 28];
     }
 
@@ -22,26 +21,49 @@ function(doc, paper) {
 
     bg.PullControls = function (pullButton) {
         this.pullButton = pullButton;
-        this.path = new paper.Path.Circle(new paper.Point(0, 0), 150);
-        this.path.style = {
+
+        this.maxPath = new paper.Path.Circle(new paper.Point(0, 0), 150);
+        this.maxPath.style = {
             strokeColor: '#0ff',
             strokeWidth: 3,
             dashArray: [4, 3]
         };
-        this.path.visible = false;
-        paper.view.draw();
+        this.maxPath.visible = false;
+
+        this.curPath = new paper.Path.Circle(new paper.Point(0, 0), 150);
+        this.curPath.style = {
+            strokeColor: '#aff',
+            strokeWidth: 2
+        };
+        this.curPath.visible = false;
+        window.curPath = this.curPath;
     }
 
     bg.PullControls.prototype.show = function () {
         var pos = getPos(this.pullButton.domElement);
-        console.log(pos);
-        this.path.position = new paper.Point(pos[0], pos[1]);
-        this.path.visible = true;
+        this.maxPath.position = new paper.Point(pos[0], pos[1]);
+        this.curPath.position = new paper.Point(pos[0], pos[1]);
+        this.maxPath.visible = true;
+        this.curPath.visible = true;
         paper.view.draw();
     }
 
     bg.PullControls.prototype.hide = function () {
-        this.path.visible = false;
+        this.maxPath.visible = false;
+        this.curPath.visible = false;
+        paper.view.draw();
+    }
+
+    bg.PullControls.prototype.updateCurrent = function (value) {
+        this.curPath.remove();
+        this.curPath = new paper.Path.Circle(new paper.Point(0, 0), 150);
+        this.curPath.style = {
+            strokeColor: '#aff',
+            strokeWidth: 2
+        };
+
+        this.curPath.position = this.maxPath.position;
+        this.curPath.scale(value);
         paper.view.draw();
     }
 
