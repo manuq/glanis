@@ -28,8 +28,9 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
-  padding: 15px;
   pointer-events: none;
+  width: 100%;
+  height: 100%;
 }
 
 #ui button {
@@ -45,4 +46,17 @@ canvas {
 
 #ui button.active {
   border-color: #00ffff;
+}
+
+#bg-ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#ui .ui-container {
+  position: relative;
+  z-index: 10;
 }

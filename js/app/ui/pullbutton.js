@@ -6,6 +6,7 @@ define(["domReady!"], function(doc) {
         text = options['text'];
 
         this.domElement = document.createElement('div');
+        this.domElement.className = "ui-container";
         this.button = document.createElement('button');
         this.button.innerText = text;
         this.domElement.appendChild(this.button);

@@ -18,6 +18,9 @@ requirejs.config({
         'tween': {
             exports: 'TWEEN'
         },
+        'paper': {
+            exports: 'paper'
+        },
     }
 });
 
