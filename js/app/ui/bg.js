@@ -33,6 +33,7 @@ function(doc, paper) {
         this.curPath = new paper.Path.Circle(new paper.Point(0, 0), 150);
         this.curPath.style = {
             strokeColor: '#aff',
+            fillColor: 'rgba(255, 255, 255, 0.3)',
             strokeWidth: 2
         };
         this.curPath.visible = false;
@@ -59,6 +60,7 @@ function(doc, paper) {
         this.curPath = new paper.Path.Circle(new paper.Point(0, 0), 150);
         this.curPath.style = {
             strokeColor: '#aff',
+            fillColor: 'rgba(255, 255, 255, 0.3)',
             strokeWidth: 2
         };
 
