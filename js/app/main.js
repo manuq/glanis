@@ -38,7 +38,7 @@ function createFrame(frameName) {
 
     var drawing = new Drawing(frameElem, frame, camera, projector);
     drawings.push(drawing);
-    drawing.load('images/test/' + frameName + '.png')
+    drawing.load('images/test/' + frameName + '.png');
 
     return frame;
 }

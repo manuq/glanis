@@ -16,6 +16,12 @@ canvas {
   opacity: 1.0;
 }
 
+.frame.circular {
+  width: 350px;
+  height: 350px;
+  border-radius: 225px;
+}
+
 .shadow {
   width: 500px;
   height: 300px;
