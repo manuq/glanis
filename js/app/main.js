@@ -420,6 +420,12 @@ function setEraser() {
     });
 }
 
+function clearFrames() {
+    drawings.forEach(function (drawing) {
+        drawing.erase();
+    });
+}
+
 function render() {
     requestAnimationFrame(render);
 
@@ -484,6 +490,9 @@ function checkEvents() {
         setEraser();
         ui.setRadioActive("radio-draw", "eraser");
     };
+    if (ui.pressed("clear-draw")) {
+        clearFrames();
+    };
 }
 
 function createUi() {
@@ -502,6 +511,7 @@ function createUi() {
         {"name": "eraser", 'text': "n", 'action': setEraser}
     ];
     ui.addRadioButtons("radio-draw", optionsDraw);
+    ui.addButton({"name": "clear-draw", "text": "m"});
 
     ui.addPullButton({"name": "next-frame", "text": "s"});
     ui.addPullButton({"name": "next-frame-instant", "text": "w"});
