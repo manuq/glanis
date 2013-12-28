@@ -490,7 +490,7 @@ function checkEvents() {
         setEraser();
         ui.setRadioActive("radio-draw", "eraser");
     };
-    if (ui.pressed("clear-draw")) {
+    if (ui.pressed("clear-draw") || keyboard.pressed("m")) {
         clearFrames();
     };
 }
