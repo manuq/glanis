@@ -25,7 +25,7 @@ var currentTweens = [];
 var changingFrames = false;
 var changingLayout = false;
 var changingOpacities = false;
-var frameTransitionDuration = 300;
+var frameTransitionDuration = config.maxDuration;
 var drawings = [];
 
 function createFrame(frameName) {
