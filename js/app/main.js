@@ -168,46 +168,31 @@ function changeLayout(layout, callback) {
     });
 }
 
-function nextFrameInstant() {
+function changeFrameInstant(direction) {
     if (changingLayout || changingFrames) {
         return;
     }
 
     changingFrames = true;
 
-    var lastFrame = frames[frames.length-1];
-    lastPosition = lastFrame.position.clone();
-    lastRotation = lastFrame.rotation.clone();
-
-    var targets = [];
-    for (var i=1; i<frames.length; i++) {
-        var frame = frames[i-1];
-        var target = new THREE.Object3D();
-        target.position = frame.position.clone();
-        target.rotation = frame.rotation.clone();
-        targets.push(target);
-    };
-
-    for (var i=1; i<frames.length; i++) {
-        var frame = frames[i];
-        target = targets[i-1];
-        frame.position = target.position.clone();
-        frame.rotation = target.rotation.clone();
-        targets.push(target);
-    };
-
-    frames[0].position = lastPosition.clone();
-    frames[0].rotation = lastRotation.clone();
+    relocateFrames(direction * -1);
 
     var t = 0;
     var tweenNextFrame = new TWEEN.Tween(t).to(0, frameTransitionDuration);
 
     tweenNextFrame.start().onComplete(function () {
-        var firstFrame = frames.shift();
-        frames.push(firstFrame);
+        shiftFrames(direction);
 
         changingFrames = false;
     });
+}
+
+function nextFrameInstant() {
+    changeFrameInstant(1);
+}
+
+function prevFrameInstant() {
+    changeFrameInstant(-1);
 }
 
 function shiftFrames(direction) {
@@ -439,6 +424,7 @@ function lessVelocity() {
     ui.setPullValue('next-frame', value);
     ui.setPullValue('next-frame-instant', value);
     ui.setPullValue('prev-frame', value);
+    ui.setPullValue('prev-frame-instant', value);
 }
 
 function moreVelocity() {
@@ -455,6 +441,7 @@ function moreVelocity() {
     ui.setPullValue('next-frame', value);
     ui.setPullValue('next-frame-instant', value);
     ui.setPullValue('prev-frame', value);
+    ui.setPullValue('prev-frame-instant', value);
 }
 
 function setVelocityProportional(value) {
@@ -513,12 +500,14 @@ function checkEvents() {
         setVelocityProportional(ui.pullValue("next-frame"));
         ui.setPullValue('next-frame-instant', ui.pullValue("next-frame"));
         ui.setPullValue('prev-frame', ui.pullValue("next-frame"));
+        ui.setPullValue('prev-frame-instant', ui.pullValue("next-frame"));
         nextFrame();
     };
     if (ui.pressed("prev-frame")) {
         setVelocityProportional(ui.pullValue("prev-frame"));
         ui.setPullValue('next-frame', ui.pullValue("prev-frame"));
         ui.setPullValue('next-frame-instant', ui.pullValue("prev-frame"));
+        ui.setPullValue('prev-frame-instant', ui.pullValue("next-frame"));
         prevFrame();
     };
     if (keyboard.pressed("s")) {
@@ -530,10 +519,22 @@ function checkEvents() {
     if (ui.pressed("next-frame-instant")) {
         setVelocityProportional(ui.pullValue("next-frame-instant"));
         ui.setPullValue('next-frame', ui.pullValue("next-frame-instant"));
+        ui.setPullValue('prev-frame', ui.pullValue("next-frame-instant"));
+        ui.setPullValue('prev-frame-instant', ui.pullValue("next-frame-instant"));
         nextFrameInstant();
+    };
+    if (ui.pressed("prev-frame-instant")) {
+        setVelocityProportional(ui.pullValue("prev-frame-instant"));
+        ui.setPullValue('next-frame', ui.pullValue("prev-frame-instant"));
+        ui.setPullValue('prev-frame', ui.pullValue("prev-frame-instant"));
+        ui.setPullValue('next-frame-instant', ui.pullValue("prev-frame-instant"));
+        prevFrameInstant();
     };
     if (keyboard.pressed("w")) {
         nextFrameInstant();
+    };
+    if (keyboard.pressed("q")) {
+        prevFrameInstant();
     };
     if (ui.pressed("opacity")) {
         setOpacityProportional(ui.pullValue("opacity"));
