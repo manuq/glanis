@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="50"
+   height="50"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="eraser.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.7776285"
+     inkscape:cx="56.08632"
+     inkscape:cy="36.550812"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer3"
+     showgrid="true"
+     inkscape:window-width="1366"
+     inkscape:window-height="709"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2990"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1002.3622)"
+     style="display:none">
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.2886179;color:#000000;fill:#d5bbdb;fill-opacity:1;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path2985"
+       sodipodi:cx="17.745098"
+       sodipodi:cy="18.039215"
+       sodipodi:rx="22.254902"
+       sodipodi:ry="22.254902"
+       d="m 40,18.039215 a 22.254902,22.254902 0 1 1 -44.5098038,0 22.254902,22.254902 0 1 1 44.5098038,0 z"
+       transform="matrix(1.118323,0,0,1.118323,5.1552496,1007.1885)" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Layer">
+    <rect
+       style="color:#000000;fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.91210287999999995;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4101"
+       width="58.105896"
+       height="58.625141"
+       x="-3.9561462"
+       y="-4.1553488"
+       ry="0" />
+    <path
+       id="path4066"
+       style="color:#000000;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.91210287999999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 37.162606,6.8872778 c 8.097585,-4.1891272 -1.276913,-7.00000001 5.318695,-10 l -17.871749,0 c -5.37158,2.99999999 5.149779,5.810871 -1.2386,10 -10.585233,6.9411772 6.937417,7.6739432 -2.803564,15.6739432 l 8.451137,0 C 41.342482,14.899823 23.956967,13.718957 37.162606,6.8872778 z"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="sccsccs" />
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:0.91210287999999995;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4088"
+       width="21.997541"
+       height="29"
+       x="14.001229"
+       y="26"
+       ry="6" />
+  </g>
+</svg>

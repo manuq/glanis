@@ -38,6 +38,8 @@ function(doc,
         elem.appendChild(button);
         widgets[name] = button;
         button.innerText = text;
+        button.style.backgroundImage = "url('images/icons/" + options.name + ".svg')";
+        button.style.color = "transparent";
         button.addEventListener("mousedown", function (event) {
             this.pressed = true;
             this.classList.toggle('active');

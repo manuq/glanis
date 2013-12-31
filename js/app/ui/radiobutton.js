@@ -17,6 +17,8 @@ define(["domReady!"], function(doc) {
             that.buttons[name] = button;
             button.id = name + "-" + i;
             button.innerText = text;
+            button.style.backgroundImage = "url('images/icons/" + name + ".svg')";
+            button.style.color = "transparent";
             button.addEventListener('click',
                                     function () { that.onButtonPress(button, action) });
 

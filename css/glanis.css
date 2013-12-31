@@ -48,6 +48,7 @@ canvas {
   margin: 3px;
   outline: none;
   pointer-events: auto;
+  background-position: center;
 }
 
 #ui button.active {

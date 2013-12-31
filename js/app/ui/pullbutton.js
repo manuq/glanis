@@ -9,6 +9,8 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.domElement.className = "ui-container";
         this.button = document.createElement('button');
         this.button.innerText = text;
+        this.button.style.backgroundImage = "url('images/icons/" + options.name + ".svg')";
+        this.button.style.color = "transparent";
         this.domElement.appendChild(this.button);
 
         this.pressed = false;
