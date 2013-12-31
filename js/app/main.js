@@ -374,9 +374,13 @@ function setOpacityProportional(value) {
 }
 
 function lessVelocity() {
-    frameTransitionDuration += 5;
+    if (frameTransitionDuration + 5 < config.maxDuration) {
+        frameTransitionDuration += 5;
+    } else {
+        frameTransitionDuration = config.maxDuration;
+    }
 
-    var value = (300 - frameTransitionDuration) / (300 - 40);
+    var value = (config.maxDuration - frameTransitionDuration) / config.maxDuration;
     if (value < 0) {
         value = 0;
     }
@@ -385,13 +389,13 @@ function lessVelocity() {
 }
 
 function moreVelocity() {
-    if (frameTransitionDuration - 5 > 40) {  // 40 miliseconds for 25 FPS
+    if (frameTransitionDuration - 5 > 0) {
         frameTransitionDuration -= 5;
     } else {
-        frameTransitionDuration = 40;
+        frameTransitionDuration = 0;
     }
 
-    var value = (300 - frameTransitionDuration) / (300 - 40);
+    var value = (config.maxDuration - frameTransitionDuration) / config.maxDuration;
     if (value < 0) {
         value = 0;
     }
@@ -400,9 +404,9 @@ function moreVelocity() {
 }
 
 function setVelocityProportional(value) {
-    var duration = 300 - ((300 - 40) * value);
-    if (duration < 40) {
-        duration = 40;
+    var duration = config.maxDuration - (config.maxDuration * value);
+    if (duration < 0) {
+        duration = 0;
     }
 
     frameTransitionDuration = duration;
