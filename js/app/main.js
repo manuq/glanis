@@ -210,7 +210,76 @@ function nextFrameInstant() {
     });
 }
 
-function nextFrame() {
+function shiftFrames(direction) {
+    if (direction == 1) {
+        var firstFrame = frames.shift();
+        frames.push(firstFrame);
+
+    } else {
+        var lastFrame = frames.pop();
+        frames.unshift(lastFrame);
+    }
+}
+
+function relocateFrames(direction) {
+
+    var auxFrames;
+
+    if (direction == 1) {
+        auxFrames = frames;
+
+    } else {
+        auxFrames = frames.slice(0).reverse();
+    }
+
+    var firstFrame = auxFrames[0];
+    firstPosition = firstFrame.position.clone();
+    firstRotation = firstFrame.rotation.clone();
+
+    var targets = [];
+    for (var i=0; i<auxFrames.length-1; i++) {
+        var frame = auxFrames[i+1];
+        var target = new THREE.Object3D();
+        target.position = frame.position.clone();
+        target.rotation = frame.rotation.clone();
+        targets.push(target);
+    };
+
+    for (var i=0; i<auxFrames.length-1; i++) {
+        var frame = auxFrames[i];
+        target = targets[i];
+        frame.position = target.position.clone();
+        frame.rotation = target.rotation.clone();
+        targets.push(target);
+    };
+
+    var lastFrame = auxFrames[auxFrames.length-1];
+    lastFrame.position = firstPosition.clone();
+    lastFrame.rotation = firstRotation.clone();
+}
+
+function changeFrameZoetrope(direction, callback) {
+    var angle = 2 * Math.PI / frames.length;
+
+    var targetRotation = {
+        x: framesGroup.rotation.x,
+        y: framesGroup.rotation.y + angle * direction,
+        z: framesGroup.rotation.z
+    };
+
+    var tweenRotation = new TWEEN.Tween(framesGroup.rotation);
+    tweenRotation.to(targetRotation, frameTransitionDuration);
+    tweenRotation.start().onComplete(function () {
+        framesGroup.rotation.y -= angle * direction;
+
+        shiftFrames(direction);
+        relocateFrames(direction);
+
+        callback();
+    });
+}
+
+function changeFrame(direction) {
     if (changingLayout || changingFrames) {
         return;
     }
@@ -218,58 +287,26 @@ function nextFrame() {
     changingFrames = true;
 
     if (currentLayout == layouts.zoetrope) {
-        var angle = 2 * Math.PI / frames.length;
-
-        var targetRotation = {
-            x: framesGroup.rotation.x,
-            y: framesGroup.rotation.y + angle,
-            z: framesGroup.rotation.z
-        };
-
-        var tweenRotation = new TWEEN.Tween(framesGroup.rotation).to(targetRotation, frameTransitionDuration);
-        tweenRotation.start().onComplete(function () {
-            framesGroup.rotation.y -= angle;
-
-            var firstFrame = frames.shift();
-            frames.push(firstFrame);
-
-            var firstFrame = frames[0];
-            firstPosition = firstFrame.position.clone();
-            firstRotation = firstFrame.rotation.clone();
-
-            var targets = [];
-            for (var i=0; i<frames.length-1; i++) {
-                var frame = frames[i+1];
-                var target = new THREE.Object3D();
-                target.position = frame.position.clone();
-                target.rotation = frame.rotation.clone();
-                targets.push(target);
-            };
-
-            for (var i=0; i<frames.length-1; i++) {
-                var frame = frames[i];
-                target = targets[i];
-                frame.position = target.position.clone();
-                frame.rotation = target.rotation.clone();
-                targets.push(target);
-            };
-
-            var lastFrame = frames[frames.length-1];
-            lastFrame.position = firstPosition.clone();
-            lastFrame.rotation = firstRotation.clone();
-
-            changingFrames = false;
-        });
-
+        changeFrameZoetrope(direction, function () {changingFrames = false;});
         return;
     }
 
-    for (var i=1; i<frames.length; i++) {
+    var start;
+    var end;
+    if (direction == 1) {
+        start = 1;
+        end = frames.length;
+    } else {
+        start = 0;
+        end = frames.length-1;
+    }
+
+    for (var i=start; i<end; i++) {
         var frame = frames[i];
-        var nextFrame = frames[i-1];
+        var prevFrame = frames[i - direction];
         var target = new THREE.Object3D();
-        target.position = nextFrame.position.clone();
-        target.rotation = nextFrame.rotation.clone();
+        target.position = prevFrame.position.clone();
+        target.rotation = prevFrame.rotation.clone();
 
         var tweenPosition = new TWEEN.Tween(frame.position).to(target.position,
                                                                frameTransitionDuration / 2);
@@ -287,11 +324,19 @@ function nextFrame() {
         tweenRotation.start();
     };
 
-    var frame = frames[0];
-    var lastFrame = frames[frames.length-1];
+    var frame;
+    var targetFrame;
+    if (direction == 1) {
+        frame = frames[0];
+        targetFrame = frames[frames.length-1];
+    } else {
+        frame = frames[frames.length-1];
+        targetFrame = frames[0];
+    }
+
     var target = new THREE.Object3D();
-    target.position = lastFrame.position.clone();
-    target.rotation = lastFrame.rotation.clone();
+    target.position = targetFrame.position.clone();
+    target.rotation = targetFrame.rotation.clone();
 
     var targetYAxisMiddle = {y: frame.position.y + ((target.position.y - frame.position.y) / 2) + (config.frameHeight*2)};
     var targetYAxisEnd = {y: target.position.y};
@@ -327,11 +372,18 @@ function nextFrame() {
             frame.position.y = targetYAxisEnd.y;
         }
 
-        var firstFrame = frames.shift();
-        frames.push(firstFrame);
+        shiftFrames(direction);
 
         changingFrames = false;
     });
+}
+
+function nextFrame() {
+    changeFrame(1);
+}
+
+function prevFrame() {
+    changeFrame(-1);
 }
 
 function addOpacity(sum) {
@@ -386,6 +438,7 @@ function lessVelocity() {
     }
     ui.setPullValue('next-frame', value);
     ui.setPullValue('next-frame-instant', value);
+    ui.setPullValue('prev-frame', value);
 }
 
 function moreVelocity() {
@@ -401,6 +454,7 @@ function moreVelocity() {
     }
     ui.setPullValue('next-frame', value);
     ui.setPullValue('next-frame-instant', value);
+    ui.setPullValue('prev-frame', value);
 }
 
 function setVelocityProportional(value) {
@@ -458,10 +512,20 @@ function checkEvents() {
     if (ui.pressed("next-frame")) {
         setVelocityProportional(ui.pullValue("next-frame"));
         ui.setPullValue('next-frame-instant', ui.pullValue("next-frame"));
+        ui.setPullValue('prev-frame', ui.pullValue("next-frame"));
         nextFrame();
+    };
+    if (ui.pressed("prev-frame")) {
+        setVelocityProportional(ui.pullValue("prev-frame"));
+        ui.setPullValue('next-frame', ui.pullValue("prev-frame"));
+        ui.setPullValue('next-frame-instant', ui.pullValue("prev-frame"));
+        prevFrame();
     };
     if (keyboard.pressed("s")) {
         nextFrame();
+    };
+    if (keyboard.pressed("a")) {
+        prevFrame();
     };
     if (ui.pressed("next-frame-instant")) {
         setVelocityProportional(ui.pullValue("next-frame-instant"));
