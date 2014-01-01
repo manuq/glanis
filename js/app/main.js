@@ -479,6 +479,17 @@ function render() {
     renderer.render(scene, camera);
 }
 
+function updateFramePulls(buttonName) {
+    var names = ['next-frame', 'prev-frame',
+                 'next-frame-instant', 'prev-frame-instant'];
+
+    names.forEach(function (name) {
+        if (name != buttonName) {
+            ui.setPullValue(name, ui.pullValue(buttonName));
+        };
+    });
+};
+
 function checkEvents() {
     if (keyboard.pressed("1")) {
         changeLayout(layouts.zoetrope, function () {});
@@ -498,16 +509,12 @@ function checkEvents() {
     };
     if (ui.pressed("next-frame")) {
         setVelocityProportional(ui.pullValue("next-frame"));
-        ui.setPullValue('next-frame-instant', ui.pullValue("next-frame"));
-        ui.setPullValue('prev-frame', ui.pullValue("next-frame"));
-        ui.setPullValue('prev-frame-instant', ui.pullValue("next-frame"));
+        updateFramePulls('next-frame');
         nextFrame();
     };
     if (ui.pressed("prev-frame")) {
         setVelocityProportional(ui.pullValue("prev-frame"));
-        ui.setPullValue('next-frame', ui.pullValue("prev-frame"));
-        ui.setPullValue('next-frame-instant', ui.pullValue("prev-frame"));
-        ui.setPullValue('prev-frame-instant', ui.pullValue("next-frame"));
+        updateFramePulls('prev-frame');
         prevFrame();
     };
     if (keyboard.pressed("s")) {
@@ -518,16 +525,12 @@ function checkEvents() {
     };
     if (ui.pressed("next-frame-instant")) {
         setVelocityProportional(ui.pullValue("next-frame-instant"));
-        ui.setPullValue('next-frame', ui.pullValue("next-frame-instant"));
-        ui.setPullValue('prev-frame', ui.pullValue("next-frame-instant"));
-        ui.setPullValue('prev-frame-instant', ui.pullValue("next-frame-instant"));
+        updateFramePulls('next-frame-instant');
         nextFrameInstant();
     };
     if (ui.pressed("prev-frame-instant")) {
         setVelocityProportional(ui.pullValue("prev-frame-instant"));
-        ui.setPullValue('next-frame', ui.pullValue("prev-frame-instant"));
-        ui.setPullValue('prev-frame', ui.pullValue("prev-frame-instant"));
-        ui.setPullValue('next-frame-instant', ui.pullValue("prev-frame-instant"));
+        updateFramePulls('prev-frame-instant');
         prevFrameInstant();
     };
     if (keyboard.pressed("w")) {
