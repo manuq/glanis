@@ -66,10 +66,16 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
 
         value = this.initialValue + magnitude / pullRadius;
 
-        if (value > 1 && value < 2) {
-            value = this.initialValue - 1 + magnitude / pullRadius;
+        if (this.initialValue > 0) {
+            if (value > 1 && value < 2) {
+                value = this.initialValue - 1 + magnitude / pullRadius;
+            } else {
+                if (value >= 2) {
+                    value = 1;
+                }
+            }
         } else {
-            if (value >= 2) {
+            if (value >= 1) {
                 value = 1;
             }
         }
