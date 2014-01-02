@@ -172,9 +172,17 @@ function animateLayout(callback) {
         });
     });
 
-    shadowTween = createShadowTween(currentLayout.shadowStyleTarget);
-    currentTweens.push(shadowTween);
-    shadowTween.start();
+    var shadowTweens = createTargetTweens(shadow, currentLayout.shadowTarget,
+                                         2000, 2000,
+                                         TWEEN.Easing.Quadratic.InOut,
+                                         TWEEN.Easing.Quadratic.InOut);
+
+    shadowTweens['pos'].start();
+    shadowTweens['rot'].start();
+
+    shadowStyleTween = createShadowTween(currentLayout.shadowStyleTarget);
+    currentTweens.push(shadowStyleTween);
+    shadowStyleTween.start();
 
     var cameraTweens = createTargetTweens(camera, currentLayout.cameraTarget,
                                           2500, 2500,

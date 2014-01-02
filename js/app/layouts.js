@@ -7,8 +7,13 @@ function(THREE, config) {
 
     var ZoetropeLayout = function () {
         this.framesGroupTarget = new THREE.Object3D();
+
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 1.0};
+
+        this.shadowTarget = new THREE.Object3D();
+        this.shadowTarget.rotation.x = Math.PI / 2;
+        this.shadowTarget.position.y -= config.frameHeight / 2;
         this.shadowStyleTarget = {};
 
         this.cameraTarget = new THREE.Object3D();
@@ -50,8 +55,13 @@ function(THREE, config) {
 
     var SequenceLayout = function () {
         this.framesGroupTarget = new THREE.Object3D();
+
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 1.0};
+
+        this.shadowTarget = new THREE.Object3D();
+        this.shadowTarget.rotation.x = Math.PI / 2;
+        this.shadowTarget.position.y -= config.frameHeight / 2;
         this.shadowStyleTarget = {};
 
         this.cameraTarget = new THREE.Object3D();
@@ -82,8 +92,13 @@ function(THREE, config) {
 
     var StackLayout = function () {
         this.framesGroupTarget = new THREE.Object3D();
+
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 0.9};
+
+        this.shadowTarget = new THREE.Object3D();
+        this.shadowTarget.rotation.x = Math.PI / 2;
+        this.shadowTarget.position.y -= config.frameHeight / 2;
         this.shadowStyleTarget = {};
 
         this.cameraTarget = new THREE.Object3D();
@@ -100,6 +115,7 @@ function(THREE, config) {
     StackLayout.prototype.calculate = function (frames) {
         var initialZ = (config.space * (frames.length - 1)) / -2;
         this.framesGroupTarget.position.z = initialZ;
+        this.shadowTarget.position.z = initialZ;
         this.shadowStyleTarget = {width: 550, height: frames.length * 114, opacity: 0.15};
 
         this.frameTargets = [];
@@ -120,8 +136,13 @@ function(THREE, config) {
 
     var LightboxLayout = function () {
         this.framesGroupTarget = new THREE.Object3D();
+
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 0.9};
+
+        this.shadowTarget = new THREE.Object3D();
+        this.shadowTarget.rotation.x = Math.PI / 2;
+        this.shadowTarget.position.y -= config.frameHeight / 2;
         this.shadowStyleTarget = {};
 
         this.cameraTarget = new THREE.Object3D();
@@ -133,6 +154,7 @@ function(THREE, config) {
     LightboxLayout.prototype.calculate = function (frames) {
         var initialZ = (config.space / 10 * (frames.length - 1)) / -2;
         this.framesGroupTarget.position.z = initialZ;
+        this.shadowTarget.position.z = initialZ;
         this.shadowStyleTarget = {width: 500, height: frames.length * 35, opacity: 0.15};
 
         this.frameTargets = [];
