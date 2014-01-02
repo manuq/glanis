@@ -6,6 +6,7 @@ function(THREE, config) {
     // zoetrope
 
     var ZoetropeLayout = function () {
+        this.framesGroupTarget = new THREE.Object3D();
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 1.0};
         this.shadowStyleTarget = {};
@@ -48,6 +49,7 @@ function(THREE, config) {
     // sequence
 
     var SequenceLayout = function () {
+        this.framesGroupTarget = new THREE.Object3D();
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 1.0};
         this.shadowStyleTarget = {};
@@ -79,6 +81,7 @@ function(THREE, config) {
     // stack
 
     var StackLayout = function () {
+        this.framesGroupTarget = new THREE.Object3D();
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 0.9};
         this.shadowStyleTarget = {};
@@ -95,12 +98,14 @@ function(THREE, config) {
     layouts.stack = new StackLayout();
 
     StackLayout.prototype.calculate = function (frames) {
+        var initialZ = (config.space * (frames.length - 1)) / -2;
+        this.framesGroupTarget.position.z = initialZ;
         this.shadowStyleTarget = {width: 550, height: frames.length * 114, opacity: 0.15};
 
         this.frameTargets = [];
         var that = this;
 
-        var curZ = (config.space * (frames.length - 1)) / -2;
+        var curZ = initialZ;
 
         frames.forEach(function (frame) {
             target = new THREE.Object3D();
@@ -114,6 +119,7 @@ function(THREE, config) {
     // lightbox
 
     var LightboxLayout = function () {
+        this.framesGroupTarget = new THREE.Object3D();
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 0.9};
         this.shadowStyleTarget = {};
@@ -125,12 +131,14 @@ function(THREE, config) {
     layouts.lightbox = new LightboxLayout();
 
     LightboxLayout.prototype.calculate = function (frames) {
+        var initialZ = (config.space / 10 * (frames.length - 1)) / -2;
+        this.framesGroupTarget.position.z = initialZ;
         this.shadowStyleTarget = {width: 500, height: frames.length * 35, opacity: 0.15};
 
         this.frameTargets = [];
         var that = this;
 
-        var curZ = (config.space / 10 * (frames.length - 1)) / -2;
+        var curZ = initialZ;
 
         frames.forEach(function (frame) {
             target = new THREE.Object3D();

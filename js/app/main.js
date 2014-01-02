@@ -120,27 +120,48 @@ function createShadowTween(targetShadow) {
     return shadowTween;
 }
 
+function createTargetTweens(object, target, posDuration, rotDuration, posEasing, rotEasing) {
+    tweens = {};
+    var tweenPosition = new TWEEN.Tween(object.position).to(target.position, posDuration);
+    tweenPosition.easing(posEasing);
+    tweens['pos'] = tweenPosition;
+
+    var targetRotation = {
+        x: target.rotation.x,
+        y: target.rotation.y,
+        z: target.rotation.z
+    };
+    var tweenRotation = new TWEEN.Tween(object.rotation).to(targetRotation, rotDuration);
+    tweenRotation.easing(rotEasing);
+    tweens['rot'] = tweenRotation;
+
+    return tweens;
+}
+
 function animateLayout(callback) {
     changingLayout = true;
     stopCurrentTweens();
 
+    var groupTweens = createTargetTweens(framesGroup, currentLayout.framesGroupTarget,
+                                         2000, 2000,
+                                         TWEEN.Easing.Quadratic.InOut,
+                                         TWEEN.Easing.Quadratic.InOut);
+
+    groupTweens['pos'].start();
+    groupTweens['rot'].start();
+
     frames.forEach(function (frame, i) {
         var target = currentLayout.frameTargets[i];
 
-        var tweenPosition = new TWEEN.Tween(frame.position).to(target.position, 500);
-        currentTweens.push(tweenPosition);
-        tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
-        tweenPosition.start();
+        var frameTweens = createTargetTweens(frame, target,
+                                              500, 500,
+                                              TWEEN.Easing.Quadratic.InOut,
+                                              TWEEN.Easing.Quadratic.InOut);
 
-        var targetRotation = {
-            x: target.rotation.x,
-            y: target.rotation.y,
-            z: target.rotation.z
-        };
-        var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, 500);
-        currentTweens.push(tweenRotation);
-        tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
-        tweenRotation.start();
+        currentTweens.push(frameTweens['pos']);
+        currentTweens.push(frameTweens['rot']);
+        frameTweens['pos'].start();
+        frameTweens['rot'].start();
 
         var tweenOpacity = new TWEEN.Tween(frame.element.style).to(currentLayout.frameStyleTarget, 2000);
         currentTweens.push(tweenOpacity);
@@ -155,20 +176,15 @@ function animateLayout(callback) {
     currentTweens.push(shadowTween);
     shadowTween.start();
 
-    var tweenCameraPosition = new TWEEN.Tween(camera.position).to(currentLayout.cameraTarget.position, 2500);
-    currentTweens.push(tweenCameraPosition);
-    tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
-    tweenCameraPosition.start();
+    var cameraTweens = createTargetTweens(camera, currentLayout.cameraTarget,
+                                          2500, 2500,
+                                          TWEEN.Easing.Quadratic.InOut,
+                                          TWEEN.Easing.Quadratic.InOut);
 
-    var targetCameraRotation = {
-        x: currentLayout.cameraTarget.rotation.x,
-        y: currentLayout.cameraTarget.rotation.y,
-        z: currentLayout.cameraTarget.rotation.z
-    };
-    var tweenCameraRotation = new TWEEN.Tween(camera.rotation).to(targetCameraRotation, 2500);
-    currentTweens.push(tweenCameraRotation);
-    tweenCameraRotation.easing(TWEEN.Easing.Quadratic.InOut);
-    tweenCameraRotation.start().onComplete(function () {
+    currentTweens.push(cameraTweens['pos']);
+    currentTweens.push(cameraTweens['rot']);
+    cameraTweens['pos'].start();
+    cameraTweens['rot'].start().onComplete(function () {
         changingLayout = false;
         callback();
     });
@@ -316,20 +332,14 @@ function changeFrame(direction) {
         target.position = prevFrame.position.clone();
         target.rotation = prevFrame.rotation.clone();
 
-        var tweenPosition = new TWEEN.Tween(frame.position).to(target.position,
-                                                               frameTransitionDuration / 2);
-        tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
-        tweenPosition.start();
+        var frameTweens = createTargetTweens(frame, target,
+                                             frameTransitionDuration / 2,
+                                             frameTransitionDuration / 2,
+                                             TWEEN.Easing.Quadratic.InOut,
+                                             TWEEN.Easing.Quadratic.InOut);
 
-        var targetRotation = {
-            x: target.rotation.x,
-            y: target.rotation.y,
-            z: target.rotation.z
-        };
-
-        var tweenRotation = new TWEEN.Tween(frame.rotation).to(targetRotation, frameTransitionDuration / 2);
-        tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
-        tweenRotation.start();
+        frameTweens['pos'].start();
+        frameTweens['rot'].start();
     };
 
     var frame;
