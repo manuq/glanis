@@ -38,7 +38,10 @@ function createFrame(frameName) {
 
     var drawing = new Drawing(frameElem, frame, camera, projector);
     drawings.push(drawing);
-    drawing.load('images/test/' + frameName + '.png');
+
+    if (frameName != null) {
+        drawing.load('images/test/' + frameName + '.png');
+    }
 
     return frame;
 }
@@ -85,6 +88,15 @@ function createFramesList(amount) {
     return frames;
 }
 
+function addFrame() {
+    console.log("hola");
+    var frame = createFrame();
+    framesGroup.add(frame);
+    frames.push(frame);
+    layouts.update(frames);
+    updateLayout(function () {});
+}
+
 function stopCurrentTweens() {
     for (var i=0; i<currentTweens.length; i++) {
         currentTweens[i].stop();
@@ -109,17 +121,12 @@ function createShadowTween(targetShadow) {
     return shadowTween;
 }
 
-function changeLayout(layout, callback) {
-    if (currentLayout == layout || changingFrames) {
-        return;
-    }
-
-    currentLayout = layout;
+function animateLayout(callback) {
     changingLayout = true;
     stopCurrentTweens();
 
     frames.forEach(function (frame, i) {
-        var target = layout.frameTargets[i];
+        var target = currentLayout.frameTargets[i];
 
         var tweenPosition = new TWEEN.Tween(frame.position).to(target.position, 500);
         currentTweens.push(tweenPosition);
@@ -136,7 +143,7 @@ function changeLayout(layout, callback) {
         tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
         tweenRotation.start();
 
-        var tweenOpacity = new TWEEN.Tween(frame.element.style).to(layout.frameStyleTarget, 2000);
+        var tweenOpacity = new TWEEN.Tween(frame.element.style).to(currentLayout.frameStyleTarget, 2000);
         currentTweens.push(tweenOpacity);
         tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
         tweenOpacity.start().onComplete(function () {
@@ -145,19 +152,19 @@ function changeLayout(layout, callback) {
         });
     });
 
-    shadowTween = createShadowTween(layout.shadowStyleTarget);
+    shadowTween = createShadowTween(currentLayout.shadowStyleTarget);
     currentTweens.push(shadowTween);
     shadowTween.start();
 
-    var tweenCameraPosition = new TWEEN.Tween(camera.position).to(layout.cameraTarget.position, 2500);
+    var tweenCameraPosition = new TWEEN.Tween(camera.position).to(currentLayout.cameraTarget.position, 2500);
     currentTweens.push(tweenCameraPosition);
     tweenCameraPosition.easing(TWEEN.Easing.Quadratic.InOut);
     tweenCameraPosition.start();
 
     var targetCameraRotation = {
-        x: layout.cameraTarget.rotation.x,
-        y: layout.cameraTarget.rotation.y,
-        z: layout.cameraTarget.rotation.z
+        x: currentLayout.cameraTarget.rotation.x,
+        y: currentLayout.cameraTarget.rotation.y,
+        z: currentLayout.cameraTarget.rotation.z
     };
     var tweenCameraRotation = new TWEEN.Tween(camera.rotation).to(targetCameraRotation, 2500);
     currentTweens.push(tweenCameraRotation);
@@ -166,6 +173,23 @@ function changeLayout(layout, callback) {
         changingLayout = false;
         callback();
     });
+}
+
+function updateLayout(callback) {
+    if (changingFrames) {
+        return;
+    }
+
+    animateLayout(callback);
+}
+
+function changeLayout(layout, callback) {
+    if (currentLayout == layout || changingFrames) {
+        return;
+    }
+
+    currentLayout = layout;
+    animateLayout(callback);
 }
 
 function changeFrameInstant(direction) {
@@ -564,6 +588,9 @@ function checkEvents() {
     };
     if (ui.pressed("clear-draw") || keyboard.pressed("m")) {
         clearFrames();
+    };
+    if (keyboard.pressed("r")) {
+        addFrame();
     };
 }
 
