@@ -89,7 +89,6 @@ function createFramesList(amount) {
 }
 
 function addFrame() {
-    console.log("hola");
     var frame = createFrame();
     framesGroup.add(frame);
     frames.push(frame);

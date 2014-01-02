@@ -8,17 +8,20 @@ function(THREE, config) {
     var ZoetropeLayout = function () {
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 1.0};
-        this.shadowStyleTarget = {width: 1800, height: 1800, opacity: 0.1};
+        this.shadowStyleTarget = {};
 
         this.cameraTarget = new THREE.Object3D();
-        this.cameraTarget.position.y = 1000;
-        this.cameraTarget.position.z = 1500;
         this.cameraTarget.rotation.x = -0.5;
     };
 
     layouts.zoetrope = new ZoetropeLayout();
 
     ZoetropeLayout.prototype.calculate = function (frames) {
+        this.shadowStyleTarget = {width: frames.length * 200, height: frames.length * 200, opacity: 0.1};
+
+        this.cameraTarget.position.y = frames.length * 100;
+        this.cameraTarget.position.z = frames.length * 150;
+
         this.frameTargets = [];
         var that = this;
 
@@ -27,7 +30,7 @@ function(THREE, config) {
         center.y = 0;
         center.z = 0;
 
-        var radius = 500;
+        var radius = frames.length * 70;
         var angle = Math.PI * 2 / frames.length;
         var curAngle = 0;
 
@@ -47,7 +50,7 @@ function(THREE, config) {
     var SequenceLayout = function () {
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 1.0};
-        this.shadowStyleTarget = {width: 3200, height: 300, opacity: 0.1};
+        this.shadowStyleTarget = {};
 
         this.cameraTarget = new THREE.Object3D();
         this.cameraTarget.position.z = 1000;
@@ -56,6 +59,8 @@ function(THREE, config) {
     layouts.sequence = new SequenceLayout();
 
     SequenceLayout.prototype.calculate = function (frames) {
+        this.shadowStyleTarget = {width: frames.length * 457, height: 300, opacity: 0.1};
+
         this.frameTargets = [];
         var that = this;
 
@@ -76,7 +81,7 @@ function(THREE, config) {
     var StackLayout = function () {
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 0.9};
-        this.shadowStyleTarget = {width: 550, height: 800, opacity: 0.15};
+        this.shadowStyleTarget = {};
 
         this.cameraTarget = new THREE.Object3D();
         this.cameraTarget.position.x = 400;
@@ -90,6 +95,8 @@ function(THREE, config) {
     layouts.stack = new StackLayout();
 
     StackLayout.prototype.calculate = function (frames) {
+        this.shadowStyleTarget = {width: 550, height: frames.length * 114, opacity: 0.15};
+
         this.frameTargets = [];
         var that = this;
 
@@ -109,7 +116,7 @@ function(THREE, config) {
     var LightboxLayout = function () {
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 0.9};
-        this.shadowStyleTarget = {width: 500, height: 300, opacity: 0.15};
+        this.shadowStyleTarget = {};
 
         this.cameraTarget = new THREE.Object3D();
         this.cameraTarget.position.z = 300;
@@ -118,6 +125,8 @@ function(THREE, config) {
     layouts.lightbox = new LightboxLayout();
 
     LightboxLayout.prototype.calculate = function (frames) {
+        this.shadowStyleTarget = {width: 500, height: frames.length * 35, opacity: 0.15};
+
         this.frameTargets = [];
         var that = this;
 
