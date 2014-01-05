@@ -92,22 +92,21 @@ function(THREE, config) {
 
     var StackLayout = function () {
         this.framesGroupTarget = new THREE.Object3D();
+        this.framesGroupTarget.rotation.y = -0.5;
 
         this.frameTargets = [];
         this.frameStyleTarget = {opacity: 0.9};
 
         this.shadowTarget = new THREE.Object3D();
         this.shadowTarget.rotation.x = Math.PI / 2;
+        this.shadowTarget.rotation.z = 0.5;
         this.shadowTarget.position.y -= config.frameHeight / 2;
         this.shadowStyleTarget = {};
 
         this.cameraTarget = new THREE.Object3D();
-        this.cameraTarget.position.x = 400;
         this.cameraTarget.position.y = 250;
         this.cameraTarget.position.z = 700;
-
         this.cameraTarget.rotation.x = -0.1;
-        this.cameraTarget.rotation.y = 0.5;
     };
 
     layouts.stack = new StackLayout();
@@ -207,7 +206,7 @@ function(THREE, config) {
                 target.rotation.x = Math.PI;
             }
             if (i !== 0 && i !== 1) {
-                target.position.x = 2000;
+                target.position.x = window.innerWidth * 3;
             }
 
             that.frameTargets.push(target);
