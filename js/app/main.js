@@ -37,6 +37,7 @@ var changingLayout = false;
 var changingOpacities = false;
 var frameTransitionDuration = config.maxDuration;
 var drawings = [];
+var soundEnabled = true;
 
 function createFrame(frameName) {
     var frameElem = document.createElement('canvas');
@@ -151,6 +152,11 @@ function createTargetTweens(object, target, posDuration, rotDuration, posEasing,
 function animateLayout(callback) {
     changingLayout = true;
     stopCurrentTweens();
+
+    if (soundEnabled) {
+        var audio = new Audio('sounds/paper.wav');
+        audio.play();
+    }
 
     var groupTweens = createTargetTweens(framesGroup, currentLayout.framesGroupTarget,
                                          2000, 2000,
@@ -348,6 +354,11 @@ function changeFrame(direction) {
     }
 
     changingFrames = true;
+
+    if (soundEnabled) {
+        var audio = new Audio('sounds/paper2.wav');
+        audio.play();
+    }
 
     if (currentLayout == layouts.zoetrope) {
         changeFrameZoetrope(direction, function () {changingFrames = false;});
