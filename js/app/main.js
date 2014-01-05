@@ -321,6 +321,27 @@ function changeFrameZoetrope(direction, callback) {
     });
 }
 
+function changeFrameThaumatrope(direction, callback) {
+    var angle = 2 * Math.PI / frames.length;
+
+    var targetRotation = {
+        x: framesGroup.rotation.x + Math.PI * direction,
+        y: framesGroup.rotation.y,
+        z: framesGroup.rotation.z
+    };
+
+    var tweenRotation = new TWEEN.Tween(framesGroup.rotation);
+    tweenRotation.to(targetRotation, frameTransitionDuration);
+    tweenRotation.start().onComplete(function () {
+        framesGroup.rotation.x -= Math.PI * direction;
+
+        shiftFrames(direction);
+        relocateFrames(-1);
+
+        callback();
+    });
+}
+
 function changeFrame(direction) {
     if (changingLayout || changingFrames) {
         return;
@@ -330,6 +351,11 @@ function changeFrame(direction) {
 
     if (currentLayout == layouts.zoetrope) {
         changeFrameZoetrope(direction, function () {changingFrames = false;});
+        return;
+    }
+
+    if (currentLayout == layouts.thaumatrope) {
+        changeFrameThaumatrope(direction, function () {changingFrames = false;});
         return;
     }
 
@@ -628,7 +654,8 @@ function createUi() {
         {"name": "zoetrope", 'text': "1", 'action': function () { changeLayout(layouts.zoetrope, function () {}) }},
         {"name": "sequence", 'text': "2", 'action': function () { changeLayout(layouts.sequence, function () {}) }, 'active': true},
         {"name": "stack", 'text': "3", 'action': function () { changeLayout(layouts.stack, function () {}) }},
-        {"name": "lightbox", 'text': "4", 'action': function () { changeLayout(layouts.lightbox, function () {}) }}
+        {"name": "lightbox", 'text': "4", 'action': function () { changeLayout(layouts.lightbox, function () {}) }},
+        {"name": "thaumatrope", 'text': "5", 'action': function () { changeLayout(layouts.thaumatrope, function () {}) }}
     ];
     ui.addRadioButtons("radio-layout", optionsLayout);
 
