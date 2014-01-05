@@ -15,6 +15,14 @@ var renderer = new THREE.CSS3DRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+var onWindowResize = function () {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+}
+
+window.addEventListener('resize', onWindowResize);
+
 var keyboard = new THREEx.KeyboardState();
 
 var frames = [];
