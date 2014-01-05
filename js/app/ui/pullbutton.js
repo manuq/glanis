@@ -45,6 +45,9 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         });
 
         this.button.addEventListener("mouseup", function (event) {
+            if (!(that.pressed)) {
+                return;
+            }
             that.pressed = false;
             that.button.classList.toggle('active');
             that.controls.hide();
