@@ -1,4 +1,4 @@
-define([], function() {
+define(["app/config"], function(config) {
 
     var Drawing = function (canvas, object, camera, projector) {
         this.canvas = canvas;
@@ -6,26 +6,19 @@ define([], function() {
         this.camera = camera;
         this.projector = projector;
         this.ctx = this.canvas.getContext("2d");
-        this.changed = false;
-        this.prevX = 0;
-        this.currX = 0;
-        this.prevY = 0;
-        this.currY = 0;
+        this.isDrawing = false;
         this.brushColor = "black";
-        this.brushSize = 8;
+        this.brushSize = config.brushSize;
         var that = this;
 
         this.canvas.addEventListener("mousemove", function (event) {
-            that.onMouseAction('move', event);
+            that.onMouseMove(event);
         });
         canvas.addEventListener("mousedown", function (event) {
-            that.onMouseAction('down', event);
+            that.onMouseDown(event);
         });
         canvas.addEventListener("mouseup", function (event) {
-            that.onMouseAction('up', event);
-        });
-        canvas.addEventListener("mouseout", function (event) {
-            that.onMouseAction('out', event);
+            that.onMouseUp(event);
         });
     }
 
@@ -33,9 +26,9 @@ define([], function() {
         this.brushColor = colorName;
 
         if (this.brushColor == "white") {
-            this.brushSize = 24;
+            this.brushSize = config.eraserSize;
         } else {
-            this.brushSize = 8;
+            this.brushSize = config.brushSize;
         };
 
     }
@@ -47,16 +40,6 @@ define([], function() {
         image.onload = function(){
             that.ctx.drawImage(image, 0, 0);
         };
-    }
-
-    Drawing.prototype.draw = function () {
-        this.ctx.beginPath();
-        this.ctx.moveTo(this.prevX, this.prevY);
-        this.ctx.lineTo(this.currX, this.currY);
-        this.ctx.strokeStyle = this.brushColor;
-        this.ctx.lineWidth = this.brushSize;
-        this.ctx.stroke();
-        this.ctx.closePath();
     }
 
     Drawing.prototype.erase = function () {
@@ -80,33 +63,34 @@ define([], function() {
         return this.camera.position.clone().add(dir.multiplyScalar(distance));
     }
 
-    Drawing.prototype.onMouseAction =  function (action, event) {
+    Drawing.prototype.onMouseDown = function (event) {
+        this.isDrawing = true;
+        this.ctx.beginPath();
+        this.ctx.lineWidth = this.brushSize;
+        this.ctx.lineJoin = 'round';
+        this.ctx.lineCap = 'round';
+        this.ctx.strokeStyle = this.brushColor;
+        this.ctx.shadowBlur = this.brushSize;
+        this.ctx.shadowColor = this.brushColor;
+
         var pos = this.getTransformedPosition(event.clientX, event.clientY)
         pos.x = pos.x - this.object.position.x + this.canvas.width / 2;
         pos.y = -pos.y + this.object.position.y + this.canvas.height / 2;
+        this.ctx.moveTo(pos.x, pos.y);
+    }
 
-        if (action == 'down') {
-            this.changed = true;
-
-            this.prevX = this.currX;
-            this.prevY = this.currY;
-            this.currX = pos.x; // - this.canvas.offsetLeft;
-            this.currY = pos.y; // - this.canvas.offsetTop;
+    Drawing.prototype.onMouseMove = function (event) {
+        if (this.isDrawing) {
+            var pos = this.getTransformedPosition(event.clientX, event.clientY)
+            pos.x = pos.x - this.object.position.x + this.canvas.width / 2;
+            pos.y = -pos.y + this.object.position.y + this.canvas.height / 2;
+            this.ctx.lineTo(pos.x, pos.y);
+            this.ctx.stroke();
         }
+    }
 
-        if (action == 'up' || action == "out") {
-            this.changed = false;
-        }
-
-        if (action == 'move') {
-            if (this.changed) {
-                this.prevX = this.currX;
-                this.prevY = this.currY;
-                this.currX = pos.x; // - this.canvas.offsetLeft;
-                this.currY = pos.y; // - this.canvas.offsetTop;
-                this.draw();
-            }
-        }
+    Drawing.prototype.onMouseUp = function (event) {
+        this.isDrawing = false;
     }
 
     return Drawing;
