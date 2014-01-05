@@ -27,6 +27,10 @@ function(doc,
         domElement.appendChild(bgCanvas);
     }
 
+    ui.updateSize = function () {
+        bg.updateSize();
+    }
+
     ui.addButton = function (options) {
         name = options['name'];
         text = options['text'];

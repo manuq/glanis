@@ -19,6 +19,10 @@ function(doc, paper) {
         return bgCanvas;
     }
 
+    bg.updateSize = function () {
+        paper.view.viewSize = [window.innerWidth, window.innerHeight];
+    }
+
     bg.PullControls = function (pullButton) {
         this.pullButton = pullButton;
 
