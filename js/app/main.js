@@ -631,8 +631,8 @@ function createUi() {
 
     ui.addPullButton({"name": "prev-frame", "text": "a"});
     ui.addPullButton({"name": "next-frame", "text": "s"});
-    ui.addPullButton({"name": "prev-frame-instant", "text": "q"});
-    ui.addPullButton({"name": "next-frame-instant", "text": "w"});
+//    ui.addPullButton({"name": "prev-frame-instant", "text": "q"});
+//    ui.addPullButton({"name": "next-frame-instant", "text": "w"});
     ui.addPullButton({"name": "opacity", "text": "o", "initial": 1});
 }
 
