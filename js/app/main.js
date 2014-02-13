@@ -502,6 +502,15 @@ function setOpacityProportional(value) {
     });
 }
 
+function setRadius(value) {
+    var radius = value * 150;
+    console.log(radius);
+
+    frames.forEach(function (frame) {
+        frame.element.style.borderRadius = radius + 'px';
+    });
+}
+
 function lessVelocity() {
     if (frameTransitionDuration + 5 < config.maxDuration) {
         frameTransitionDuration += 5;
@@ -638,6 +647,9 @@ function checkEvents() {
     if (ui.pressed("opacity")) {
         setOpacityProportional(ui.pullValue("opacity"));
     };
+    if (ui.pressed("radius")) {
+        setRadius(ui.pullValue("radius"));
+    };
     if (keyboard.pressed("z")) {
         lessOpacity();
     };
@@ -690,6 +702,7 @@ function createUi() {
 //    ui.addPullButton({"name": "prev-frame-instant", "text": "q"});
 //    ui.addPullButton({"name": "next-frame-instant", "text": "w"});
     ui.addPullButton({"name": "opacity", "text": "o", "initial": 1});
+    ui.addPullButton({"name": "radius"});
 }
 
 function main() {
