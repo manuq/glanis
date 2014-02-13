@@ -42,7 +42,7 @@ var soundEnabled = true;
 function createFrame(frameName) {
     var frameElem = document.createElement('canvas');
     frameElem.width = 300;
-    frameElem.height = 390;
+    frameElem.height = 300;
     frameElem.classList.add('frame');
 
     var frame = new THREE.CSS3DObject(frameElem);
