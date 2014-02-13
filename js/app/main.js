@@ -39,7 +39,7 @@ var frameTransitionDuration = config.maxDuration;
 var drawings = [];
 var soundEnabled = true;
 
-function createFrame(frameName) {
+function createFrame(frameName, groupObject) {
     var frameElem = document.createElement('canvas');
     frameElem.width = 300;
     frameElem.height = 300;
@@ -47,7 +47,7 @@ function createFrame(frameName) {
 
     var frame = new THREE.CSS3DObject(frameElem);
 
-    var drawing = new Drawing(frameElem, frame, camera, projector);
+    var drawing = new Drawing(frameElem, frame, groupObject, camera, projector);
     drawings.push(drawing);
 
     if (frameName != null) {
@@ -91,7 +91,7 @@ function createFramesList(amount) {
 
     for (var i=0; i<amount; i++) {
         var frameName = "frame-" + zeroFill(i+1, 2);
-        var frame = createFrame(frameName);
+        var frame = createFrame(frameName, framesGroup);
         framesGroup.add(frame);
         frames.push(frame);
     };

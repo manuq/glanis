@@ -1,13 +1,9 @@
 define(["app/config"], function(config) {
 
-    function pxToInt(cssString) {
-        return parseInt(
-            cssString.substring(0, cssString.length - 2)); // 2 is the length of 'px'
-    }
-
-    var Drawing = function (canvas, object, camera, projector) {
+    var Drawing = function (canvas, object, groupObject, camera, projector) {
         this.canvas = canvas;
         this.object = object;
+        this.groupObject = groupObject;
         this.camera = camera;
         this.projector = projector;
         this.ctx = this.canvas.getContext("2d");
@@ -65,7 +61,11 @@ define(["app/config"], function(config) {
 
         var dir = vector.sub(this.camera.position).normalize();
         var distance = - this.camera.position.z / dir.z;
-        return this.camera.position.clone().add(dir.multiplyScalar(distance));
+        var pos = this.camera.position.clone().add(dir.multiplyScalar(distance));
+        pos.x = pos.x - this.object.position.x + this.canvas.width / 2;
+        pos.y = -pos.y + this.object.position.y + this.groupObject.position.y + this.canvas.height / 2;
+        return pos;
+
     }
 
     Drawing.prototype.onMouseDown = function (event) {
@@ -78,20 +78,13 @@ define(["app/config"], function(config) {
         this.ctx.shadowBlur = this.brushSize;
         this.ctx.shadowColor = this.brushColor;
 
-        var pos = this.getTransformedPosition(event.clientX, event.clientY)
-        var radius = pxToInt(this.canvas.style.borderRadius);
-        pos.x = pos.x - this.object.position.x + this.canvas.width / 2;
-        pos.y = -pos.y + this.object.position.y + this.canvas.height / 2;
+        var pos = this.getTransformedPosition(event.clientX, event.clientY);
         this.ctx.moveTo(pos.x, pos.y);
     }
 
     Drawing.prototype.onMouseMove = function (event) {
         if (this.isDrawing) {
-            var pos = this.getTransformedPosition(event.clientX, event.clientY)
-            var radius = pxToInt(this.canvas.style.borderRadius);
-            pos.x = pos.x - this.object.position.x + this.canvas.width / 2;
-            pos.y = -pos.y + this.object.position.y + this.canvas.height / 2;
-//            pos.y = -pos.y + this.object.position.y + (this.canvas.height + 2*radius) / 2;
+            var pos = this.getTransformedPosition(event.clientX, event.clientY);
             this.ctx.lineTo(pos.x, pos.y);
             this.ctx.stroke();
         }
