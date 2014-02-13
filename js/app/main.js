@@ -595,6 +595,10 @@ function checkEvents() {
         changeLayout(layouts.lightbox, function () {});
         ui.setRadioActive("radio-layout", "lightbox");
     };
+    if (keyboard.pressed("5")) {
+        changeLayout(layouts.thaumatrope, function () {});
+        ui.setRadioActive("radio-layout", "thaumatrope");
+    };
     if (ui.pressed("next-frame")) {
         setVelocityProportional(ui.pullValue("next-frame"));
         updateFramePulls('next-frame');
