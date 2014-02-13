@@ -1,5 +1,10 @@
 define(["app/config"], function(config) {
 
+    function pxToInt(cssString) {
+        return parseInt(
+            cssString.substring(0, cssString.length - 2)); // 2 is the length of 'px'
+    }
+
     var Drawing = function (canvas, object, camera, projector) {
         this.canvas = canvas;
         this.object = object;
@@ -74,6 +79,7 @@ define(["app/config"], function(config) {
         this.ctx.shadowColor = this.brushColor;
 
         var pos = this.getTransformedPosition(event.clientX, event.clientY)
+        var radius = pxToInt(this.canvas.style.borderRadius);
         pos.x = pos.x - this.object.position.x + this.canvas.width / 2;
         pos.y = -pos.y + this.object.position.y + this.canvas.height / 2;
         this.ctx.moveTo(pos.x, pos.y);
@@ -82,8 +88,10 @@ define(["app/config"], function(config) {
     Drawing.prototype.onMouseMove = function (event) {
         if (this.isDrawing) {
             var pos = this.getTransformedPosition(event.clientX, event.clientY)
+            var radius = pxToInt(this.canvas.style.borderRadius);
             pos.x = pos.x - this.object.position.x + this.canvas.width / 2;
             pos.y = -pos.y + this.object.position.y + this.canvas.height / 2;
+//            pos.y = -pos.y + this.object.position.y + (this.canvas.height + 2*radius) / 2;
             this.ctx.lineTo(pos.x, pos.y);
             this.ctx.stroke();
         }

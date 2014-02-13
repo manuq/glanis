@@ -182,7 +182,11 @@ function animateLayout(callback) {
         var tweenOpacity = new TWEEN.Tween(frame.element.style).to(currentLayout.frameStyleTarget, 2000);
         currentTweens.push(tweenOpacity);
         tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
-        tweenOpacity.start().onComplete(function () {
+        tweenOpacity.start();
+        tweenOpacity.onUpdate(function () {
+            frame.element.style.borderRadius = this.borderR + 'px';
+        });
+        tweenOpacity.onComplete(function () {
             var value = (frame.element.style.opacity - 0.1) / 0.9;
             ui.setPullValue('opacity', value);
         });
