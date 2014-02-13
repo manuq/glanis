@@ -28,7 +28,7 @@ function(doc, paper) {
 
         this.maxPath = new paper.Path.Circle(new paper.Point(0, 0), 150);
         this.maxPath.style = {
-            strokeColor: '#0ff',
+            strokeColor: '#ff88bf',
             strokeWidth: 3,
             dashArray: [4, 3]
         };
@@ -36,7 +36,7 @@ function(doc, paper) {
 
         this.curPath = new paper.Path.Circle(new paper.Point(0, 0), 150);
         this.curPath.style = {
-            strokeColor: '#aff',
+            strokeColor: '#ff88bf',
             fillColor: 'rgba(255, 255, 255, 0.3)',
             strokeWidth: 2
         };
@@ -63,11 +63,10 @@ function(doc, paper) {
         this.curPath.remove();
         this.curPath = new paper.Path.Circle(new paper.Point(0, 0), 150);
         this.curPath.style = {
-            strokeColor: '#aff',
+            strokeColor: '#ff88bf',
             fillColor: 'rgba(255, 255, 255, 0.3)',
             strokeWidth: 2
         };
-
         this.curPath.position = this.maxPath.position;
         this.curPath.scale(value);
         paper.view.draw();
