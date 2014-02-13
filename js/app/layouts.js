@@ -9,7 +9,10 @@ function(THREE, config) {
         this.framesGroupTarget = new THREE.Object3D();
 
         this.frameTargets = [];
-        this.frameStyleTarget = {opacity: 1.0};
+        this.frameStyleTarget = {
+            opacity: 1.0,
+            borderR: 0
+        };
 
         this.shadowTarget = new THREE.Object3D();
         this.shadowTarget.rotation.x = Math.PI / 2;
@@ -57,7 +60,10 @@ function(THREE, config) {
         this.framesGroupTarget = new THREE.Object3D();
 
         this.frameTargets = [];
-        this.frameStyleTarget = {opacity: 1.0};
+        this.frameStyleTarget = {
+            opacity: 1.0,
+            borderR: 0
+        };
 
         this.shadowTarget = new THREE.Object3D();
         this.shadowTarget.rotation.x = Math.PI / 2;
@@ -95,7 +101,10 @@ function(THREE, config) {
         this.framesGroupTarget.rotation.y = -0.5;
 
         this.frameTargets = [];
-        this.frameStyleTarget = {opacity: 0.9};
+        this.frameStyleTarget = {
+            opacity: 0.9,
+            borderR: 0
+        };
 
         this.shadowTarget = new THREE.Object3D();
         this.shadowTarget.rotation.x = Math.PI / 2;
@@ -137,7 +146,10 @@ function(THREE, config) {
         this.framesGroupTarget = new THREE.Object3D();
 
         this.frameTargets = [];
-        this.frameStyleTarget = {opacity: 0.9};
+        this.frameStyleTarget = {
+            opacity: 0.9,
+            borderR: 0
+        };
 
         this.shadowTarget = new THREE.Object3D();
         this.shadowTarget.rotation.x = Math.PI / 2;
@@ -177,7 +189,10 @@ function(THREE, config) {
         this.framesGroupTarget.position.y = 200;
 
         this.frameTargets = [];
-        this.frameStyleTarget = {opacity: 1};
+        this.frameStyleTarget = {
+            opacity: 1.0,
+            borderR: 150
+        };
 
         this.shadowTarget = new THREE.Object3D();
         this.shadowTarget.rotation.x = Math.PI / 2;
