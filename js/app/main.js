@@ -441,6 +441,55 @@ function moveFirstFrameJump(direction, callback) {
     });
 }
 
+function moveFirstFrameRotating(direction, callback) {
+    var bottomFrame = frames[0];
+    var topFrame = frames[frames.length-1];
+
+    if (direction == 1) {
+        var originalTopPosition = topFrame.position.clone();
+        bottomFrame.position = {
+            x: topFrame.position.x - config.frameWidth,
+            y: topFrame.position.y,
+            z: topFrame.position.z
+        };
+
+        var endPosition = topFrame.position.clone();
+        var tween = new TWEEN.Tween(bottomFrame.position).to(endPosition,
+                                                             frameTransitionDuration);
+        tween.easing(TWEEN.Easing.Quadratic.InOut);
+
+        tween.onComplete(function () {
+            bottomFrame.position = originalTopPosition;
+
+            shiftFrames(direction);
+            callback();
+        });
+
+        tween.start();
+
+    } else {
+        var originalBottomPosition = bottomFrame.position.clone();
+        var endPosition = {
+            x: topFrame.position.x - config.frameWidth,
+            y: topFrame.position.y,
+            z: topFrame.position.z
+        };
+
+        var tween = new TWEEN.Tween(topFrame.position).to(endPosition,
+                                                          frameTransitionDuration);
+        tween.easing(TWEEN.Easing.Quadratic.InOut);
+
+        tween.onComplete(function () {
+            topFrame.position = originalBottomPosition;
+
+            shiftFrames(direction);
+            callback();
+        });
+
+        tween.start();
+    }
+}
+
 function changeFrameThaumatrope(direction, callback) {
     var angle = 2 * Math.PI / frames.length;
 
@@ -474,7 +523,7 @@ function changeFrameStack(direction, callback) {
 
 function changeFrameLightbox(direction, callback) {
     moveOtherFrames(direction);
-    moveFirstFrameFast(direction, callback);
+    moveFirstFrameRotating(direction, callback);
 }
 
 function changeFrameZoetrope(direction, callback) {
@@ -589,7 +638,6 @@ function setOpacityProportional(value) {
 
 function setRadius(value) {
     var radius = value * 150;
-    console.log(radius);
 
     frames.forEach(function (frame) {
         frame.element.style.borderRadius = radius + 'px';
