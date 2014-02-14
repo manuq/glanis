@@ -310,6 +310,11 @@ function relocateFrames(direction) {
     lastFrame.rotation = firstRotation.clone();
 }
 
+function changeFrameSequence(direction, callback) {
+    moveOtherFrames(direction);
+    moveFirstFrameFast(direction, callback);
+}
+
 function changeFrameZoetrope(direction, callback) {
     var angle = 2 * Math.PI / frames.length;
 
@@ -352,28 +357,7 @@ function changeFrameThaumatrope(direction, callback) {
     });
 }
 
-function changeFrame(direction) {
-    if (changingLayout || changingFrames) {
-        return;
-    }
-
-    changingFrames = true;
-
-    if (soundEnabled) {
-        var audio = new Audio('sounds/paper2.wav');
-        audio.play();
-    }
-
-    if (currentLayout == layouts.zoetrope) {
-        changeFrameZoetrope(direction, function () {changingFrames = false;});
-        return;
-    }
-
-    if (currentLayout == layouts.thaumatrope) {
-        changeFrameThaumatrope(direction, function () {changingFrames = false;});
-        return;
-    }
-
+function moveOtherFrames(direction) {
     var start;
     var end;
     if (direction == 1) {
@@ -401,6 +385,56 @@ function changeFrame(direction) {
         frameTweens['rot'].start();
     };
 
+}
+
+function moveFirstFrameFast(direction, callback) {
+    var frame;
+    var targetFrame;
+    if (direction == 1) {
+        frame = frames[0];
+        targetFrame = frames[frames.length-1];
+    } else {
+        frame = frames[frames.length-1];
+        targetFrame = frames[0];
+    }
+
+    var target = new THREE.Object3D();
+    target.position = targetFrame.position.clone();
+    target.rotation = targetFrame.rotation.clone();
+
+    var outLength = 800;
+    var outPosition = {x: frame.position.x - outLength * direction};
+    var inPosition = {x: target.position.x + outLength * direction};
+
+    var tweenA = new TWEEN.Tween(frame.position).to(outPosition,
+                                                    frameTransitionDuration / 2);
+
+    var tweenB = new TWEEN.Tween(frame.position).to(target.position,
+                                                    frameTransitionDuration / 2);
+    tweenB.easing(TWEEN.Easing.Quadratic.Out);
+
+    tweenA.onComplete(function () {
+        frame.position.x = inPosition.x;
+        tweenB.start();
+    });
+    tweenA.easing(TWEEN.Easing.Quadratic.In);
+
+    tweenA.start();
+
+    var t = 0;
+    var tweenNextFrame = new TWEEN.Tween(t).to(0, frameTransitionDuration);
+    tweenNextFrame.start().onComplete(function () {
+        if (tweenB != null) {
+            tweenB.stop();
+            frame.position.x = target.position.x;
+        }
+
+        shiftFrames(direction);
+        callback();
+    });
+}
+
+function moveFirstFrameJump(direction, callback) {
     var frame;
     var targetFrame;
     if (direction == 1) {
@@ -450,9 +484,43 @@ function changeFrame(direction) {
         }
 
         shiftFrames(direction);
-
-        changingFrames = false;
+        callback();
     });
+}
+
+function changeFrame(direction) {
+    if (changingLayout || changingFrames) {
+        return;
+    }
+
+    changingFrames = true;
+
+    if (soundEnabled) {
+        var audio = new Audio('sounds/paper2.wav');
+        audio.play();
+    }
+
+    var callback = function () {
+        changingFrames = false;
+    }
+
+    if (currentLayout == layouts.sequence) {
+        changeFrameSequence(direction, callback);
+        return;
+    }
+
+    if (currentLayout == layouts.zoetrope) {
+        changeFrameZoetrope(direction, callback);
+        return;
+    }
+
+    if (currentLayout == layouts.thaumatrope) {
+        changeFrameThaumatrope(direction, callback);
+        return;
+    }
+
+    moveOtherFrames(direction);
+    moveFirstFrameJump(direction, callback);
 }
 
 function nextFrame() {
