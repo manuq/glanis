@@ -310,53 +310,6 @@ function relocateFrames(direction) {
     lastFrame.rotation = firstRotation.clone();
 }
 
-function changeFrameSequence(direction, callback) {
-    moveOtherFrames(direction);
-    moveFirstFrameFast(direction, callback);
-}
-
-function changeFrameZoetrope(direction, callback) {
-    var angle = 2 * Math.PI / frames.length;
-
-    var targetRotation = {
-        x: framesGroup.rotation.x,
-        y: framesGroup.rotation.y + angle * direction,
-        z: framesGroup.rotation.z
-    };
-
-    var tweenRotation = new TWEEN.Tween(framesGroup.rotation);
-    tweenRotation.to(targetRotation, frameTransitionDuration);
-    tweenRotation.start().onComplete(function () {
-        framesGroup.rotation.y -= angle * direction;
-
-        shiftFrames(direction);
-        relocateFrames(direction);
-
-        callback();
-    });
-}
-
-function changeFrameThaumatrope(direction, callback) {
-    var angle = 2 * Math.PI / frames.length;
-
-    var targetRotation = {
-        x: framesGroup.rotation.x + Math.PI * direction,
-        y: framesGroup.rotation.y,
-        z: framesGroup.rotation.z
-    };
-
-    var tweenRotation = new TWEEN.Tween(framesGroup.rotation);
-    tweenRotation.to(targetRotation, frameTransitionDuration);
-    tweenRotation.start().onComplete(function () {
-        framesGroup.rotation.x -= Math.PI * direction;
-
-        shiftFrames(direction);
-        relocateFrames(-1);
-
-        callback();
-    });
-}
-
 function moveOtherFrames(direction) {
     var start;
     var end;
@@ -488,6 +441,63 @@ function moveFirstFrameJump(direction, callback) {
     });
 }
 
+function changeFrameThaumatrope(direction, callback) {
+    var angle = 2 * Math.PI / frames.length;
+
+    var targetRotation = {
+        x: framesGroup.rotation.x + Math.PI * direction,
+        y: framesGroup.rotation.y,
+        z: framesGroup.rotation.z
+    };
+
+    var tweenRotation = new TWEEN.Tween(framesGroup.rotation);
+    tweenRotation.to(targetRotation, frameTransitionDuration);
+    tweenRotation.start().onComplete(function () {
+        framesGroup.rotation.x -= Math.PI * direction;
+
+        shiftFrames(direction);
+        relocateFrames(-1);
+
+        callback();
+    });
+}
+
+function changeFrameSequence(direction, callback) {
+    moveOtherFrames(direction);
+    moveFirstFrameFast(direction, callback);
+}
+
+function changeFrameStack(direction, callback) {
+    moveOtherFrames(direction);
+    moveFirstFrameJump(direction, callback);
+}
+
+function changeFrameLightbox(direction, callback) {
+    moveOtherFrames(direction);
+    moveFirstFrameFast(direction, callback);
+}
+
+function changeFrameZoetrope(direction, callback) {
+    var angle = 2 * Math.PI / frames.length;
+
+    var targetRotation = {
+        x: framesGroup.rotation.x,
+        y: framesGroup.rotation.y + angle * direction,
+        z: framesGroup.rotation.z
+    };
+
+    var tweenRotation = new TWEEN.Tween(framesGroup.rotation);
+    tweenRotation.to(targetRotation, frameTransitionDuration);
+    tweenRotation.start().onComplete(function () {
+        framesGroup.rotation.y -= angle * direction;
+
+        shiftFrames(direction);
+        relocateFrames(direction);
+
+        callback();
+    });
+}
+
 function changeFrame(direction) {
     if (changingLayout || changingFrames) {
         return;
@@ -504,13 +514,23 @@ function changeFrame(direction) {
         changingFrames = false;
     }
 
+    if (currentLayout == layouts.zoetrope) {
+        changeFrameZoetrope(direction, callback);
+        return;
+    }
+
     if (currentLayout == layouts.sequence) {
         changeFrameSequence(direction, callback);
         return;
     }
 
-    if (currentLayout == layouts.zoetrope) {
-        changeFrameZoetrope(direction, callback);
+    if (currentLayout == layouts.stack) {
+        changeFrameStack(direction, callback);
+        return;
+    }
+
+    if (currentLayout == layouts.lightbox) {
+        changeFrameLightbox(direction, callback);
         return;
     }
 
@@ -518,9 +538,6 @@ function changeFrame(direction) {
         changeFrameThaumatrope(direction, callback);
         return;
     }
-
-    moveOtherFrames(direction);
-    moveFirstFrameJump(direction, callback);
 }
 
 function nextFrame() {
