@@ -79,11 +79,6 @@ function zeroFill(number, width) {
     return number + ""; // always return a string
 }
 
-function pxToInt(cssString) {
-    return parseInt(
-        cssString.substring(0, cssString.length - 2)); // 2 is the length of 'px'
-}
-
 function createFramesList(amount) {
     var frames = [];
     framesGroup = new THREE.Object3D();
@@ -116,8 +111,8 @@ function stopCurrentTweens() {
 
 function createShadowTween(targetShadow) {
     var shadowAni = {elem: shadow.element,
-                     width: pxToInt(shadow.element.style.width),
-                     height: pxToInt(shadow.element.style.height),
+                     width: parseInt(shadow.element.style.width),
+                     height: parseInt(shadow.element.style.height),
                      opacity: shadow.element.style.opacity};
 
     var shadowTween = new TWEEN.Tween(shadowAni).to(targetShadow, 500);
