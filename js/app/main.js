@@ -439,6 +439,7 @@ function moveFirstFrameJump(direction, callback) {
 function moveFirstFrameRotating(direction, callback) {
     var bottomFrame = frames[0];
     var topFrame = frames[frames.length-1];
+    var originalOpacity = parseFloat(frames[0].element.style.opacity);
 
     if (direction == 1) {
         var originalTopPosition = topFrame.position.clone();
@@ -462,6 +463,12 @@ function moveFirstFrameRotating(direction, callback) {
 
         tween.start();
 
+        var tweenOpacity = new TWEEN.Tween({value: 0}).to({value: originalOpacity}, frameTransitionDuration);
+        tweenOpacity.onUpdate(function () {
+            bottomFrame.element.style.opacity = this.value;
+        });
+        tweenOpacity.start();
+
     } else {
         var originalBottomPosition = bottomFrame.position.clone();
         var endPosition = {
@@ -482,6 +489,15 @@ function moveFirstFrameRotating(direction, callback) {
         });
 
         tween.start();
+
+        var tweenOpacity = new TWEEN.Tween({value: originalOpacity}).to({value: 0}, frameTransitionDuration);
+        tweenOpacity.onUpdate(function () {
+            topFrame.element.style.opacity = this.value;
+        });
+        tweenOpacity.onComplete(function () {
+            topFrame.element.style.opacity = originalOpacity;
+        });
+        tweenOpacity.start();
     }
 }
 
