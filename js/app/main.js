@@ -450,18 +450,18 @@ function moveFirstFrameRotating(direction, callback) {
         };
 
         var endPosition = topFrame.position.clone();
-        var tween = new TWEEN.Tween(bottomFrame.position).to(endPosition,
-                                                             frameTransitionDuration);
-        tween.easing(TWEEN.Easing.Quadratic.InOut);
+        var tweenPosition = new TWEEN.Tween(bottomFrame.position).to(endPosition,
+                                                                     frameTransitionDuration);
+        tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
 
-        tween.onComplete(function () {
+        tweenPosition.onComplete(function () {
             bottomFrame.position = originalTopPosition;
 
             shiftFrames(direction);
             callback();
         });
 
-        tween.start();
+        tweenPosition.start();
 
         var targetRotation = {
             y: bottomFrame.rotation.y
@@ -490,18 +490,18 @@ function moveFirstFrameRotating(direction, callback) {
             z: topFrame.position.z
         };
 
-        var tween = new TWEEN.Tween(topFrame.position).to(endPosition,
-                                                          frameTransitionDuration);
-        tween.easing(TWEEN.Easing.Quadratic.InOut);
+        var tweenPosition = new TWEEN.Tween(topFrame.position).to(endPosition,
+                                                                  frameTransitionDuration);
+        tweenPosition.easing(TWEEN.Easing.Quadratic.InOut);
 
-        tween.onComplete(function () {
+        tweenPosition.onComplete(function () {
             topFrame.position = originalBottomPosition;
 
             shiftFrames(direction);
             callback();
         });
 
-        tween.start();
+        tweenPosition.start();
 
         var originalRotationY = topFrame.rotation.y;
         var targetRotation = {
