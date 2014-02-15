@@ -463,9 +463,22 @@ function moveFirstFrameRotating(direction, callback) {
 
         tween.start();
 
+        var targetRotation = {
+            y: bottomFrame.rotation.y
+        };
+
+        bottomFrame.rotation.y -= Math.PI;
+        var tweenRotation = new TWEEN.Tween(bottomFrame.rotation).to(targetRotation, frameTransitionDuration);
+        tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenRotation.start();
+
         var tweenOpacity = new TWEEN.Tween({value: 0}).to({value: originalOpacity}, frameTransitionDuration);
+        tweenOpacity.easing(TWEEN.Easing.Quadratic.Out);
         tweenOpacity.onUpdate(function () {
             bottomFrame.element.style.opacity = this.value;
+        });
+        tweenOpacity.onComplete(function () {
+            bottomFrame.element.style.opacity = originalOpacity;
         });
         tweenOpacity.start();
 
@@ -490,7 +503,20 @@ function moveFirstFrameRotating(direction, callback) {
 
         tween.start();
 
+        var originalRotationY = topFrame.rotation.y;
+        var targetRotation = {
+            y: topFrame.rotation.y - Math.PI
+        };
+
+        var tweenRotation = new TWEEN.Tween(topFrame.rotation).to(targetRotation, frameTransitionDuration);
+        tweenRotation.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenRotation.onComplete(function () {
+            topFrame.rotation.y = originalRotationY;
+        });
+        tweenRotation.start();
+
         var tweenOpacity = new TWEEN.Tween({value: originalOpacity}).to({value: 0}, frameTransitionDuration);
+        tweenOpacity.easing(TWEEN.Easing.Quadratic.In);
         tweenOpacity.onUpdate(function () {
             topFrame.element.style.opacity = this.value;
         });
