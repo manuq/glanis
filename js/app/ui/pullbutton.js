@@ -23,6 +23,11 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
             this.pullValue = options["initial"];
         };
 
+        this.onRelease = null;
+        if ("onRelease" in options) {
+            this.onRelease = options["onRelease"];
+        };
+
         this.controls = new bg.PullControls(this);
 
         var that = this;
@@ -51,6 +56,9 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
             that.pressed = false;
             that.button.classList.toggle('active');
             that.controls.hide();
+            if (that.onRelease) {
+                that.onRelease();
+            }
         });
 
         document.documentElement.addEventListener('mouseup', function (event) {
@@ -58,6 +66,9 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
                 that.pressed = false;
                 that.button.classList.toggle('active');
                 that.controls.hide();
+                if (that.onRelease) {
+                    that.onRelease();
+                }
             }
         });
     }

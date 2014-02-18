@@ -784,7 +784,6 @@ function calcFrameRate() {
     frameRate = (currentTime - lastCalledTime);
     lastCalledTime = currentTime;
     if (inSync) {
-        console.log(frameRate);
         frameTransitionDuration = frameRate;
     }
 }
@@ -925,10 +924,14 @@ function createUi() {
     ui.addRadioButtons("radio-draw", optionsDraw);
     ui.addButton({"name": "clear-draw", "text": "m"});
 
-    ui.addPullButton({"name": "prev-frame", "text": "a"});
-    ui.addPullButton({"name": "next-frame", "text": "s"});
-//    ui.addPullButton({"name": "prev-frame-instant", "text": "q"});
-//    ui.addPullButton({"name": "next-frame-instant", "text": "w"});
+    function unSync() {
+        inSync = false;
+    }
+
+    ui.addPullButton({"name": "prev-frame", "text": "a", "onRelease": unSync});
+    ui.addPullButton({"name": "next-frame", "text": "s", "onRelease": unSync});
+//    ui.addPullButton({"name": "prev-frame-instant", "text": "q", "onRelease": unSync});
+//    ui.addPullButton({"name": "next-frame-instant", "text": "w", "onRelease": unSync});
     ui.addPullButton({"name": "opacity", "text": "o", "initial": 1});
     ui.addPullButton({"name": "radius"});
 }
