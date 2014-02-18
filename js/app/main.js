@@ -39,6 +39,10 @@ var frameTransitionDuration = config.maxDuration;
 var drawings = [];
 var soundEnabled = true;
 
+var lastCalledTime;
+var frameRate;
+var inSync = false;
+
 function createFrame(frameName, groupObject) {
     var frameElem = document.createElement('canvas');
     frameElem.width = 300;
@@ -739,9 +743,14 @@ function moreVelocity() {
 }
 
 function setVelocityProportional(value) {
+    if (value == 1) {
+        inSync = true;
+        return;
+    };
+    inSync = false;
     var duration = config.maxDuration - (config.maxDuration * value);
-    if (duration < 0) {
-        duration = 0;
+    if (duration < frameRate) {
+        duration = frameRate;
     }
 
     frameTransitionDuration = duration;
@@ -765,12 +774,38 @@ function clearFrames() {
     });
 }
 
+function calcFrameRate() {
+    if(!lastCalledTime) {
+        lastCalledTime = new Date().getTime();
+        frameRate = 0;
+        return;
+    }
+    var currentTime = new Date().getTime();
+    frameRate = (currentTime - lastCalledTime);
+    lastCalledTime = currentTime;
+    if (inSync) {
+        console.log(frameRate);
+        frameTransitionDuration = frameRate;
+    }
+}
+
+var frameCounter = 0;
 function render() {
     requestAnimationFrame(render);
 
     checkEvents();
-    TWEEN.update();
-    renderer.render(scene, camera);
+    calcFrameRate();
+    frameCounter += 1;
+    if (inSync) {
+        if (frameCounter >= 4) {
+            frameCounter = 0;
+            TWEEN.update();
+            renderer.render(scene, camera);
+        }
+    } else {
+        TWEEN.update();
+        renderer.render(scene, camera);
+    }
 }
 
 function updateFramePulls(buttonName) {
