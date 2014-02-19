@@ -62,9 +62,15 @@ function(doc, paper) {
     bg.PullControls.prototype.updateCurrent = function (value) {
         this.curPath.remove();
         this.curPath = new paper.Path.Circle(new paper.Point(0, 0), 150);
+        var fillColor;
+        if (value == 1) {
+            fillColor = 'rgba(255, 255, 255, 0.6)';
+        } else {
+            fillColor = 'rgba(255, 255, 255, 0.3)';
+        }
         this.curPath.style = {
             strokeColor: '#ff88bf',
-            fillColor: 'rgba(255, 255, 255, 0.3)',
+            fillColor: fillColor,
             strokeWidth: 2
         };
         this.curPath.position = this.maxPath.position;
