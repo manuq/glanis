@@ -596,17 +596,17 @@ function changeFrameZoetrope(direction, callback) {
 
     var targetRotation = {
         x: framesGroup.rotation.x,
-        y: framesGroup.rotation.y + angle * direction,
+        y: framesGroup.rotation.y - angle * direction,
         z: framesGroup.rotation.z
     };
 
     var tweenRotation = new TWEEN.Tween(framesGroup.rotation);
     tweenRotation.to(targetRotation, frameTransitionDuration);
     tweenRotation.start().onComplete(function () {
-        framesGroup.rotation.y -= angle * direction;
+        framesGroup.rotation.y += angle * direction;
 
-        shiftFrames(direction);
-        relocateFrames(direction);
+        shiftFrames(-direction);
+        relocateFrames(-direction);
 
         callback();
     });
