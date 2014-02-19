@@ -5,7 +5,8 @@ function(doc, paper) {
     var bgCanvas;
 
     function getPos(elem) {
-        return [elem.offsetLeft + 28, elem.offsetTop + 28];
+        return [elem.offsetLeft + elem.parentElement.offsetLeft + 28,
+                elem.offsetTop + elem.parentElement.offsetTop + 28];
     }
 
     bg.init = function () {

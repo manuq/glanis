@@ -31,17 +31,14 @@ function(doc,
         bg.updateSize();
     }
 
-    ui.addButton = function (options) {
+    ui.createButton = function (options) {
         name = options['name'];
-        text = options['text'];
-        elem = document.createElement('div');
-        elem.className = "ui-container";
-        domElement.appendChild(elem);
-        setContainerClasses(elem);
+
         var button = document.createElement('button');
-        elem.appendChild(button);
         widgets[name] = button;
-        button.innerText = text;
+
+        button.innerText = options['text'];
+
         button.style.backgroundImage = "url('images/icons/" + options.name + ".svg')";
         button.style.color = "transparent";
         button.addEventListener("mousedown", function (event) {
@@ -56,21 +53,48 @@ function(doc,
             this.pressed = false;
             this.classList.remove('active');
         });
+
+        var widget = {domElement: button};
+        return widget;
     }
 
-    ui.addPullButton = function (options) {
+    ui.addButton = function (options) {
+        var button = ui.createButton(options);
+        ui.addRow([button]);
+    }
+
+    ui.createPullButton = function (options) {
         var pull = new PullButton(options);
         name = options['name'];
         widgets[name] = pull;
-        domElement.appendChild(pull.domElement);
-        setContainerClasses(pull.domElement);
+        return pull;
+    }
+
+    ui.addPullButton = function (options) {
+        var pull = ui.createPullButton(options);
+        ui.addRow([pull]);
+    }
+
+    ui.createRadioButtons = function (name, options) {
+        var radio = new RadioButton(name, options);
+        widgets[name] = radio;
+        return radio;
+    }
+
+    ui.addRow = function (widgets_list) {
+        rowElement = document.createElement('div');
+        rowElement.className = "ui-container";
+        domElement.appendChild(rowElement);
+        setContainerClasses(rowElement);
+
+        widgets_list.forEach(function (w) {
+            rowElement.appendChild(w.domElement);
+        });
     }
 
     ui.addRadioButtons = function (name, options) {
-        var radio = new RadioButton(name, options);
-        widgets[name] = radio;
-        domElement.appendChild(radio.domElement);
-        setContainerClasses(radio.domElement);
+        var radio = ui.createRadioButtons(name, options);
+        ui.addRow([radio]);
     }
 
     ui.setRadioActive = function (radioName, butName) {

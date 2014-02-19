@@ -6,7 +6,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         text = options['text'];
 
         this.domElement = document.createElement('div');
-        this.domElement.className = "ui-container";
+        this.domElement.className = "widget";
         this.button = document.createElement('button');
         this.button.innerText = text;
         this.button.style.backgroundImage = "url('images/icons/" + options.name + ".svg')";

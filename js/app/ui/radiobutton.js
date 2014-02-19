@@ -3,7 +3,7 @@ define(["domReady!"], function(doc) {
     var RadioButton = function (name, options) {
         this.buttons = {};
         this.domElement = document.createElement('div');
-        this.domElement.className = "ui-container";
+        this.domElement.className = "widget";
         var that = this;
 
         var activeSet = false;

@@ -916,25 +916,35 @@ function createUi() {
         {"name": "lightbox", 'text': "4", 'action': function () { changeLayout(layouts.lightbox, function () {}) }},
         {"name": "thaumatrope", 'text': "5", 'action': function () { changeLayout(layouts.thaumatrope, function () {}) }}
     ];
-    ui.addRadioButtons("radio-layout", optionsLayout);
 
-    var optionsDraw = [
-        {"name": "pencil", 'text': "b", 'action': setPencil},
-        {"name": "eraser", 'text': "n", 'action': setEraser}
-    ];
-    ui.addRadioButtons("radio-draw", optionsDraw);
-    ui.addButton({"name": "clear-draw", "text": "m"});
+    var radioLayout = ui.createRadioButtons("radio-layout", optionsLayout);
+
+    ui.addRow([radioLayout]);
 
     function unSync() {
         inSync = false;
     }
 
-    ui.addPullButton({"name": "prev-frame", "text": "a", "onRelease": unSync});
-    ui.addPullButton({"name": "next-frame", "text": "s", "onRelease": unSync});
-//    ui.addPullButton({"name": "prev-frame-instant", "text": "q", "onRelease": unSync});
-//    ui.addPullButton({"name": "next-frame-instant", "text": "w", "onRelease": unSync});
-    ui.addPullButton({"name": "opacity", "text": "o", "initial": 1});
-    ui.addPullButton({"name": "radius"});
+    var pullPrevFrame = ui.createPullButton({"name": "prev-frame", "text": "a", "onRelease": unSync});
+    var pullNextFrame = ui.createPullButton({"name": "next-frame", "text": "s", "onRelease": unSync});
+    //    ui.addPullButton({"name": "prev-frame-instant", "text": "q", "onRelease": unSync});
+    //    ui.addPullButton({"name": "next-frame-instant", "text": "w", "onRelease": unSync});
+
+    ui.addRow([pullPrevFrame, pullNextFrame]);
+
+    var optionsDraw = [
+        {"name": "pencil", 'text': "b", 'action': setPencil},
+        {"name": "eraser", 'text': "n", 'action': setEraser}
+    ];
+    var radioDraw = ui.createRadioButtons("radio-draw", optionsDraw);
+    var buttonClear = ui.createButton({"name": "clear-draw", "text": "m"});
+
+    ui.addRow([radioDraw, buttonClear]);
+
+    var pullOpacity = ui.createPullButton({"name": "opacity", "text": "o", "initial": 1});
+    var pullRadius = ui.createPullButton({"name": "radius"});
+
+    ui.addRow([pullOpacity, pullRadius]);
 }
 
 function main() {
