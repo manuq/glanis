@@ -47,6 +47,7 @@ define(["app/config"], function(config) {
     }
 
     Drawing.prototype.erase = function () {
+        this.ctx.beginPath();
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
