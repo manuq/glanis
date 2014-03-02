@@ -12,7 +12,7 @@ define(["app/config"], function(config) {
         this.brushSize = config.brushSize;
         var that = this;
 
-        this.canvas.addEventListener("mousemove", function (event) {
+        canvas.addEventListener("mousemove", function (event) {
             that.onMouseMove(event);
         });
         canvas.addEventListener("mousedown", function (event) {
@@ -20,6 +20,9 @@ define(["app/config"], function(config) {
         });
         canvas.addEventListener("mouseup", function (event) {
             that.onMouseUp(event);
+        });
+        canvas.addEventListener("mouseover", function (event) {
+            that.onMouseOver(event);
         });
     }
 
@@ -92,6 +95,11 @@ define(["app/config"], function(config) {
 
     Drawing.prototype.onMouseUp = function (event) {
         this.isDrawing = false;
+    }
+
+    Drawing.prototype.onMouseOver = function (event) {
+        var pos = this.getTransformedPosition(event.clientX, event.clientY);
+        this.ctx.moveTo(pos.x, pos.y);
     }
 
     return Drawing;
