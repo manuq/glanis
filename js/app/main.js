@@ -27,6 +27,7 @@ window.addEventListener('resize', onWindowResize);
 
 var keyboard = new THREEx.KeyboardState();
 
+var allFrames = [];
 var frames = [];
 var framesGroup;
 var shadow;
@@ -92,8 +93,10 @@ function createFramesList(amount) {
         var frameName = "frame-" + zeroFill(i+1, 2);
         var frame = createFrame(frameName, framesGroup);
         framesGroup.add(frame);
-        frames.push(frame);
+        allFrames.push(frame);
     };
+
+    frames = allFrames.slice(0, 7);
 
     return frames;
 }
@@ -578,7 +581,8 @@ function changeFrameThaumatrope(direction, callback) {
 }
 
 function changeFrameSequence(direction, callback) {
-    var auxFrames = frames.slice(3).concat(frames.slice(0, 3));
+    var middle = Math.floor(frames.length / 2);
+    var auxFrames = frames.slice(middle).concat(frames.slice(0, middle));
     moveOtherFrames(auxFrames, direction);
     moveFirstFrameFast(auxFrames, direction, callback);
 }
@@ -792,7 +796,20 @@ function calcFrameRate() {
 }
 
 function changeNumberOfFrames(number) {
-    console.log(number);
+    frames = allFrames.slice(0, number);
+    otherFrames = allFrames.slice(number);
+
+    frameStyleTarget = {
+        opacity: 0.0
+    };
+    otherFrames.forEach(function (frame) {
+        var tweenOpacity = new TWEEN.Tween(frame.element.style).to(frameStyleTarget, 200);
+        tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenOpacity.start();
+    });
+
+    layouts.update(frames);
+    updateLayout(function () {});
 }
 
 var frameCounter = 0;
@@ -966,10 +983,11 @@ function createUi() {
 
 function main() {
     createUi();
-    frames = createFramesList(7);
+    frames = createFramesList(15);
     layouts.update(frames);
     shadow = createShadow();
     changeLayout(layouts.sequence, function () {});
+    changeNumberOfFrames(7);
     render();
 }
 
