@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="clear-draw.svg">
+   sodipodi:docname="7.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="10.2"
-     inkscape:cx="-1.896995"
-     inkscape:cy="25.000031"
+     inkscape:zoom="5.1"
+     inkscape:cx="8.4386091"
+     inkscape:cy="19.586395"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
      showgrid="true"
@@ -34,7 +34,8 @@
      inkscape:window-height="709"
      inkscape:window-x="0"
      inkscape:window-y="27"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false">
     <inkscape:grid
        type="xygrid"
        id="grid2990"
@@ -51,7 +52,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -76,20 +77,16 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Layer">
-    <g
-       id="g3815"
-       transform="matrix(1.306116,0,0,1.306116,-7.6528995,-7.6528995)"
-       style="stroke-width:3.06251512;stroke-miterlimit:4;stroke-dasharray:none">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3949"
-         d="M 17.928932,17.928932 32.071068,32.071068"
-         style="color:#000000;fill:none;stroke:#333333;stroke-width:3.06251512;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
-      <path
-         style="color:#000000;fill:none;stroke:#333333;stroke-width:3.06251512;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         d="M 17.928932,32.071068 32.071068,17.928932"
-         id="path3968"
-         inkscape:connector-curvature="0" />
-    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:23.40018082px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#333333;fill-opacity:1;stroke:none;font-family:Sans"
+       x="25.045706"
+       y="33.529411"
+       id="text3838"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3840"
+         x="25.045706"
+         y="33.529411">7</tspan></text>
   </g>
 </svg>

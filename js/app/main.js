@@ -791,6 +791,10 @@ function calcFrameRate() {
     }
 }
 
+function changeNumberOfFrames(number) {
+    console.log(number);
+}
+
 var frameCounter = 0;
 function render() {
     requestAnimationFrame(render);
@@ -947,6 +951,17 @@ function createUi() {
     var pullRadius = ui.createPullButton({"name": "radius"});
 
     ui.addRow([pullOpacity, pullRadius]);
+
+    var optionsNumberOfFrames = [
+        {"name": "7", 'text': "7", 'action': function () { changeNumberOfFrames(7) }, 'active': true},
+        {"name": "11", 'text': "11", 'action': function () { changeNumberOfFrames(11) }},
+        {"name": "15", 'text': "15", 'action': function () { changeNumberOfFrames(15) }},
+    ];
+
+    var radioNumberOfFrames = ui.createRadioButtons("radio-number-of-frames", optionsNumberOfFrames);
+
+    ui.addRow([radioNumberOfFrames]);
+
 }
 
 function main() {
