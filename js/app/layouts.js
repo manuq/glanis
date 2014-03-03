@@ -28,8 +28,8 @@ function(THREE, config) {
     ZoetropeLayout.prototype.calculate = function (frames) {
         this.shadowStyleTarget = {width: frames.length * 200, height: frames.length * 200, opacity: 0.1};
 
-        this.cameraTarget.position.y = frames.length * 100;
-        this.cameraTarget.position.z = frames.length * 150;
+        this.cameraTarget.position.y = 300 + frames.length * 57;
+        this.cameraTarget.position.z = 300 + frames.length * 107; //frames.length * 150;
 
         this.frameTargets = [];
         var that = this;
