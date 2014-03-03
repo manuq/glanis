@@ -2,6 +2,12 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
 
     var pullRadius = 150;
 
+    // FIXME dup of ui bg getPos
+    function getPos(elem) {
+        return [elem.offsetLeft + elem.parentElement.offsetLeft + 28,
+                elem.offsetTop + elem.parentElement.offsetTop + 28];
+    }
+
     var PullButton = function (options) {
         text = options['text'];
 
@@ -16,7 +22,6 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.pressed = false;
         this.initialCoords;
         this.curCoords;
-        this.initialValue;
 
         this.pullValue = 0;
         if ("initial" in options) {
@@ -33,8 +38,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         var that = this;
 
         this.button.addEventListener("mousedown", function (event) {
-            that.initialValue = that.pullValue;
-            that.initialCoords = [event.screenX, event.screenY];
+            that.initialCoords = getPos(that.domElement);
             that.curCoords = that.initialCoords.slice(0);
 
             that.pressed = true;
@@ -44,7 +48,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
 
         document.documentElement.addEventListener('mousemove', function (event) {
             if (that.pressed) {
-                that.curCoords = [event.screenX, event.screenY];
+                that.curCoords = [event.x, event.y];
                 that.updatePullValue();
             }
         });
@@ -78,20 +82,13 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         var dy = this.curCoords[1] - this.initialCoords[1];
         var magnitude = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
-        value = this.initialValue + magnitude / pullRadius;
+        if (magnitude < 25) {
+            return;
+        }
 
-        if (this.initialValue > 0) {
-            if (value > 1 && value < 2) {
-                value = this.initialValue - 1 + magnitude / pullRadius;
-            } else {
-                if (value >= 2) {
-                    value = 1;
-                }
-            }
-        } else {
-            if (value >= 1) {
-                value = 1;
-            }
+        value = magnitude / pullRadius;
+        if (value >= 1) {
+            value = 1;
         }
 
         this.pullValue = value;
