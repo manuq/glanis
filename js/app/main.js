@@ -168,10 +168,11 @@ function animateLayout(callback) {
     frames.forEach(function (frame, i) {
         var target = currentLayout.frameTargets[i];
 
+        var duration = 250 + 750 * (i / frames.length);
         var frameTweens = createTargetTweens(frame, target,
-                                              500, 500,
-                                              TWEEN.Easing.Quadratic.InOut,
-                                              TWEEN.Easing.Quadratic.InOut);
+                                             duration, duration,
+                                             TWEEN.Easing.Quadratic.InOut,
+                                             TWEEN.Easing.Quadratic.InOut);
 
         currentTweens.push(frameTweens['pos']);
         currentTweens.push(frameTweens['rot']);
@@ -192,7 +193,7 @@ function animateLayout(callback) {
     });
 
     var shadowTweens = createTargetTweens(shadow, currentLayout.shadowTarget,
-                                         2000, 2000,
+                                         1000, 1000,
                                          TWEEN.Easing.Quadratic.InOut,
                                          TWEEN.Easing.Quadratic.InOut);
 
@@ -204,7 +205,7 @@ function animateLayout(callback) {
     shadowStyleTween.start();
 
     var cameraTweens = createTargetTweens(camera, currentLayout.cameraTarget,
-                                          2500, 2500,
+                                          1500, 1500,
                                           TWEEN.Easing.Quadratic.InOut,
                                           TWEEN.Easing.Quadratic.InOut);
 
