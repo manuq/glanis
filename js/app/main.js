@@ -310,20 +310,22 @@ function relocateFrames(direction) {
     lastFrame.rotation = firstRotation.clone();
 }
 
-function moveOtherFrames(direction) {
-    var start;
-    var end;
+function moveOtherFrames(frames, direction) {
+
+    var auxFrames;
+
     if (direction == 1) {
-        start = 1;
-        end = frames.length;
+        auxFrames = frames.slice(0);
+
     } else {
-        start = 0;
-        end = frames.length-1;
+        auxFrames = frames.slice(0).reverse();
     }
 
-    for (var i=start; i<end; i++) {
-        var frame = frames[i];
-        var prevFrame = frames[i - direction];
+    auxFrames.forEach(function (frame, i) {
+        if (i == 0) {
+            return;
+        }
+        var prevFrame = auxFrames[i - 1];
         var target = new THREE.Object3D();
         target.position = prevFrame.position.clone();
         target.rotation = prevFrame.rotation.clone();
@@ -336,11 +338,11 @@ function moveOtherFrames(direction) {
 
         frameTweens['pos'].start();
         frameTweens['rot'].start();
-    };
+    });
 
 }
 
-function moveFirstFrameFast(direction, callback) {
+function moveFirstFrameFast(frames, direction, callback) {
     var frame;
     var targetFrame;
     if (direction == 1) {
@@ -387,7 +389,7 @@ function moveFirstFrameFast(direction, callback) {
     });
 }
 
-function moveFirstFrameJump(direction, callback) {
+function moveFirstFrameJump(frames, direction, callback) {
     var frame;
     var targetFrame;
     if (direction == 1) {
@@ -441,7 +443,7 @@ function moveFirstFrameJump(direction, callback) {
     });
 }
 
-function moveFirstFrameRotating(direction, callback) {
+function moveFirstFrameRotating(frames, direction, callback) {
     var bottomFrame = frames[0];
     var topFrame = frames[frames.length-1];
     var originalOpacity = parseFloat(frames[0].element.style.opacity);
@@ -557,10 +559,8 @@ function moveFirstFrameRotating(direction, callback) {
 }
 
 function changeFrameThaumatrope(direction, callback) {
-    var angle = 2 * Math.PI / frames.length;
-
     var targetRotation = {
-        x: framesGroup.rotation.x + Math.PI * direction,
+        x: framesGroup.rotation.x - Math.PI * direction,
         y: framesGroup.rotation.y,
         z: framesGroup.rotation.z
     };
@@ -568,7 +568,7 @@ function changeFrameThaumatrope(direction, callback) {
     var tweenRotation = new TWEEN.Tween(framesGroup.rotation);
     tweenRotation.to(targetRotation, frameTransitionDuration);
     tweenRotation.start().onComplete(function () {
-        framesGroup.rotation.x -= Math.PI * direction;
+        framesGroup.rotation.x += Math.PI * direction;
 
         shiftFrames(direction);
         relocateFrames(-1);
@@ -578,18 +578,19 @@ function changeFrameThaumatrope(direction, callback) {
 }
 
 function changeFrameSequence(direction, callback) {
-    moveOtherFrames(direction);
-    moveFirstFrameFast(direction, callback);
+    var auxFrames = frames.slice(3).concat(frames.slice(0, 3));
+    moveOtherFrames(auxFrames, direction);
+    moveFirstFrameFast(auxFrames, direction, callback);
 }
 
 function changeFrameStack(direction, callback) {
-    moveOtherFrames(direction);
-    moveFirstFrameJump(direction, callback);
+    moveOtherFrames(frames, direction);
+    moveFirstFrameJump(frames, direction, callback);
 }
 
 function changeFrameLightbox(direction, callback) {
-    moveOtherFrames(direction);
-    moveFirstFrameRotating(direction, callback);
+    moveOtherFrames(frames, direction);
+    moveFirstFrameRotating(frames, direction, callback);
 }
 
 function changeFrameZoetrope(direction, callback) {

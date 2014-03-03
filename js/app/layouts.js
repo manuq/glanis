@@ -41,7 +41,7 @@ function(THREE, config) {
 
         var radius = frames.length * 70;
         var angle = Math.PI * 2 / frames.length;
-        var curAngle = 0;
+        var curAngle = angle;
 
         frames.forEach(function (frame) {
             target = new THREE.Object3D();
@@ -82,12 +82,19 @@ function(THREE, config) {
         this.frameTargets = [];
         var that = this;
 
-        var curX = ((config.frameWidth * (frames.length - 1)) +
-                    (config.space * (frames.length - 1)))  / -2;
+        var middleX = ((config.frameWidth * (frames.length - 1)) +
+            (config.space * (frames.length - 1))) / 2;
 
-        frames.forEach(function (frame) {
+        var curX = -1 * middleX;
+
+        frames.forEach(function (frame, i) {
+            var atLeft = i < Math.floor(frames.length / 2);
             target = new THREE.Object3D();
-            target.position.x = curX;
+            if (atLeft) {
+                target.position.x = curX + middleX + (config.frameWidth + config.space);
+            } else {
+                target.position.x = curX - middleX;
+            }
             that.frameTargets.push(target);
 
             curX += config.frameWidth + config.space;
@@ -213,14 +220,17 @@ function(THREE, config) {
         frames.forEach(function (frame, i) {
             target = new THREE.Object3D();
 
-            if (i == 0) {
+            var last = frames.length-1;
+            var first = 0;
+
+            if (i == last) {
                 target.position.z = 0.1;
             }
-            if (i == 1) {
+            if (i == first) {
                 target.position.z = -0.1;
                 target.rotation.x = Math.PI;
             }
-            if (i !== 0 && i !== 1) {
+            if (i !== last && i !== first) {
                 target.position.x = window.innerWidth * 3;
             }
 
