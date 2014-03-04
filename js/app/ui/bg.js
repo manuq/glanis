@@ -65,7 +65,7 @@ function(doc, paper) {
         this.curPath = new paper.Path.Circle(new paper.Point(0, 0), 150);
         var fillColor;
         if (value == 1) {
-            fillColor = 'rgba(255, 255, 255, 0.6)';
+            fillColor = 'rgba(252, 200, 252, 0.8)';
         } else {
             fillColor = 'rgba(255, 255, 255, 0.3)';
         }
