@@ -1,7 +1,7 @@
 define(["domReady!",
-        "app/ui/bg", "app/ui/pullbutton", "app/ui/radiobutton"],
+        "app/ui/bg", "app/ui/pullbutton", "app/ui/confirmbutton", "app/ui/radiobutton"],
 function(doc,
-         bg, PullButton, RadioButton) {
+         bg, PullButton, ConfirmButton, RadioButton) {
 
     var ui = {};
     var domElement;
@@ -61,6 +61,13 @@ function(doc,
     ui.addButton = function (options) {
         var button = ui.createButton(options);
         ui.addRow([button]);
+    }
+
+    ui.createConfirmButton = function (options) {
+        var confirm = new ConfirmButton(options);
+        name = options['name'];
+        widgets[name] = confirm;
+        return confirm;
     }
 
     ui.createPullButton = function (options) {

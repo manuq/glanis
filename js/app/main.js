@@ -921,7 +921,7 @@ function checkEvents() {
         setEraser();
         ui.setRadioActive("radio-draw", "eraser");
     };
-    if (ui.pressed("clear-draw") || keyboard.pressed("m")) {
+    if (keyboard.pressed("m")) {
         clearFrames();
     };
     if (keyboard.pressed("r")) {
@@ -960,7 +960,8 @@ function createUi() {
         {"name": "eraser", 'text': "n", 'action': setEraser}
     ];
     var radioDraw = ui.createRadioButtons("radio-draw", optionsDraw);
-    var buttonClear = ui.createButton({"name": "clear-draw", "text": "m"});
+    var buttonClear = ui.createConfirmButton({"name": "clear-draw", "text": "m",
+                                              'action': function () { clearFrames() }});
 
     ui.addRow([radioDraw, buttonClear]);
 
@@ -978,7 +979,6 @@ function createUi() {
     var radioNumberOfFrames = ui.createRadioButtons("radio-number-of-frames", optionsNumberOfFrames);
 
     ui.addRow([radioNumberOfFrames]);
-
 }
 
 function main() {
