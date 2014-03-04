@@ -625,10 +625,10 @@ function changeFrame(direction) {
 
     changingFrames = true;
 
-    if (soundEnabled) {
-        var audio = new Audio('sounds/paper2.wav');
-        audio.play();
-    }
+    // if (soundEnabled) {
+    //     var audio = new Audio('sounds/paper2.wav');
+    //     audio.play();
+    // }
 
     var callback = function () {
         changingFrames = false;
