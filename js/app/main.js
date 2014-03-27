@@ -66,12 +66,10 @@ function createShadow() {
     var shadowElem = document.createElement('div');
     shadowElem.classList.add('shadow');
 
-    var shadow = new THREE.CSS3DObject(shadowElem);
+    shadow = new THREE.CSS3DObject(shadowElem);
     shadow.rotation.x = Math.PI / 2;
     shadow.position.y -= config.frameHeight / 2;
     scene.add(shadow);
-
-    return shadow;
 }
 
 function zeroFill(number, width) {
@@ -85,7 +83,6 @@ function zeroFill(number, width) {
 }
 
 function createFramesList(amount) {
-    var frames = [];
     framesGroup = new THREE.Object3D();
     scene.add(framesGroup);
 
@@ -95,10 +92,6 @@ function createFramesList(amount) {
         framesGroup.add(frame);
         allFrames.push(frame);
     };
-
-    frames = allFrames.slice(0, 7);
-
-    return frames;
 }
 
 function addFrame() {
@@ -982,11 +975,10 @@ function createUi() {
 }
 
 function main() {
+    currentLayout = layouts.sequence;
     createUi();
-    frames = createFramesList(15);
-    layouts.update(frames);
-    shadow = createShadow();
-    changeLayout(layouts.sequence, function () {});
+    createShadow();
+    createFramesList(15);
     changeNumberOfFrames(7);
     render();
 }
