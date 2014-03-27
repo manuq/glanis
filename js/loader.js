@@ -11,6 +11,10 @@ requirejs.config({
             deps: ['three'],
             exports: 'THREE.CSS3DRenderer'
         },
+        'TrackballControls': {
+            deps: ['three'],
+            exports: 'THREE.TrackballControls'
+        },
         'THREEx.KeyboardState': {
             deps: ['three'],
             exports: 'THREEx'

@@ -1,12 +1,13 @@
 define(["domReady!", "three", "tween", "THREEx.KeyboardState",
         "app/drawing", "app/config", "app/ui", "app/layouts",
-        "CSS3DRenderer"],
+        "CSS3DRenderer", "TrackballControls"],
 function(doc, THREE, TWEEN, THREEx,
          Drawing, config, ui, layouts) {
 
 var scene;
 var camera;
 var projector;
+var controls;
 var renderer;
 var keyboard;
 
@@ -825,6 +826,8 @@ function updateFramePulls(buttonName) {
 };
 
 function checkEvents() {
+    //controls.update();
+
     if (keyboard.pressed("1")) {
         changeLayout(layouts.zoetrope, function () {});
         ui.setRadioActive("radio-layout", "zoetrope");
@@ -967,7 +970,7 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-
+    controls.handleResize();
     ui.updateSize();
 }
 
@@ -978,6 +981,20 @@ function initThreeJs () {
     camera.position.z = 350;
 
     projector = new THREE.Projector();
+
+    controls = new THREE.TrackballControls(camera);
+
+    controls.rotateSpeed = 1.0;
+    controls.zoomSpeed = 1.2;
+    controls.panSpeed = 0.8;
+
+    controls.noZoom = false;
+    controls.noPan = false;
+
+    controls.staticMoving = true;
+    controls.dynamicDampingFactor = 0.3;
+
+    controls.keys = [ 65, 83, 68 ];
 
     renderer = new THREE.CSS3DRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
