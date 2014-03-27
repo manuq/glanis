@@ -798,7 +798,13 @@ function changeNumberOfFrames(number) {
     otherFrames.forEach(function (frame) {
         var tweenOpacity = new TWEEN.Tween(frame.element.style).to(frameStyleTarget, 200);
         tweenOpacity.easing(TWEEN.Easing.Quadratic.InOut);
+        tweenOpacity.onComplete(function () {
+            frame.element.style.display = 'none';
+        });
         tweenOpacity.start();
+    });
+    frames.forEach(function (frame) {
+        frame.element.style.display = 'block';
     });
 
     layouts.update(frames);
