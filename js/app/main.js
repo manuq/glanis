@@ -4,28 +4,11 @@ define(["domReady!", "three", "tween", "THREEx.KeyboardState",
 function(doc, THREE, TWEEN, THREEx,
          Drawing, config, ui, layouts) {
 
-var scene = new THREE.Scene();
-
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 350;
-
-var projector = new THREE.Projector();
-
-var renderer = new THREE.CSS3DRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-var onWindowResize = function () {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    ui.updateSize();
-}
-
-window.addEventListener('resize', onWindowResize);
-
-var keyboard = new THREEx.KeyboardState();
+var scene;
+var camera;
+var projector;
+var renderer;
+var keyboard;
 
 var allFrames = [];
 var frames = [];
@@ -980,7 +963,33 @@ function createUi() {
     ui.addRow([radioNumberOfFrames]);
 }
 
+function onWindowResize() {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    ui.updateSize();
+}
+
+function initThreeJs () {
+    scene = new THREE.Scene();
+
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 350;
+
+    projector = new THREE.Projector();
+
+    renderer = new THREE.CSS3DRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    window.addEventListener('resize', onWindowResize);
+
+    keyboard = new THREEx.KeyboardState();
+}
+
 function main() {
+    initThreeJs();
     currentLayout = layouts.sequence;
     createUi();
     createShadow();
