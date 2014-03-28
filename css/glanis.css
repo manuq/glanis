@@ -12,6 +12,10 @@ canvas {
   height: 100%;
 }
 
+canvas.frame {
+  cursor: crosshair;
+}
+
 .frame {
   border: 6px solid #eee;
   width: 300px;
