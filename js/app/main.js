@@ -918,11 +918,11 @@ function createUi() {
     ui.init();
 
     var optionsLayout = [
-        {"name": "zoetrope", 'text': "1", 'action': function () { changeLayout(layouts.zoetrope, function () {}) }},
         {"name": "sequence", 'text': "2", 'action': function () { changeLayout(layouts.sequence, function () {}) }, 'active': true},
         {"name": "stack", 'text': "3", 'action': function () { changeLayout(layouts.stack, function () {}) }},
+        {"name": "thaumatrope", 'text': "5", 'action': function () { changeLayout(layouts.thaumatrope, function () {}) }},
         {"name": "lightbox", 'text': "4", 'action': function () { changeLayout(layouts.lightbox, function () {}) }},
-        {"name": "thaumatrope", 'text': "5", 'action': function () { changeLayout(layouts.thaumatrope, function () {}) }}
+        {"name": "zoetrope", 'text': "1", 'action': function () { changeLayout(layouts.zoetrope, function () {}) }}
     ];
 
     var radioLayout = ui.createRadioButtons("radio-layout", optionsLayout);
