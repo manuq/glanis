@@ -956,6 +956,7 @@ function createUi() {
     ui.addRow([pullOpacity, pullRadius]);
 
     var optionsNumberOfFrames = [
+        {"name": "2", 'text': "2", 'action': function () { changeNumberOfFrames(2) }},
         {"name": "7", 'text': "7", 'action': function () { changeNumberOfFrames(7) }, 'active': true},
         {"name": "11", 'text': "11", 'action': function () { changeNumberOfFrames(11) }},
         {"name": "15", 'text': "15", 'action': function () { changeNumberOfFrames(15) }},
