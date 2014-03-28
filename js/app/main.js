@@ -965,6 +965,9 @@ function createUi() {
     var radioNumberOfFrames = ui.createRadioButtons("radio-number-of-frames", optionsNumberOfFrames);
 
     ui.addRow([radioNumberOfFrames]);
+
+//    var buttonHelp = ui.createButton({"name": "help"});
+//    ui.addRow([buttonHelp]);
 }
 
 function onWindowResize() {
