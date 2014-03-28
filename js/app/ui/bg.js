@@ -7,9 +7,9 @@ function(doc, paper) {
     const BIG_RADIUS = 150;
     const SMALL_RADIUS = 50;
 
-    const STROKE_COLOR = '#ff88bf';
-    const FILL_COLOR = 'rgba(255, 255, 255, 0.3)';
-    const HIT_COLOR = 'rgba(252, 200, 252, 0.8)';
+    const STROKE_COLOR = '#07eaff';
+    const FILL_COLOR = 'rgba(7, 234, 255, 0.3)';
+    const HIT_COLOR = 'rgba(7, 234, 255, 0.8)';
 
 
     function getPos(elem) {

@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  background-color: #07eaff;
+  background-color: #7933ce;
   -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
@@ -57,7 +57,7 @@ canvas {
 }
 
 #ui button.active {
-  border-color: #ff88bf;
+  border-color: #07eaff;
 }
 
 #bg-ui {
