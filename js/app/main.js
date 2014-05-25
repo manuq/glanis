@@ -938,7 +938,7 @@ function createUi() {
     //    ui.addPullButton({"name": "prev-frame-instant", "text": "q", "onRelease": unSync});
     //    ui.addPullButton({"name": "next-frame-instant", "text": "w", "onRelease": unSync});
 
-    ui.addRow([pullPrevFrame, pullNextFrame]);
+    ui.addRow([pullPrevFrame, pullNextFrame], 1);
 
     var optionsDraw = [
         {"name": "pencil", 'text': "b", 'action': setPencil},

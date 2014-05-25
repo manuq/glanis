@@ -72,6 +72,11 @@ canvas.frame {
   z-index: 1;
 }
 
+#ui .space {
+  display: inline-block;
+  margin-left: 56px;
+}
+
 #ui .widget {
   display: inline-block;
 }

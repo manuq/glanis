@@ -88,11 +88,20 @@ function(doc,
         return radio;
     }
 
-    ui.addRow = function (widgets_list) {
+    ui.addSpaces = function (elem, spaces) {
+        for (var i = 0; i < spaces; i++) {
+            var spaceElement = document.createElement('div');
+            spaceElement.className = "space";
+            elem.appendChild(spaceElement);
+        }
+    }
+
+    ui.addRow = function (widgets_list, margin) {
         rowElement = document.createElement('div');
         rowElement.className = "ui-container";
         domElement.appendChild(rowElement);
         setContainerClasses(rowElement);
+        ui.addSpaces(rowElement, margin);
 
         widgets_list.forEach(function (w) {
             rowElement.appendChild(w.domElement);
