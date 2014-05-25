@@ -5,11 +5,12 @@ function(doc, paper) {
     var bgCanvas;
 
     const BIG_RADIUS = 150;
-    const SMALL_RADIUS = 50;
+    const SMALL_RADIUS = 27;
 
     const STROKE_COLOR = '#07eaff';
     const FILL_COLOR = 'rgba(7, 234, 255, 0.3)';
-    const HIT_COLOR = 'rgba(7, 234, 255, 0.8)';
+    const HIT_FILL_COLOR = 'rgba(7, 234, 255, 0.8)';
+    const HIT_STROKE_COLOR = '#fff';
 
 
     function getPos(elem) {
@@ -72,7 +73,7 @@ function(doc, paper) {
         this.curPath = new paper.Path.Circle(new paper.Point(0, 0), BIG_RADIUS);
         var fillColor;
         if (value == 1) {
-            fillColor = HIT_COLOR;
+            fillColor = HIT_FILL_COLOR;
         } else {
             fillColor = FILL_COLOR;
         }
@@ -89,56 +90,78 @@ function(doc, paper) {
     bg.ConfirmControls = function (confirmButton) {
         this.confirmButton = confirmButton;
 
-        this.maxPath = new paper.Path.Circle(new paper.Point(0, 0), BIG_RADIUS);
-        this.maxPath.style = {
+        maxPath = new paper.Path.Circle(new paper.Point(0, 0), BIG_RADIUS);
+        maxPath.style = {
             strokeColor: STROKE_COLOR,
             strokeWidth: 3,
             dashArray: [4, 3]
         };
-        this.maxPath.visible = false;
 
-        this.confirmPath = new paper.Path.Circle(new paper.Point(0, 0), SMALL_RADIUS);
+        this.confirmPath = new paper.Path.Circle(new paper.Point(BIG_RADIUS, 0), SMALL_RADIUS);
         this.confirmPath.style = {
             strokeColor: STROKE_COLOR,
             fillColor: FILL_COLOR,
             strokeWidth: 2
         };
-        this.confirmPath.visible = false;
+
+        var confirmLine = new paper.Path.Line(
+            new paper.Point(SMALL_RADIUS + 20, 0),
+            new paper.Point(BIG_RADIUS - SMALL_RADIUS - 10, 0))
+        confirmLine.style = {
+            strokeColor: STROKE_COLOR,
+            strokeWidth: 3,
+            dashArray: [4, 3]
+        };
+
+        this.confirmTick = new paper.Path([
+            new paper.Point(BIG_RADIUS - 10, SMALL_RADIUS - 28),
+            new paper.Point(BIG_RADIUS - 5, SMALL_RADIUS - 18),
+            new paper.Point(BIG_RADIUS + 10, SMALL_RADIUS - 35)
+        ]);
+        this.confirmTick.style = {
+            strokeColor: STROKE_COLOR,
+            strokeWidth: 4
+        };
+
+        this.group = new paper.Group([maxPath, this.confirmPath, confirmLine,
+                                      this.confirmTick])
+        this.group.visible = false;
     }
 
     bg.ConfirmControls.prototype.show = function () {
         var pos = getPos(this.confirmButton.domElement);
-        this.maxPath.position = new paper.Point(pos[0], pos[1]);
-        this.confirmPath.position = new paper.Point(pos[0] + BIG_RADIUS, pos[1]);
-        this.maxPath.visible = true;
-        this.confirmPath.visible = true;
+        this.group.position = new paper.Point(pos[0], pos[1]);
+        this.group.visible = true;
         paper.view.draw();
     }
 
     bg.ConfirmControls.prototype.hide = function () {
-        this.maxPath.visible = false;
-        this.confirmPath.visible = false;
+        this.group.visible = false;
         paper.view.draw();
     }
 
     bg.ConfirmControls.prototype.update = function (pointerX, pointerY) {
-        var x = pointerX - this.maxPath.position.x - BIG_RADIUS;
-        var y = pointerY - this.maxPath.position.y;
+        var x = pointerX - this.group.position.x - BIG_RADIUS;
+        var y = pointerY - this.group.position.y;
 
         var squared_dist = Math.pow(x, 2) + Math.pow(y, 2);
         var hit = squared_dist <= Math.pow(SMALL_RADIUS, 2);
 
         var fillColor;
         if (hit) {
-            fillColor = HIT_COLOR;
+            strokeColor = HIT_STROKE_COLOR;
+            fillColor = HIT_FILL_COLOR;
         } else {
+            strokeColor = STROKE_COLOR;
             fillColor = FILL_COLOR;
         }
 
         this.confirmPath.style = {
-            strokeColor: STROKE_COLOR,
             fillColor: fillColor,
-            strokeWidth: 2
+        };
+
+        this.confirmTick.style = {
+            strokeColor: strokeColor
         };
 
         paper.view.draw();
