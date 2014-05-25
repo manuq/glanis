@@ -927,8 +927,6 @@ function createUi() {
 
     var radioLayout = ui.createRadioButtons("radio-layout", optionsLayout);
 
-    ui.addRow([radioLayout]);
-
     function unSync() {
         inSync = false;
     }
@@ -938,22 +936,16 @@ function createUi() {
     //    ui.addPullButton({"name": "prev-frame-instant", "text": "q", "onRelease": unSync});
     //    ui.addPullButton({"name": "next-frame-instant", "text": "w", "onRelease": unSync});
 
-    ui.addRow([pullPrevFrame, pullNextFrame], 1);
-
     var optionsDraw = [
-        {"name": "pencil", 'text': "b", 'action': setPencil},
-        {"name": "eraser", 'text': "n", 'action': setEraser}
+        {"name": "eraser", 'text': "n", 'action': setEraser},
+        {"name": "pencil", 'text': "b", 'action': setPencil, 'active': true}
     ];
     var radioDraw = ui.createRadioButtons("radio-draw", optionsDraw);
     var buttonClear = ui.createConfirmButton({"name": "clear-draw", "text": "m",
                                               'action': function () { clearFrames() }});
 
-    ui.addRow([radioDraw, buttonClear]);
-
     var pullOpacity = ui.createPullButton({"name": "opacity", "text": "o", "initial": 1});
     var pullRadius = ui.createPullButton({"name": "radius"});
-
-    ui.addRow([pullOpacity, pullRadius]);
 
     var optionsNumberOfFrames = [
         {"name": "2", 'text': "2", 'action': function () { changeNumberOfFrames(2) }},
@@ -963,10 +955,15 @@ function createUi() {
     ];
 
     var radioNumberOfFrames = ui.createRadioButtons("radio-number-of-frames", optionsNumberOfFrames);
+    //    var buttonHelp = ui.createButton({"name": "help"});
 
+    ui.addRow([radioLayout]);
     ui.addRow([radioNumberOfFrames]);
-
-//    var buttonHelp = ui.createButton({"name": "help"});
+//    ui.addRowSpace();
+    ui.addRow([pullPrevFrame, pullNextFrame], 1);
+//    ui.addRowSpace();
+    ui.addRow([radioDraw, buttonClear]);
+    ui.addRow([pullOpacity, pullRadius], 1);
 //    ui.addRow([buttonHelp]);
 }
 

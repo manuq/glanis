@@ -88,6 +88,15 @@ function(doc,
         return radio;
     }
 
+    ui.addRowSpace = function (spaces) {
+        spaces = spaces || 1;
+        for (var i = 0; i < spaces; i++) {
+            var rowSpaceElement = document.createElement('div');
+            rowSpaceElement.className = "ui-container-space";
+            domElement.appendChild(rowSpaceElement);
+        }
+    }
+
     ui.addSpaces = function (elem, spaces) {
         for (var i = 0; i < spaces; i++) {
             var spaceElement = document.createElement('div');
@@ -97,7 +106,7 @@ function(doc,
     }
 
     ui.addRow = function (widgets_list, margin) {
-        rowElement = document.createElement('div');
+        var rowElement = document.createElement('div');
         rowElement.className = "ui-container";
         domElement.appendChild(rowElement);
         setContainerClasses(rowElement);

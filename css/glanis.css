@@ -88,6 +88,13 @@ canvas.frame {
   margin-left: 8px;
 }
 
+#ui .ui-container-space {
+  position: relative;
+  margin-top: -8px;
+  height: 50px;
+  margin-left: 8px;
+}
+
 #ui .ui-container.first {
   margin-top: 8px;
 }
