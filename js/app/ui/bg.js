@@ -113,18 +113,18 @@ function(doc, paper) {
             dashArray: [4, 3]
         };
 
-        this.confirmTick = new paper.Path([
+        confirmTick = new paper.Path([
             new paper.Point(BIG_RADIUS - 10, SMALL_RADIUS - 28),
             new paper.Point(BIG_RADIUS - 5, SMALL_RADIUS - 18),
             new paper.Point(BIG_RADIUS + 10, SMALL_RADIUS - 35)
         ]);
-        this.confirmTick.style = {
-            strokeColor: STROKE_COLOR,
+        confirmTick.style = {
+            strokeColor: HIT_STROKE_COLOR,
             strokeWidth: 4
         };
 
         this.group = new paper.Group([maxPath, this.confirmPath, confirmLine,
-                                      this.confirmTick])
+                                      confirmTick])
         this.group.visible = false;
     }
 
@@ -141,7 +141,7 @@ function(doc, paper) {
     }
 
     bg.ConfirmControls.prototype.update = function (pointerX, pointerY) {
-        var x = pointerX - this.group.position.x - BIG_RADIUS;
+        var x = pointerX - this.group.position.x - BIG_RADIUS + 12;
         var y = pointerY - this.group.position.y;
 
         var squared_dist = Math.pow(x, 2) + Math.pow(y, 2);
@@ -149,19 +149,13 @@ function(doc, paper) {
 
         var fillColor;
         if (hit) {
-            strokeColor = HIT_STROKE_COLOR;
             fillColor = HIT_FILL_COLOR;
         } else {
-            strokeColor = STROKE_COLOR;
             fillColor = FILL_COLOR;
         }
 
         this.confirmPath.style = {
             fillColor: fillColor,
-        };
-
-        this.confirmTick.style = {
-            strokeColor: strokeColor
         };
 
         paper.view.draw();
