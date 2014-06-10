@@ -11,7 +11,7 @@ define(["app/ui", "tween"], function(ui, TWEEN) {
     };
 
     Scriptor.prototype.wait = function (params) {
-        var duration = parseInt(params[0]);
+        var duration = params[0];
 
         var x = 0;
         var tween = new TWEEN.Tween(x).to(0, duration);
@@ -44,7 +44,7 @@ define(["app/ui", "tween"], function(ui, TWEEN) {
 
     Scriptor.prototype.drag = function (params) {
         var buttonName = params[0];
-        var percent = parseFloat(params[1]);
+        var percent = params[1];
 
         var button = ui.getWidget(buttonName);
 
@@ -52,8 +52,8 @@ define(["app/ui", "tween"], function(ui, TWEEN) {
             button.dragPercent(percent);
             this.tutorial.next();
         } else {
-            var percentEnd = parseFloat(params[2]);
-            var duration = parseInt(params[3]);
+            var percentEnd = params[2];
+            var duration = params[3];
 
             var tween = new TWEEN.Tween({p: percent}).to({p: percentEnd}, duration);
 
@@ -73,27 +73,27 @@ define(["app/ui", "tween"], function(ui, TWEEN) {
         this.scriptor = new Scriptor(this);
         this.script = [
 //            ['say', 'hola mundo?'],
-            ['wait', '3000'],
+            ['wait', 3000],
             ['press', 'next-frame'],
-            ['drag', 'next-frame', '0.3'],
-            ['wait', '3000'],
+            ['drag', 'next-frame', 0.3],
+            ['wait', 3000],
             ['release', 'next-frame'],
-            ['wait', '800'],
+            ['wait', 800],
             ['press', 'prev-frame'],
-            ['drag', 'prev-frame', '0.3'],
-            ['wait', '3000'],
+            ['drag', 'prev-frame', 0.3],
+            ['wait', 3000],
             ['release', 'prev-frame'],
-            ['wait', '800'],
+            ['wait', 800],
             ['press', 'next-frame'],
-            ['drag', 'next-frame', '0.3'],
-            ['wait', '3000'],
-            ['drag', 'next-frame', '0.3', '0.6', '5000'],
-            ['wait', '3000'],
-            ['drag', 'next-frame', '0.6', '0.9', '5000'],
-            ['wait', '3000'],
-            ['drag', 'next-frame', '0.9', '1.0', '2000'],
-            ['wait', '5000'],
-            ['drag', 'next-frame', '1.0', '0.3', '5000'],
+            ['drag', 'next-frame', 0.3],
+            ['wait', 3000],
+            ['drag', 'next-frame', 0.3, 0.6, 5000],
+            ['wait', 3000],
+            ['drag', 'next-frame', 0.6, 0.9, 5000],
+            ['wait', 3000],
+            ['drag', 'next-frame', 0.9, 1.0, 2000],
+            ['wait', 5000],
+            ['drag', 'next-frame', 1.0, 0.3, 5000],
             ['release', 'next-frame'],
         ];
     };
