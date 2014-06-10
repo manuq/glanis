@@ -41,9 +41,9 @@ define(["app/config"], function(config) {
         var image = new Image();
         image.src = imageSrc;
         var that = this;
-        image.onload = function(){
-            that.ctx.drawImage(image, 0, 0);
-        };
+        image.addEventListener("load", function () {
+            that.ctx.drawImage(image, 0, 0)});
+        image.addEventListener("error", function () {});
     }
 
     Drawing.prototype.erase = function () {

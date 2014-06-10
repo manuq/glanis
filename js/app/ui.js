@@ -31,10 +31,25 @@ function(doc,
         bg.updateSize();
     }
 
+    ui.enable = function () {
+        for (var widgetName in widgets) {
+            widgets[widgetName].enable();
+        }
+    }
+
+    ui.disable = function () {
+        for (var widgetName in widgets) {
+            console.log(widgetName);
+            widgets[widgetName].disable();
+        }
+    }
+
     ui.createButton = function (options) {
-        name = options['name'];
+        var name = options['name'];
 
         var button = document.createElement('button');
+        button.enable = function () {};
+        button.disable = function () {};
         widgets[name] = button;
 
         button.innerText = options['text'];
@@ -65,14 +80,14 @@ function(doc,
 
     ui.createConfirmButton = function (options) {
         var confirm = new ConfirmButton(options);
-        name = options['name'];
+        var name = options['name'];
         widgets[name] = confirm;
         return confirm;
     }
 
     ui.createPullButton = function (options) {
         var pull = new PullButton(options);
-        name = options['name'];
+        var name = options['name'];
         widgets[name] = pull;
         return pull;
     }
@@ -128,22 +143,8 @@ function(doc,
         }
     }
 
-    ui.pressed = function (name) {
-        if (name in widgets) {
-            return widgets[name].pressed;
-        }
-    }
-
-    ui.pullValue = function (name) {
-        if (name in widgets) {
-            return widgets[name].pullValue;
-        }
-    }
-
-    ui.setPullValue = function (name, value) {
-        if (name in widgets) {
-            widgets[name].pullValue = value;
-        }
+    ui.getWidget = function (name) {
+        return widgets[name];
     }
 
     return ui;

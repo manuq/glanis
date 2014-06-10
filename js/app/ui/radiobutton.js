@@ -36,7 +36,7 @@ define(["domReady!"], function(doc) {
     RadioButton.prototype.onButtonPress = function (button, action) {
         action(function () {});
         for (var butName in this.buttons) {
-            but = this.buttons[butName];
+            var but = this.buttons[butName];
             but.classList.toggle('active', but == button);
         }
     }
@@ -49,9 +49,15 @@ define(["domReady!"], function(doc) {
         button = this.buttons[butName];
 
         for (var butName2 in this.buttons) {
-            but = this.buttons[butName2];
+            var but = this.buttons[butName2];
             but.classList.toggle('active', but == button);
         }
+    }
+
+    RadioButton.prototype.enable = function () {
+    }
+
+    RadioButton.prototype.disable = function () {
     }
 
     return RadioButton;

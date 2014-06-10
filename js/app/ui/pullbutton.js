@@ -34,47 +34,8 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         };
 
         this.controls = new bg.PullControls(this);
+        this.enable();
 
-        var that = this;
-
-        this.button.addEventListener("mousedown", function (event) {
-            that.initialCoords = getPos(that.domElement);
-            that.curCoords = that.initialCoords.slice(0);
-
-            that.pressed = true;
-            that.button.classList.toggle('active');
-            that.controls.show();
-        });
-
-        document.documentElement.addEventListener('mousemove', function (event) {
-            if (that.pressed) {
-                that.curCoords = [event.x, event.y];
-                that.updatePullValue();
-            }
-        });
-
-        this.button.addEventListener("mouseup", function (event) {
-            if (!(that.pressed)) {
-                return;
-            }
-            that.pressed = false;
-            that.button.classList.toggle('active');
-            that.controls.hide();
-            if (that.onRelease) {
-                that.onRelease();
-            }
-        });
-
-        document.documentElement.addEventListener('mouseup', function (event) {
-            if (that.pressed) {
-                that.pressed = false;
-                that.button.classList.toggle('active');
-                that.controls.hide();
-                if (that.onRelease) {
-                    that.onRelease();
-                }
-            }
-        });
     }
 
     PullButton.prototype.updatePullValue = function () {
@@ -93,6 +54,68 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
 
         this.pullValue = value;
         this.controls.updateCurrent(this.pullValue);
+    }
+
+    PullButton.prototype.press = function () {
+        this.initialCoords = getPos(this.domElement);
+        this.curCoords = this.initialCoords.slice(0);
+
+        this.pressed = true;
+        this.button.classList.toggle('active');
+        this.controls.show();
+    }
+
+    PullButton.prototype.drag = function () {
+        if (this.pressed) {
+            this.curCoords = [event.x, event.y];
+            this.updatePullValue();
+        }
+    }
+
+    PullButton.prototype.release = function () {
+        if (!(this.pressed)) {
+            return;
+        }
+        this.pressed = false;
+        this.button.classList.toggle('active');
+        this.controls.hide();
+        if (this.onRelease) {
+            this.onRelease();
+        }
+    }
+
+    PullButton.prototype.onButtonMouseDown = function (event) {
+        this.press();
+    }
+
+    PullButton.prototype.onButtonMouseUp = function (event) {
+        this.release();
+    }
+
+    PullButton.prototype.onDocMouseMove = function (event) {
+        this.drag(event.x, event.y);
+    }
+
+    PullButton.prototype.onDocMouseUp = function (event) {
+        this.release();
+    }
+
+    PullButton.prototype.enable = function () {
+        this.onButtonMouseDown = this.onButtonMouseDown.bind(this);
+        this.onButtonMouseUp = this.onButtonMouseUp.bind(this);
+        this.onDocMouseMove = this.onDocMouseMove.bind(this);
+        this.onDocMouseUp = this.onDocMouseUp.bind(this);
+        this.button.addEventListener("mousedown", this.onButtonMouseDown);
+        this.button.addEventListener("mouseup", this.onButtonMouseUp);
+        document.documentElement.addEventListener("mousemove", this.onDocMouseMove);
+        document.documentElement.addEventListener("mouseup", this.onDocMouseUp);
+    }
+
+    PullButton.prototype.disable = function () {
+        this.button.removeEventListener("mousedown", this.onButtonMouseDown);
+        this.button.removeEventListener("mouseup", this.onButtonMouseUp);
+        document.documentElement.removeEventListener("mousemove", this.onDocMouseMove);
+        document.documentElement.removeEventListener("mouseup", this.onDocMouseUp);
     }
 
     return PullButton;

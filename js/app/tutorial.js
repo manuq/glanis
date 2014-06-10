@@ -43,11 +43,8 @@ define(["app/tutorial"], function(tutorial) {
         this.scriptor = new Scriptor(this);
         this.script = [
             ['say', 'hola mundo?'],
-            ['wait', '1000'],
-            ['say', 'hola mundo'],
-            ['wait', '1000'],
-            ['say', 'hola mundo!'],
-            ['wait', '1000'],
+//            ['press', 'next-frame'],
+            ['wait', '3000'],
             ['say', 'FIN'],
         ];
     };

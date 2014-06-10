@@ -169,7 +169,7 @@ function animateLayout(callback) {
         });
         tweenOpacity.onComplete(function () {
             var value = (frame.element.style.opacity - 0.1) / 0.9;
-            ui.setPullValue('opacity', value);
+            ui.getWidget('opacity').pullValue = value;
         });
     });
 
@@ -656,7 +656,7 @@ function addOpacity(sum) {
         });
     }
     var value = (opacity - 0.1) / 0.9;
-    ui.setPullValue('opacity', value);
+    ui.getWidget('opacity').pullValue = value;
 
     changingOpacities = false;
 }
@@ -704,10 +704,8 @@ function lessVelocity() {
     if (value < 0) {
         value = 0;
     }
-    ui.setPullValue('next-frame', value);
-    ui.setPullValue('next-frame-instant', value);
-    ui.setPullValue('prev-frame', value);
-    ui.setPullValue('prev-frame-instant', value);
+    ui.getWidget('next-frame').pullValue = value;
+    ui.getWidget('prev-frame').pullValue = value;
 }
 
 function moreVelocity() {
@@ -721,10 +719,8 @@ function moreVelocity() {
     if (value < 0) {
         value = 0;
     }
-    ui.setPullValue('next-frame', value);
-    ui.setPullValue('next-frame-instant', value);
-    ui.setPullValue('prev-frame', value);
-    ui.setPullValue('prev-frame-instant', value);
+    ui.getWidget('next-frame').pullValue = value;
+    ui.getWidget('prev-frame').pullValue = value;
 }
 
 function setVelocityProportional(value) {
@@ -817,12 +813,11 @@ function update() {
 }
 
 function updateFramePulls(buttonName) {
-    var names = ['next-frame', 'prev-frame',
-                 'next-frame-instant', 'prev-frame-instant'];
-
+    var names = ['next-frame', 'prev-frame'];
+    var value = ui.getWidget(buttonName).pullValue;
     names.forEach(function (name) {
         if (name != buttonName) {
-            ui.setPullValue(name, ui.pullValue(buttonName));
+            ui.getWidget(name).pullValue = value;
         };
     });
 };
@@ -853,13 +848,13 @@ function checkEvents() {
         changeLayout(layouts.thaumatrope, function () {});
         ui.setRadioActive("radio-layout", "thaumatrope");
     };
-    if (ui.pressed("next-frame")) {
-        setVelocityProportional(ui.pullValue("next-frame"));
+    if (ui.getWidget("next-frame").pressed) {
+        setVelocityProportional(ui.getWidget("next-frame").pullValue);
         updateFramePulls('next-frame');
         nextFrame();
     };
-    if (ui.pressed("prev-frame")) {
-        setVelocityProportional(ui.pullValue("prev-frame"));
+    if (ui.getWidget("prev-frame").pressed) {
+        setVelocityProportional(ui.getWidget("prev-frame").pullValue);
         updateFramePulls('prev-frame');
         prevFrame();
     };
@@ -869,27 +864,17 @@ function checkEvents() {
     if (keyboard.pressed("a")) {
         prevFrame();
     };
-    if (ui.pressed("next-frame-instant")) {
-        setVelocityProportional(ui.pullValue("next-frame-instant"));
-        updateFramePulls('next-frame-instant');
-        nextFrameInstant();
-    };
-    if (ui.pressed("prev-frame-instant")) {
-        setVelocityProportional(ui.pullValue("prev-frame-instant"));
-        updateFramePulls('prev-frame-instant');
-        prevFrameInstant();
-    };
     if (keyboard.pressed("w")) {
         nextFrameInstant();
     };
     if (keyboard.pressed("q")) {
         prevFrameInstant();
     };
-    if (ui.pressed("opacity")) {
-        setOpacityProportional(ui.pullValue("opacity"));
+    if (ui.getWidget("opacity").pressed) {
+        setOpacityProportional(ui.getWidget("opacity").pullValue);
     };
-    if (ui.pressed("radius")) {
-        setRadius(ui.pullValue("radius"));
+    if (ui.getWidget("radius").pressed) {
+        setRadius(ui.getWidget("radius").pullValue);
     };
     if (keyboard.pressed("z")) {
         lessOpacity();
@@ -921,8 +906,10 @@ function checkEvents() {
 
 function createTutorial() {
     ignoreUI = true;
+    ui.disable()
     endCallback = function () {
         ignoreUI = false;
+        ui.enable()
     }
     tutorial = new Tutorial(endCallback);
 }
@@ -1022,8 +1009,8 @@ function initThreeJs () {
 function main() {
     initThreeJs();
     currentLayout = layouts.sequence;
-    createTutorial();
     createUi();
+    createTutorial();
     createShadow();
     createFramesList(15);
     changeNumberOfFrames(7);

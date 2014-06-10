@@ -49,6 +49,12 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         });
     }
 
+    ConfirmButton.prototype.enable = function () {
+    }
+
+    ConfirmButton.prototype.disable = function () {
+    }
+
     return ConfirmButton;
 
 });
