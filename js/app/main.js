@@ -823,9 +823,11 @@ function updateFramePulls(buttonName) {
 };
 
 function checkEvents() {
-    if (ignoreUI) {
-        return;
-    }
+    // FIXME disconnect keyboard
+    // if (ignoreUI) {
+    //     return;
+    // }
+
     //controls.update();
 
     if (keyboard.pressed("1")) {

@@ -39,7 +39,6 @@ function(doc,
 
     ui.disable = function () {
         for (var widgetName in widgets) {
-            console.log(widgetName);
             widgets[widgetName].disable();
         }
     }

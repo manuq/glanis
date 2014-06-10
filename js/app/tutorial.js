@@ -45,8 +45,6 @@ define(["app/ui"], function(ui) {
             this.tutorial.next();
         }
         button.press();
-        button.pullValue = 0.5;
-        button.drag(242, 183);
         this.tutorial.next();
     };
 
@@ -60,13 +58,32 @@ define(["app/ui"], function(ui) {
         this.tutorial.next();
     };
 
+    Scriptor.prototype.drag = function (params) {
+        var buttonName = params[0];
+        var percent = parseFloat(params[1]);
+        var button = ui.getWidget(buttonName);
+        if (button === undefined) {
+            this.tutorial.next();
+        }
+        button.dragPercent(percent);
+        this.tutorial.next();
+    };
+
     var Tutorial = function (endCallback) {
         this.endCallback = endCallback;
         this.scriptor = new Scriptor(this);
         this.script = [
 //            ['say', 'hola mundo?'],
+            ['wait', '3000'],
             ['press', 'next-frame'],
-            ['wait', '100'],
+            ['drag', 'next-frame', '0.3'],
+            ['wait', '3000'],
+            ['drag', 'next-frame', '0.6'],
+            ['wait', '3000'],
+            ['drag', 'next-frame', '0.9'],
+            ['wait', '3000'],
+            ['drag', 'next-frame', '1.0'],
+            ['wait', '5000'],
             ['release', 'next-frame'],
         ];
     };

@@ -38,16 +38,19 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
 
     }
 
-    PullButton.prototype.updatePullValue = function () {
-        var dx = this.curCoords[0] - this.initialCoords[0];
-        var dy = this.curCoords[1] - this.initialCoords[1];
-        var magnitude = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    PullButton.prototype.updatePullValue = function (value) {
+        if (value === undefined) {
+            var dx = this.curCoords[0] - this.initialCoords[0];
+            var dy = this.curCoords[1] - this.initialCoords[1];
+            var magnitude = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
-        if (magnitude < 25) {
-            return;
+            if (magnitude < 25) {
+                return;
+            }
+
+            value = magnitude / pullRadius;
         }
 
-        value = magnitude / pullRadius;
         if (value >= 1) {
             value = 1;
         }
@@ -69,6 +72,12 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         if (this.pressed) {
             this.curCoords = [x, y];
             this.updatePullValue();
+        }
+    }
+
+    PullButton.prototype.dragPercent = function (percent) {
+        if (this.pressed) {
+            this.updatePullValue(percent);
         }
     }
 
