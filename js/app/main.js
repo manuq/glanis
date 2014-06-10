@@ -830,24 +830,19 @@ function checkEvents() {
     //controls.update();
 
     if (keyboard.pressed("1")) {
-        changeLayout(layouts.zoetrope, function () {});
-        ui.setRadioActive("radio-layout", "zoetrope");
+        ui.getWidget("radio-layout").press("zoetrope");
     };
     if (keyboard.pressed("2")) {
-        changeLayout(layouts.sequence, function () {});
-        ui.setRadioActive("radio-layout", "sequence");
+        ui.getWidget("radio-layout").press("sequence");
     };
     if (keyboard.pressed("3")) {
-        changeLayout(layouts.stack, function () {});
-        ui.setRadioActive("radio-layout", "stack");
+        ui.getWidget("radio-layout").press("stack");
     };
     if (keyboard.pressed("4")) {
-        changeLayout(layouts.lightbox, function () {});
-        ui.setRadioActive("radio-layout", "lightbox");
+        ui.getWidget("radio-layout").press("lightbox");
     };
     if (keyboard.pressed("5")) {
-        changeLayout(layouts.thaumatrope, function () {});
-        ui.setRadioActive("radio-layout", "thaumatrope");
+        ui.getWidget("radio-layout").press("thaumatrope");
     };
     if (ui.getWidget("next-frame").pressed) {
         setVelocityProportional(ui.getWidget("next-frame").pullValue);
@@ -890,12 +885,11 @@ function checkEvents() {
         moreVelocity();
     };
     if (keyboard.pressed("b")) {
-        setPencil();
-        ui.setRadioActive("radio-draw", "pencil");
+        ui.getWidget("radio-draw").press("pencil");
     };
     if (keyboard.pressed("n")) {
         setEraser();
-        ui.setRadioActive("radio-draw", "eraser");
+        ui.getWidget("radio-draw").press("eraser");
     };
     if (keyboard.pressed("m")) {
         clearFrames();

@@ -25,10 +25,15 @@ define(["app/ui", "tween"], function(ui, TWEEN) {
     Scriptor.prototype.press = function (params) {
         var buttonName = params[0];
         var button = ui.getWidget(buttonName);
-        if (button === undefined) {
-            this.tutorial.next();
-        }
         button.press();
+        this.tutorial.next();
+    };
+
+    Scriptor.prototype.pressRadio = function (params) {
+        var radioName = params[0];
+        var buttonName = params[1];
+        var radio = ui.getWidget(radioName);
+        radio.press(buttonName);
         this.tutorial.next();
     };
 
@@ -94,6 +99,14 @@ define(["app/ui", "tween"], function(ui, TWEEN) {
             ['drag', 'next-frame', 0.9, 1.0, 2000],
             ['wait', 5000],
             ['drag', 'next-frame', 1.0, 0.3, 5000],
+            ['release', 'next-frame'],
+            ['wait', 3000],
+            ['pressRadio', 'radio-layout', 'zoetrope'],
+            ['wait', 3000],
+            ['press', 'next-frame'],
+            ['drag', 'next-frame', 0.1, 1.0, 10000],
+            ['wait', 5000],
+            ['drag', 'next-frame', 1.0, 0.1, 2000],
             ['release', 'next-frame'],
         ];
     };

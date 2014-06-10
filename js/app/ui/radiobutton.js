@@ -2,6 +2,7 @@ define(["domReady!"], function(doc) {
 
     var RadioButton = function (name, options) {
         this.buttons = {};
+        this.actions = {};
         this.domElement = document.createElement('div');
         this.domElement.className = "widget";
         var that = this;
@@ -15,6 +16,7 @@ define(["domReady!"], function(doc) {
             var button = document.createElement('button');
             that.domElement.appendChild(button);
             that.buttons[name] = button;
+            that.actions[name] = action;
             button.id = name + "-" + i;
             button.innerText = text;
             button.style.backgroundImage = "url('images/icons/" + name + ".svg')";
@@ -46,7 +48,22 @@ define(["domReady!"], function(doc) {
             return
         }
 
-        button = this.buttons[butName];
+        var button = this.buttons[butName];
+
+        for (var butName2 in this.buttons) {
+            var but = this.buttons[butName2];
+            but.classList.toggle('active', but == button);
+        }
+    }
+
+    RadioButton.prototype.press = function (butName) {
+        if (!(butName in this.buttons)) {
+            return
+        }
+
+        var button = this.buttons[butName];
+        var action = this.actions[butName];
+        action(function () {});
 
         for (var butName2 in this.buttons) {
             var but = this.buttons[butName2];

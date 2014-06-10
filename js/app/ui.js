@@ -136,12 +136,6 @@ function(doc,
         ui.addRow([radio]);
     }
 
-    ui.setRadioActive = function (radioName, butName) {
-        if (radioName in widgets) {
-            widgets[radioName].setActive(butName);
-        }
-    }
-
     ui.getWidget = function (name) {
         return widgets[name];
     }
