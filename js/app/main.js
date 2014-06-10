@@ -798,7 +798,6 @@ function update() {
 
     checkEvents();
     calcFrameRate(time);
-    tutorial.update(time);
     frameCounter += 1;
     if (inSync) {
         if (frameCounter >= 4) {

@@ -1,22 +1,4 @@
-define(["app/ui"], function(ui) {
-
-    var timer;
-
-    var Timer = function (duration, callback) {
-        this.startTime = undefined;
-        this.duration = duration;
-        this.callback = callback;
-    }
-
-    Timer.prototype.update = function (time) {
-        if (this.startTime === undefined) {
-            this.startTime = time;
-            return;
-        }
-        if (time > this.startTime + this.duration) {
-            this.callback();
-        }
-    }
+define(["app/ui", "tween"], function(ui, TWEEN) {
 
     var Scriptor = function (tutorial) {
         this.tutorial = tutorial;
@@ -29,13 +11,15 @@ define(["app/ui"], function(ui) {
     };
 
     Scriptor.prototype.wait = function (params) {
+        var duration = parseInt(params[0]);
+
+        var x = 0;
+        var tween = new TWEEN.Tween(x).to(0, duration);
+
         var that = this;
-        var time = parseInt(params[0]);
-        var callback = function () {
-            timer = undefined;
+        tween.start().onComplete(function () {
             that.tutorial.next();
-        }
-        timer = new Timer(time, callback);
+        });
     };
 
     Scriptor.prototype.press = function (params) {
@@ -61,12 +45,27 @@ define(["app/ui"], function(ui) {
     Scriptor.prototype.drag = function (params) {
         var buttonName = params[0];
         var percent = parseFloat(params[1]);
+
         var button = ui.getWidget(buttonName);
-        if (button === undefined) {
+
+        if (params[2] === undefined) {
+            button.dragPercent(percent);
             this.tutorial.next();
+        } else {
+            var percentEnd = parseFloat(params[2]);
+            var duration = parseInt(params[3]);
+
+            var tween = new TWEEN.Tween({p: percent}).to({p: percentEnd}, duration);
+
+            var that = this;
+            tween.onUpdate(function () {
+                button.dragPercent(this.p);
+            });
+
+            tween.start().onComplete(function () {
+                that.tutorial.next();
+            });
         }
-        button.dragPercent(percent);
-        this.tutorial.next();
     };
 
     var Tutorial = function (endCallback) {
@@ -78,12 +77,23 @@ define(["app/ui"], function(ui) {
             ['press', 'next-frame'],
             ['drag', 'next-frame', '0.3'],
             ['wait', '3000'],
-            ['drag', 'next-frame', '0.6'],
+            ['release', 'next-frame'],
+            ['wait', '800'],
+            ['press', 'prev-frame'],
+            ['drag', 'prev-frame', '0.3'],
             ['wait', '3000'],
-            ['drag', 'next-frame', '0.9'],
+            ['release', 'prev-frame'],
+            ['wait', '800'],
+            ['press', 'next-frame'],
+            ['drag', 'next-frame', '0.3'],
             ['wait', '3000'],
-            ['drag', 'next-frame', '1.0'],
+            ['drag', 'next-frame', '0.3', '0.6', '5000'],
+            ['wait', '3000'],
+            ['drag', 'next-frame', '0.6', '0.9', '5000'],
+            ['wait', '3000'],
+            ['drag', 'next-frame', '0.9', '1.0', '2000'],
             ['wait', '5000'],
+            ['drag', 'next-frame', '1.0', '0.3', '5000'],
             ['release', 'next-frame'],
         ];
     };
@@ -101,12 +111,6 @@ define(["app/ui"], function(ui) {
 
         var method = params.shift();
         this.scriptor[method](params);
-    };
-
-    Tutorial.prototype.update = function (time) {
-        if (timer !== undefined) {
-            timer.update(time);
-        }
     };
 
     return Tutorial;
