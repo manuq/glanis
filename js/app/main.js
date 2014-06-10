@@ -1,8 +1,8 @@
 define(["domReady!", "three", "tween", "THREEx.KeyboardState",
-        "app/drawing", "app/config", "app/ui", "app/layouts",
+        "app/drawing", "app/config", "app/ui", "app/layouts", "app/tutorial",
         "CSS3DRenderer", "TrackballControls"],
 function(doc, THREE, TWEEN, THREEx,
-         Drawing, config, ui, layouts) {
+         Drawing, config, ui, layouts, Tutorial) {
 
 var scene;
 var camera;
@@ -10,7 +10,7 @@ var projector;
 var controls;
 var renderer;
 var keyboard;
-
+var ignoreUI = false;
 var allFrames = [];
 var frames = [];
 var framesGroup;
@@ -23,6 +23,7 @@ var changingOpacities = false;
 var frameTransitionDuration = config.maxDuration;
 var drawings = [];
 var soundEnabled = true;
+var tutorial;
 
 var lastCalledTime;
 var frameRate;
@@ -758,15 +759,14 @@ function clearFrames() {
     });
 }
 
-function calcFrameRate() {
+function calcFrameRate(time) {
     if(!lastCalledTime) {
-        lastCalledTime = new Date().getTime();
+        lastCalledTime = time;
         frameRate = 0;
         return;
     }
-    var currentTime = new Date().getTime();
-    frameRate = (currentTime - lastCalledTime);
-    lastCalledTime = currentTime;
+    frameRate = (time - lastCalledTime);
+    lastCalledTime = time;
     if (inSync) {
         frameTransitionDuration = frameRate;
     }
@@ -796,11 +796,13 @@ function changeNumberOfFrames(number) {
 }
 
 var frameCounter = 0;
-function render() {
-    requestAnimationFrame(render);
+function update() {
+    requestAnimationFrame(update);
+    var time = new Date().getTime();
 
     checkEvents();
-    calcFrameRate();
+    calcFrameRate(time);
+    tutorial.update(time);
     frameCounter += 1;
     if (inSync) {
         if (frameCounter >= 4) {
@@ -826,6 +828,9 @@ function updateFramePulls(buttonName) {
 };
 
 function checkEvents() {
+    if (ignoreUI) {
+        return;
+    }
     //controls.update();
 
     if (keyboard.pressed("1")) {
@@ -912,6 +917,14 @@ function checkEvents() {
     if (keyboard.pressed("r")) {
         addFrame();
     };
+}
+
+function createTutorial() {
+    ignoreUI = true;
+    endCallback = function () {
+        ignoreUI = false;
+    }
+    tutorial = new Tutorial(endCallback);
 }
 
 function createUi() {
@@ -1009,11 +1022,13 @@ function initThreeJs () {
 function main() {
     initThreeJs();
     currentLayout = layouts.sequence;
+    createTutorial();
     createUi();
     createShadow();
     createFramesList(15);
     changeNumberOfFrames(7);
-    render();
+    tutorial.start();
+    update();
 }
 
 main();
