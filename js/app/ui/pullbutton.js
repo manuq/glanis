@@ -65,9 +65,9 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.controls.show();
     }
 
-    PullButton.prototype.drag = function () {
+    PullButton.prototype.drag = function (x, y) {
         if (this.pressed) {
-            this.curCoords = [event.x, event.y];
+            this.curCoords = [x, y];
             this.updatePullValue();
         }
     }

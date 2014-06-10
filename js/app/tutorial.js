@@ -1,4 +1,4 @@
-define(["app/tutorial"], function(tutorial) {
+define(["app/ui"], function(ui) {
 
     var timer;
 
@@ -38,14 +38,36 @@ define(["app/tutorial"], function(tutorial) {
         timer = new Timer(time, callback);
     };
 
+    Scriptor.prototype.press = function (params) {
+        var buttonName = params[0];
+        var button = ui.getWidget(buttonName);
+        if (button === undefined) {
+            this.tutorial.next();
+        }
+        button.press();
+        button.pullValue = 0.5;
+        button.drag(242, 183);
+        this.tutorial.next();
+    };
+
+    Scriptor.prototype.release = function (params) {
+        var buttonName = params[0];
+        var button = ui.getWidget(buttonName);
+        if (button === undefined) {
+            this.tutorial.next();
+        }
+        button.release();
+        this.tutorial.next();
+    };
+
     var Tutorial = function (endCallback) {
         this.endCallback = endCallback;
         this.scriptor = new Scriptor(this);
         this.script = [
-            ['say', 'hola mundo?'],
-//            ['press', 'next-frame'],
-            ['wait', '3000'],
-            ['say', 'FIN'],
+//            ['say', 'hola mundo?'],
+            ['press', 'next-frame'],
+            ['wait', '100'],
+            ['release', 'next-frame'],
         ];
     };
 
