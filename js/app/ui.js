@@ -102,6 +102,12 @@ function(doc,
         return radio;
     }
 
+    ui.createSpace = function () {
+        var spaceElement = document.createElement('div');
+        spaceElement.className = "space";
+        return spaceElement;
+    }
+
     ui.addRowSpace = function (spaces) {
         spaces = spaces || 1;
         for (var i = 0; i < spaces; i++) {
@@ -111,20 +117,16 @@ function(doc,
         }
     }
 
-    ui.addSpaces = function (elem, spaces) {
-        for (var i = 0; i < spaces; i++) {
-            var spaceElement = document.createElement('div');
-            spaceElement.className = "space";
-            elem.appendChild(spaceElement);
-        }
-    }
-
     ui.addRow = function (widgets_list, margin) {
         var rowElement = document.createElement('div');
         rowElement.className = "ui-container";
         domElement.appendChild(rowElement);
         setContainerClasses(rowElement);
-        ui.addSpaces(rowElement, margin);
+
+        for (var i = 0; i < margin; i++) {
+            var spaceElement = ui.createSpace();
+            rowElement.appendChild(spaceElement);
+        }
 
         widgets_list.forEach(function (w) {
             rowElement.appendChild(w.domElement);
