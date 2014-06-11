@@ -16,6 +16,11 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
                 elem.offsetTop + elem.parentElement.offsetTop + 28];
     }
 
+    function getPosRadio(elem) {
+        return [elem.offsetLeft + elem.parentElement.offsetLeft + elem.parentElement.parentElement.offsetLeft + 28,
+                elem.offsetTop + elem.parentElement.offsetTop + elem.parentElement.parentElement.offsetTop + 28];
+    }
+
     bg.init = function () {
         bgCanvas = document.createElement('canvas');
         bgCanvas.id = "bg-ui";
@@ -44,7 +49,7 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
         }
         this.playing = true;
 
-        var pos = getPos(this.radioButton.activeButton);
+        var pos = getPosRadio(this.radioButton.activeButton);
 
         this.tween = new TWEEN.Tween({p: 1}).to({p: 0}, 500);
         var that = this;
@@ -66,7 +71,6 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
         this.tween.start().onComplete(function () {
             that.playing = false;
         });
-
     }
 
     bg.PullControls = function (pullButton) {
