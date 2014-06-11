@@ -45,7 +45,7 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
 
     bg.RadioControls.prototype.play = function (radioButton) {
         if (this.playing) {
-            return;
+            this.tween.stop();
         }
         this.playing = true;
 

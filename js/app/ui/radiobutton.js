@@ -52,6 +52,9 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         var button = this.buttons[butName];
         var action = this.actions[butName];
 
+        if (button == this.activeButton) {
+            return;
+        }
         this.activeButton = button;
 
         action(function () {});
