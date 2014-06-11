@@ -1,4 +1,4 @@
-define(["app/ui", "tween"], function(ui, TWEEN) {
+define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, TWEEN) {
 
     var Scriptor = function (tutorial) {
         this.tutorial = tutorial;
@@ -76,39 +76,7 @@ define(["app/ui", "tween"], function(ui, TWEEN) {
     var Tutorial = function (endCallback) {
         this.endCallback = endCallback;
         this.scriptor = new Scriptor(this);
-        this.script = [
-//            ['say', 'hola mundo?'],
-            ['wait', 3000],
-            ['press', 'next-frame'],
-            ['drag', 'next-frame', 0.3],
-            ['wait', 3000],
-            ['release', 'next-frame'],
-            ['wait', 800],
-            ['press', 'prev-frame'],
-            ['drag', 'prev-frame', 0.3],
-            ['wait', 3000],
-            ['release', 'prev-frame'],
-            ['wait', 800],
-            ['press', 'next-frame'],
-            ['drag', 'next-frame', 0.3],
-            ['wait', 3000],
-            ['drag', 'next-frame', 0.3, 0.6, 5000],
-            ['wait', 3000],
-            ['drag', 'next-frame', 0.6, 0.9, 5000],
-            ['wait', 3000],
-            ['drag', 'next-frame', 0.9, 1.0, 2000],
-            ['wait', 5000],
-            ['drag', 'next-frame', 1.0, 0.3, 5000],
-            ['release', 'next-frame'],
-            ['wait', 3000],
-            ['pressRadio', 'radio-layout', 'zoetrope'],
-            ['wait', 3000],
-            ['press', 'next-frame'],
-            ['drag', 'next-frame', 0.1, 1.0, 10000],
-            ['wait', 5000],
-            ['drag', 'next-frame', 1.0, 0.1, 2000],
-            ['release', 'next-frame'],
-        ];
+        this.script = tutorialScript;
     };
 
     Tutorial.prototype.start = function () {
