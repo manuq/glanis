@@ -17,8 +17,8 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
     }
 
     function getPosRadio(elem) {
-        return [elem.offsetLeft + elem.parentElement.offsetLeft + elem.parentElement.parentElement.offsetLeft + 28,
-                elem.offsetTop + elem.parentElement.offsetTop + elem.parentElement.parentElement.offsetTop + 28];
+        return [elem.offsetLeft + elem.parentElement.offsetLeft + elem.parentElement.parentElement.offsetLeft + 25,
+                elem.offsetTop + elem.parentElement.offsetTop + elem.parentElement.parentElement.offsetTop + 25];
     }
 
     bg.init = function () {
