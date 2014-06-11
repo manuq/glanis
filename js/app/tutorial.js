@@ -83,6 +83,10 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
         this.next();
     };
 
+    Tutorial.prototype.cancel = function () {
+        this.script = [];
+    };
+
     Tutorial.prototype.next = function () {
         var params = this.script.shift();
         if (params === undefined) {

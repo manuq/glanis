@@ -216,33 +216,6 @@ function changeLayout(layout, callback) {
     animateLayout(callback);
 }
 
-function changeFrameInstant(direction) {
-    if (changingLayout || changingFrames) {
-        return;
-    }
-
-    changingFrames = true;
-
-    relocateFrames(direction * -1);
-
-    var t = 0;
-    var tweenNextFrame = new TWEEN.Tween(t).to(0, frameTransitionDuration);
-
-    tweenNextFrame.start().onComplete(function () {
-        shiftFrames(direction);
-
-        changingFrames = false;
-    });
-}
-
-function nextFrameInstant() {
-    changeFrameInstant(1);
-}
-
-function prevFrameInstant() {
-    changeFrameInstant(-1);
-}
-
 function shiftFrames(direction) {
     if (direction == 1) {
         var firstFrame = frames.shift();
@@ -822,28 +795,59 @@ function updateFramePulls(buttonName) {
 };
 
 function checkEvents() {
-    // FIXME disconnect keyboard
-    // if (ignoreUI) {
-    //     return;
-    // }
+    // controls.update();
+    if (!ignoreUI) {
+        if (keyboard.pressed("1")) {
+            ui.getWidget("radio-layout").press("zoetrope");
+        };
+        if (keyboard.pressed("2")) {
+            ui.getWidget("radio-layout").press("sequence");
+        };
+        if (keyboard.pressed("3")) {
+            ui.getWidget("radio-layout").press("stack");
+        };
+        if (keyboard.pressed("4")) {
+            ui.getWidget("radio-layout").press("lightbox");
+        };
+        if (keyboard.pressed("5")) {
+            ui.getWidget("radio-layout").press("thaumatrope");
+        };
+        if (keyboard.pressed("b")) {
+            ui.getWidget("radio-draw").press("pencil");
+        };
+        if (keyboard.pressed("n")) {
+            setEraser();
+            ui.getWidget("radio-draw").press("eraser");
+        };
+        if (keyboard.pressed("m")) {
+            clearFrames();
+        };
+        if (keyboard.pressed("s")) {
+            nextFrame();
+        };
+        if (keyboard.pressed("a")) {
+            prevFrame();
+        };
+        if (keyboard.pressed("z")) {
+            lessOpacity();
+        };
+        if (keyboard.pressed("x")) {
+            moreOpacity();
+        };
+        if (keyboard.pressed("c")) {
+            lessVelocity();
+        };
+        if (keyboard.pressed("v")) {
+            moreVelocity();
+        };
+    }
 
-    //controls.update();
+    if (keyboard.pressed("escape")) {
+        if (tutorial !== undefined) {
+            tutorial.cancel();
+        }
+    };
 
-    if (keyboard.pressed("1")) {
-        ui.getWidget("radio-layout").press("zoetrope");
-    };
-    if (keyboard.pressed("2")) {
-        ui.getWidget("radio-layout").press("sequence");
-    };
-    if (keyboard.pressed("3")) {
-        ui.getWidget("radio-layout").press("stack");
-    };
-    if (keyboard.pressed("4")) {
-        ui.getWidget("radio-layout").press("lightbox");
-    };
-    if (keyboard.pressed("5")) {
-        ui.getWidget("radio-layout").press("thaumatrope");
-    };
     if (ui.getWidget("next-frame").pressed) {
         setVelocityProportional(ui.getWidget("next-frame").pullValue);
         updateFramePulls('next-frame');
@@ -854,48 +858,11 @@ function checkEvents() {
         updateFramePulls('prev-frame');
         prevFrame();
     };
-    if (keyboard.pressed("s")) {
-        nextFrame();
-    };
-    if (keyboard.pressed("a")) {
-        prevFrame();
-    };
-    if (keyboard.pressed("w")) {
-        nextFrameInstant();
-    };
-    if (keyboard.pressed("q")) {
-        prevFrameInstant();
-    };
     if (ui.getWidget("opacity").pressed) {
         setOpacityProportional(ui.getWidget("opacity").pullValue);
     };
     if (ui.getWidget("radius").pressed) {
         setRadius(ui.getWidget("radius").pullValue);
-    };
-    if (keyboard.pressed("z")) {
-        lessOpacity();
-    };
-    if (keyboard.pressed("x")) {
-        moreOpacity();
-    };
-    if (keyboard.pressed("c")) {
-        lessVelocity();
-    };
-    if (keyboard.pressed("v")) {
-        moreVelocity();
-    };
-    if (keyboard.pressed("b")) {
-        ui.getWidget("radio-draw").press("pencil");
-    };
-    if (keyboard.pressed("n")) {
-        setEraser();
-        ui.getWidget("radio-draw").press("eraser");
-    };
-    if (keyboard.pressed("m")) {
-        clearFrames();
-    };
-    if (keyboard.pressed("r")) {
-        addFrame();
     };
 }
 
@@ -928,8 +895,6 @@ function createUi() {
 
     var pullPrevFrame = ui.createPullButton({"name": "prev-frame", "text": "a", "onRelease": unSync});
     var pullNextFrame = ui.createPullButton({"name": "next-frame", "text": "s", "onRelease": unSync});
-    //    ui.addPullButton({"name": "prev-frame-instant", "text": "q", "onRelease": unSync});
-    //    ui.addPullButton({"name": "next-frame-instant", "text": "w", "onRelease": unSync});
 
     var optionsDraw = [
         {"name": "eraser", 'text': "n", 'action': setEraser},
@@ -954,12 +919,9 @@ function createUi() {
 
     ui.addRow([radioLayout]);
     ui.addRow([radioNumberOfFrames]);
-//    ui.addRowSpace();
     ui.addRow([pullPrevFrame, pullNextFrame], 1);
-//    ui.addRowSpace();
     ui.addRow([radioDraw, buttonClear]);
     ui.addRow([pullOpacity, pullRadius], 1);
-//    ui.addRow([buttonHelp]);
 }
 
 function onWindowResize() {
