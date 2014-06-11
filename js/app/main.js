@@ -798,29 +798,28 @@ function checkEvents() {
     // controls.update();
     if (!ignoreUI) {
         if (keyboard.pressed("1")) {
-            ui.getWidget("radio-layout").press("zoetrope");
-        };
-        if (keyboard.pressed("2")) {
             ui.getWidget("radio-layout").press("sequence");
         };
-        if (keyboard.pressed("3")) {
+        if (keyboard.pressed("2")) {
             ui.getWidget("radio-layout").press("stack");
+        };
+        if (keyboard.pressed("3")) {
+            ui.getWidget("radio-layout").press("thaumatrope");
         };
         if (keyboard.pressed("4")) {
             ui.getWidget("radio-layout").press("lightbox");
         };
         if (keyboard.pressed("5")) {
-            ui.getWidget("radio-layout").press("thaumatrope");
+            ui.getWidget("radio-layout").press("zoetrope");
         };
         if (keyboard.pressed("b")) {
             ui.getWidget("radio-draw").press("pencil");
         };
         if (keyboard.pressed("n")) {
-            setEraser();
             ui.getWidget("radio-draw").press("eraser");
         };
         if (keyboard.pressed("m")) {
-            clearFrames();
+            ui.getWidget("clear-draw").press();
         };
         if (keyboard.pressed("s")) {
             nextFrame();
@@ -967,11 +966,11 @@ function main() {
     initThreeJs();
     currentLayout = layouts.sequence;
     createUi();
-    createTutorial();
+//    createTutorial();
     createShadow();
     createFramesList(15);
     changeNumberOfFrames(7);
-    tutorial.start();
+//    tutorial.start();
     update();
 }
 

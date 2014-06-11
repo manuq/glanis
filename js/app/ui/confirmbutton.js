@@ -39,7 +39,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
             if (that.pressed) {
                 var hit = that.controls.update(event.x, event.y);
                 if (hit) {
-                    that.action();
+                    that.press();
                 }
 
                 that.pressed = false;
@@ -47,6 +47,10 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
                 that.controls.hide();
             }
         });
+    }
+
+    ConfirmButton.prototype.press = function () {
+        this.action();
     }
 
     ConfirmButton.prototype.enable = function () {
