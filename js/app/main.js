@@ -966,11 +966,11 @@ function main() {
     initThreeJs();
     currentLayout = layouts.sequence;
     createUi();
-//    createTutorial();
     createShadow();
     createFramesList(15);
     changeNumberOfFrames(7);
-//    tutorial.start();
+    createTutorial();
+    tutorial.start();
     update();
 }
 

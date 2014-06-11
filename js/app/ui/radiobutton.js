@@ -3,6 +3,7 @@ define(["domReady!"], function(doc) {
     var RadioButton = function (name, options) {
         this.buttons = {};
         this.actions = {};
+        this.callbacks = {};
         this.domElement = document.createElement('div');
         this.domElement.className = "widget";
         var that = this;
@@ -21,8 +22,9 @@ define(["domReady!"], function(doc) {
             button.innerText = text;
             button.style.backgroundImage = "url('images/icons/" + name + ".svg')";
             button.style.color = "transparent";
-            button.addEventListener('click',
-                                    function () { that.onButtonPress(button, action) });
+
+            var onClick = that.onClick.bind(that, name);
+            that.callbacks[name] = onClick;
 
             if (!(activeSet) && 'active' in opt) {
                 button.classList.add('active');
@@ -33,48 +35,42 @@ define(["domReady!"], function(doc) {
         if (!(activeSet)) {
             this.domElement.children[0].classList.add('active');
         }
+
+        this.enable();
     }
 
-    RadioButton.prototype.onButtonPress = function (button, action) {
-        action(function () {});
-        for (var butName in this.buttons) {
-            var but = this.buttons[butName];
-            but.classList.toggle('active', but == button);
-        }
-    }
-
-    RadioButton.prototype.setActive = function (butName) {
-        if (!(butName in this.buttons)) {
-            return
-        }
-
-        var button = this.buttons[butName];
-
-        for (var butName2 in this.buttons) {
-            var but = this.buttons[butName2];
-            but.classList.toggle('active', but == button);
-        }
+    RadioButton.prototype.onClick = function (butName) {
+        this.press(butName);
     }
 
     RadioButton.prototype.press = function (butName) {
-        if (!(butName in this.buttons)) {
-            return
-        }
-
         var button = this.buttons[butName];
         var action = this.actions[butName];
-        action(function () {});
 
+        action(function () {});
         for (var butName2 in this.buttons) {
-            var but = this.buttons[butName2];
-            but.classList.toggle('active', but == button);
+            var button2 = this.buttons[butName2];
+            button2.classList.toggle('active', button2 == button);
         }
+
     }
 
     RadioButton.prototype.enable = function () {
+        var that = this;
+        for (var butName in this.buttons) {
+            var button = this.buttons[butName];
+            var onClick = this.callbacks[butName];
+            button.addEventListener("click", onClick);
+        }
     }
 
     RadioButton.prototype.disable = function () {
+        var that = this;
+        for (var butName in this.buttons) {
+            var button = this.buttons[butName];
+            var onClick = this.callbacks[butName];
+            button.removeEventListener("click", onClick);
+        }
     }
 
     return RadioButton;
