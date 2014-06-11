@@ -73,13 +73,16 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
         }
     };
 
-    var Tutorial = function (endCallback) {
-        this.endCallback = endCallback;
-        this.scriptor = new Scriptor(this);
-        this.script = tutorialScript;
+    var Tutorial = function () {
+        this.endCallback = undefined;
+        this.script = undefined;
+        this.scriptor = undefined;
     };
 
-    Tutorial.prototype.start = function () {
+    Tutorial.prototype.start = function (endCallback) {
+        this.endCallback = endCallback;
+        this.script = tutorialScript.slice(0);
+        this.scriptor = new Scriptor(this);
         this.next();
     };
 
@@ -94,6 +97,7 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
             return;
         }
 
+        params = params.slice(0);
         var method = params.shift();
         this.scriptor[method](params);
     };

@@ -45,6 +45,7 @@ function(doc,
 
     ui.createButton = function (options) {
         var name = options['name'];
+        var action = options['action'];
 
         var button = document.createElement('button');
         button.enable = function () {};
@@ -56,6 +57,7 @@ function(doc,
         button.style.backgroundImage = "url('images/icons/" + options.name + ".svg')";
         button.style.color = "transparent";
         button.addEventListener("mousedown", function (event) {
+            action();
             this.pressed = true;
             this.classList.toggle('active');
         });

@@ -821,11 +821,11 @@ function checkEvents() {
         if (keyboard.pressed("m")) {
             ui.getWidget("clear-draw").pressConfirm();
         };
-        if (keyboard.pressed("s")) {
-            nextFrame();
+        if (keyboard.pressed("right")) {
+            ui.getWidget("next-frame").press();
         };
-        if (keyboard.pressed("a")) {
-            prevFrame();
+        if (keyboard.pressed("left")) {
+            ui.getWidget("prev-frame").press();
         };
         if (keyboard.pressed("z")) {
             lessOpacity();
@@ -866,13 +866,17 @@ function checkEvents() {
 }
 
 function createTutorial() {
+    tutorial = new Tutorial();
+}
+
+function startTutorial() {
     ignoreUI = true;
     ui.disable()
     endCallback = function () {
         ignoreUI = false;
         ui.enable()
     }
-    tutorial = new Tutorial(endCallback);
+    tutorial.start(endCallback);
 }
 
 function createUi() {
@@ -914,7 +918,7 @@ function createUi() {
     ];
 
     var radioNumberOfFrames = ui.createRadioButtons("radio-number-of-frames", optionsNumberOfFrames);
-    var buttonHelp = ui.createButton({"name": "help"});
+    var buttonHelp = ui.createButton({"name": "help", "action": function () { startTutorial() }});
 
     ui.addRow([radioLayout, {domElement: ui.createSpace()}, buttonHelp]);
     ui.addRow([radioNumberOfFrames]);
@@ -965,12 +969,11 @@ function initThreeJs () {
 function main() {
     initThreeJs();
     currentLayout = layouts.sequence;
+    createTutorial();
     createUi();
     createShadow();
     createFramesList(15);
     changeNumberOfFrames(7);
-    createTutorial();
-    tutorial.start();
     update();
 }
 
