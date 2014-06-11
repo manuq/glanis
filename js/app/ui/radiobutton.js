@@ -1,7 +1,8 @@
-define(["domReady!"], function(doc) {
+define(["domReady!", "app/ui/bg"], function(doc, bg) {
 
     var RadioButton = function (name, options) {
         this.buttons = {};
+        this.activeButton = undefined;
         this.actions = {};
         this.callbacks = {};
         this.domElement = document.createElement('div');
@@ -28,13 +29,17 @@ define(["domReady!"], function(doc) {
 
             if (!(activeSet) && 'active' in opt) {
                 button.classList.add('active');
+                this.activeButton = button;
                 activeSet = true
             }
         });
 
         if (!(activeSet)) {
             this.domElement.children[0].classList.add('active');
+            this.activeButton = this.domElement.children[0];
         }
+
+        this.controls = new bg.RadioControls(this);
 
         this.enable();
     }
@@ -47,12 +52,15 @@ define(["domReady!"], function(doc) {
         var button = this.buttons[butName];
         var action = this.actions[butName];
 
+        this.activeButton = button;
+
         action(function () {});
         for (var butName2 in this.buttons) {
             var button2 = this.buttons[butName2];
             button2.classList.toggle('active', button2 == button);
         }
 
+        this.controls.play();
     }
 
     RadioButton.prototype.enable = function () {

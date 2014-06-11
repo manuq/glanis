@@ -1,6 +1,4 @@
-define(["domReady!", "paper"],
-function(doc, paper) {
-
+define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
     var bg = {};
     var bgCanvas;
 
@@ -31,6 +29,44 @@ function(doc, paper) {
 
     bg.updateSize = function () {
         paper.view.viewSize = [window.innerWidth, window.innerHeight];
+    }
+
+    bg.RadioControls = function (radioButton) {
+        this.radioButton = radioButton;
+        this.playing = false;
+        this.tween = undefined;
+        this.path = undefined;
+    }
+
+    bg.RadioControls.prototype.play = function (radioButton) {
+        if (this.playing) {
+            return;
+        }
+        this.playing = true;
+
+        var pos = getPos(this.radioButton.activeButton);
+
+        this.tween = new TWEEN.Tween({p: 1}).to({p: 0}, 500);
+        var that = this;
+        this.tween.onUpdate(function () {
+            if (that.path) {
+                that.path.remove();
+            }
+            that.path = new paper.Path.Circle(new paper.Point(0, 0), BIG_RADIUS / 2);
+            that.path.position = new paper.Point(pos[0], pos[1]);
+            that.path.visible = true;
+            that.path.style = {
+                fillColor: FILL_COLOR,
+            };
+
+            that.path.scale(this.p);
+            paper.view.draw();
+        });
+
+        this.tween.start().onComplete(function () {
+            that.playing = false;
+        });
+
     }
 
     bg.PullControls = function (pullButton) {
