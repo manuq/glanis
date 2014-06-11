@@ -819,7 +819,7 @@ function checkEvents() {
             ui.getWidget("radio-draw").press("eraser");
         };
         if (keyboard.pressed("m")) {
-            ui.getWidget("clear-draw").press();
+            ui.getWidget("clear-draw").pressConfirm();
         };
         if (keyboard.pressed("s")) {
             nextFrame();
