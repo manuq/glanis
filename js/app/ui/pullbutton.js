@@ -34,8 +34,13 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         };
 
         this.controls = new bg.PullControls(this);
-        this.enable();
 
+        this.onButtonMouseDown = this.onButtonMouseDown.bind(this);
+        this.onButtonMouseUp = this.onButtonMouseUp.bind(this);
+        this.onDocMouseMove = this.onDocMouseMove.bind(this);
+        this.onDocMouseUp = this.onDocMouseUp.bind(this);
+
+        this.enable();
     }
 
     PullButton.prototype.updatePullValue = function (value) {
@@ -110,10 +115,6 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
     }
 
     PullButton.prototype.enable = function () {
-        this.onButtonMouseDown = this.onButtonMouseDown.bind(this);
-        this.onButtonMouseUp = this.onButtonMouseUp.bind(this);
-        this.onDocMouseMove = this.onDocMouseMove.bind(this);
-        this.onDocMouseUp = this.onDocMouseUp.bind(this);
         this.button.addEventListener("mousedown", this.onButtonMouseDown);
         this.button.addEventListener("mouseup", this.onButtonMouseUp);
         document.documentElement.addEventListener("mousemove", this.onDocMouseMove);
