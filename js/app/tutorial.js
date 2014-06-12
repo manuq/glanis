@@ -2,7 +2,7 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
 
     var Scriptor = function (tutorial) {
         this.tutorial = tutorial;
-    }
+    };
 
     Scriptor.prototype.say = function (params) {
         var words = params[0];

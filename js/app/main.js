@@ -1,8 +1,8 @@
-define(["domReady!", "three", "tween", "THREEx.KeyboardState",
+define(["domReady!", "three", "tween", "app/keyboard",
         "app/drawing", "app/config", "app/ui", "app/layouts", "app/tutorial",
         "CSS3DRenderer", "TrackballControls"],
-function(doc, THREE, TWEEN, THREEx,
-         Drawing, config, ui, layouts, Tutorial) {
+function(doc, THREE, TWEEN,
+         Keyboard, Drawing, config, ui, layouts, Tutorial) {
 
 var scene;
 var camera;
@@ -823,9 +823,17 @@ function checkEvents() {
         };
         if (keyboard.pressed("right")) {
             ui.getWidget("next-frame").press();
+        } else {
+            if (keyboard.released("right")) {
+                ui.getWidget("next-frame").release();
+            }
         };
         if (keyboard.pressed("left")) {
             ui.getWidget("prev-frame").press();
+        } else {
+            if (keyboard.released("left")) {
+                ui.getWidget("prev-frame").release();
+            }
         };
         if (keyboard.pressed("z")) {
             lessOpacity();
@@ -963,7 +971,7 @@ function initThreeJs () {
 
     window.addEventListener('resize', onWindowResize);
 
-    keyboard = new THREEx.KeyboardState();
+    keyboard = new Keyboard();
 }
 
 function main() {
