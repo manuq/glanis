@@ -908,8 +908,8 @@ function createUi() {
         inSync = false;
     }
 
-    var pullPrevFrame = ui.createPullButton({"name": "prev-frame", "text": "a", "onRelease": unSync});
-    var pullNextFrame = ui.createPullButton({"name": "next-frame", "text": "s", "onRelease": unSync});
+    var pullPrevFrame = ui.createPullButton({"name": "prev-frame", "text": "a", "initial": 0.5, "onRelease": unSync});
+    var pullNextFrame = ui.createPullButton({"name": "next-frame", "text": "s", "initial": 0.5, "onRelease": unSync});
 
     var optionsDraw = [
         {"name": "eraser", 'text': "n", 'action': setEraser},
@@ -919,7 +919,7 @@ function createUi() {
     var buttonClear = ui.createConfirmButton({"name": "clear-draw", "text": "m",
                                               'action': function () { clearFrames() }});
 
-    var pullOpacity = ui.createPullButton({"name": "opacity", "text": "o", "initial": 0.5});
+    var pullOpacity = ui.createPullButton({"name": "opacity", "text": "o"});
     var pullRadius = ui.createPullButton({"name": "radius"});
 
     var optionsNumberOfFrames = [
