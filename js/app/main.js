@@ -169,7 +169,7 @@ function animateLayout(callback) {
         });
         tweenOpacity.onComplete(function () {
             var value = (frame.element.style.opacity - 0.1) / 0.9;
-            ui.getWidget('opacity').pullValue = value;
+            ui.getWidget('opacity').setPullValue(value, false);
         });
     });
 
@@ -629,7 +629,7 @@ function addOpacity(sum) {
         });
     }
     var value = (opacity - 0.1) / 0.9;
-    ui.getWidget('opacity').pullValue = value;
+    ui.getWidget('opacity').setPullValue(value);
 
     changingOpacities = false;
 }
@@ -677,8 +677,8 @@ function lessVelocity() {
     if (value < 0) {
         value = 0;
     }
-    ui.getWidget('next-frame').pullValue = value;
-    ui.getWidget('prev-frame').pullValue = value;
+    ui.getWidget('next-frame').setPullValue(value);
+    ui.getWidget('prev-frame').setPullValue(value);
 }
 
 function moreVelocity() {
@@ -692,8 +692,8 @@ function moreVelocity() {
     if (value < 0) {
         value = 0;
     }
-    ui.getWidget('next-frame').pullValue = value;
-    ui.getWidget('prev-frame').pullValue = value;
+    ui.getWidget('next-frame').setPullValue(value);
+    ui.getWidget('prev-frame').setPullValue(value);
 }
 
 function setVelocityProportional(value) {
@@ -769,7 +769,8 @@ function update() {
     requestAnimationFrame(update);
     var time = new Date().getTime();
 
-    checkEvents();
+    checkInputEvents();
+    updateWidgets();
     calcFrameRate(time);
     frameCounter += 1;
     if (inSync) {
@@ -789,12 +790,12 @@ function updateFramePulls(buttonName) {
     var value = ui.getWidget(buttonName).pullValue;
     names.forEach(function (name) {
         if (name != buttonName) {
-            ui.getWidget(name).pullValue = value;
+            ui.getWidget(name).setPullValue(value, false);
         };
     });
 };
 
-function checkEvents() {
+function checkInputEvents() {
     // controls.update();
     if (!ignoreUI) {
         if (keyboard.pressed("1")) {
@@ -854,7 +855,10 @@ function checkEvents() {
             tutorial.cancel();
         }
     };
+}
 
+
+function updateWidgets() {
     if (ui.getWidget("next-frame").pressed) {
         setVelocityProportional(ui.getWidget("next-frame").pullValue);
         updateFramePulls('next-frame');
@@ -915,7 +919,7 @@ function createUi() {
     var buttonClear = ui.createConfirmButton({"name": "clear-draw", "text": "m",
                                               'action': function () { clearFrames() }});
 
-    var pullOpacity = ui.createPullButton({"name": "opacity", "text": "o", "initial": 1});
+    var pullOpacity = ui.createPullButton({"name": "opacity", "text": "o", "initial": 0.5});
     var pullRadius = ui.createPullButton({"name": "radius"});
 
     var optionsNumberOfFrames = [

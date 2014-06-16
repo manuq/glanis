@@ -9,12 +9,10 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
     }
 
     var PullButton = function (options) {
-        text = options['text'];
-
         this.domElement = document.createElement('div');
         this.domElement.className = "widget";
         this.button = document.createElement('button');
-        this.button.innerText = text;
+        this.button.innerText = options['text'];
         this.button.style.backgroundImage = "url('images/icons/" + options.name + ".svg')";
         this.button.style.color = "transparent";
         this.domElement.appendChild(this.button);
@@ -24,9 +22,6 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.curCoords;
 
         this.pullValue = 0;
-        if ("initial" in options) {
-            this.pullValue = options["initial"];
-        };
 
         this.onRelease = null;
         if ("onRelease" in options) {
@@ -35,12 +30,28 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
 
         this.controls = new bg.PullControls(this);
 
+        if ("initial" in options) {
+            this.setPullValue(options["initial"], false);
+        };
+
         this.onButtonMouseDown = this.onButtonMouseDown.bind(this);
         this.onButtonMouseUp = this.onButtonMouseUp.bind(this);
         this.onDocMouseMove = this.onDocMouseMove.bind(this);
         this.onDocMouseUp = this.onDocMouseUp.bind(this);
 
         this.enable();
+    }
+
+    PullButton.prototype.setPullValue = function (value, visible) {
+        if (visible === undefined) {
+            visible = true;
+        }
+
+        this.pullValue = value;
+        this.controls.updateCurrent(this.pullValue);
+        if (!visible) {
+            this.controls.hide();
+        }
     }
 
     PullButton.prototype.updatePullValue = function (value) {
@@ -60,8 +71,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
             value = 1;
         }
 
-        this.pullValue = value;
-        this.controls.updateCurrent(this.pullValue);
+        this.setPullValue(value);
     }
 
     PullButton.prototype.press = function () {
