@@ -812,13 +812,25 @@ function checkEvents() {
         if (keyboard.pressed("5")) {
             ui.getWidget("radio-layout").press("zoetrope");
         };
-        if (keyboard.pressed("b")) {
-            ui.getWidget("radio-draw").press("pencil");
+        if (keyboard.pressed("q")) {
+            ui.getWidget("radio-number-of-frames").press("2");
         };
-        if (keyboard.pressed("n")) {
+        if (keyboard.pressed("w")) {
+            ui.getWidget("radio-number-of-frames").press("7");
+        };
+        if (keyboard.pressed("e")) {
+            ui.getWidget("radio-number-of-frames").press("11");
+        };
+        if (keyboard.pressed("r")) {
+            ui.getWidget("radio-number-of-frames").press("15");
+        };
+        if (keyboard.pressed("a")) {
             ui.getWidget("radio-draw").press("eraser");
         };
-        if (keyboard.pressed("m")) {
+        if (keyboard.pressed("s")) {
+            ui.getWidget("radio-draw").press("pencil");
+        };
+        if (keyboard.pressed("d")) {
             ui.getWidget("clear-draw").pressConfirm();
         };
         if (keyboard.pressed("right")) {
@@ -834,18 +846,6 @@ function checkEvents() {
             if (keyboard.released("left")) {
                 ui.getWidget("prev-frame").release();
             }
-        };
-        if (keyboard.pressed("z")) {
-            lessOpacity();
-        };
-        if (keyboard.pressed("x")) {
-            moreOpacity();
-        };
-        if (keyboard.pressed("c")) {
-            lessVelocity();
-        };
-        if (keyboard.pressed("v")) {
-            moreVelocity();
         };
     }
 
