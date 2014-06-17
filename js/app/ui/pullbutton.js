@@ -50,7 +50,9 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.pullValue = value;
         this.controls.updateCurrent(this.pullValue);
         if (!visible) {
-            this.controls.hide();
+            if (!this.pressed) {
+                this.controls.hide();
+            }
         }
     }
 
