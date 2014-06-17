@@ -7,6 +7,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.callbacks = {};
         this.domElement = document.createElement('div');
         this.domElement.className = "widget";
+        this.isEnabled = false;
         var that = this;
 
         var activeSet = false;
@@ -73,6 +74,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
             var onClick = this.callbacks[butName];
             button.addEventListener("click", onClick);
         }
+        this.isEnabled = true;
     }
 
     RadioButton.prototype.disable = function () {
@@ -82,6 +84,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
             var onClick = this.callbacks[butName];
             button.removeEventListener("click", onClick);
         }
+        this.isEnabled = false;
     }
 
     return RadioButton;

@@ -575,6 +575,10 @@ function changeFrame(direction) {
     }
 
     changingFrames = true;
+    if (!ignoreUI) {
+        ui.getWidget("radio-layout").disable();
+        ui.getWidget("radio-number-of-frames").disable();
+    }
 
     // if (soundEnabled) {
     //     var audio = new Audio('sounds/paper2.wav');
@@ -583,6 +587,10 @@ function changeFrame(direction) {
 
     var callback = function () {
         changingFrames = false;
+        if (!ignoreUI) {
+            ui.getWidget("radio-layout").enable();
+            ui.getWidget("radio-number-of-frames").enable();
+        }
     }
 
     if (currentLayout == layouts.zoetrope) {
@@ -798,33 +806,37 @@ function updateFramePulls(buttonName) {
 function checkInputEvents() {
     // controls.update();
     if (!ignoreUI) {
-        if (keyboard.pressed("1")) {
-            ui.getWidget("radio-layout").press("sequence");
-        };
-        if (keyboard.pressed("2")) {
-            ui.getWidget("radio-layout").press("stack");
-        };
-        if (keyboard.pressed("3")) {
-            ui.getWidget("radio-layout").press("thaumatrope");
-        };
-        if (keyboard.pressed("4")) {
-            ui.getWidget("radio-layout").press("lightbox");
-        };
-        if (keyboard.pressed("5")) {
-            ui.getWidget("radio-layout").press("zoetrope");
-        };
-        if (keyboard.pressed("q")) {
-            ui.getWidget("radio-number-of-frames").press("2");
-        };
-        if (keyboard.pressed("w")) {
-            ui.getWidget("radio-number-of-frames").press("7");
-        };
-        if (keyboard.pressed("e")) {
-            ui.getWidget("radio-number-of-frames").press("11");
-        };
-        if (keyboard.pressed("r")) {
-            ui.getWidget("radio-number-of-frames").press("15");
-        };
+        if (ui.getWidget("radio-layout").isEnabled) {
+            if (keyboard.pressed("1")) {
+                ui.getWidget("radio-layout").press("sequence");
+            };
+            if (keyboard.pressed("2")) {
+                ui.getWidget("radio-layout").press("stack");
+            };
+            if (keyboard.pressed("3")) {
+                ui.getWidget("radio-layout").press("thaumatrope");
+            };
+            if (keyboard.pressed("4")) {
+                ui.getWidget("radio-layout").press("lightbox");
+            };
+            if (keyboard.pressed("5")) {
+                ui.getWidget("radio-layout").press("zoetrope");
+            };
+        }
+        if (ui.getWidget("radio-number-of-frames").isEnabled) {
+            if (keyboard.pressed("q")) {
+                ui.getWidget("radio-number-of-frames").press("2");
+            };
+            if (keyboard.pressed("w")) {
+                ui.getWidget("radio-number-of-frames").press("7");
+            };
+            if (keyboard.pressed("e")) {
+                ui.getWidget("radio-number-of-frames").press("11");
+            };
+            if (keyboard.pressed("r")) {
+                ui.getWidget("radio-number-of-frames").press("15");
+            };
+        }
         if (keyboard.pressed("a")) {
             ui.getWidget("radio-draw").press("eraser");
         };
@@ -894,12 +906,16 @@ function startTutorial() {
 function createUi() {
     ui.init();
 
+    function layoutCallback() {
+        changeLayout(this.layout, function () {});
+    }
+
     var optionsLayout = [
-        {"name": "sequence", 'text': "2", 'action': function () { changeLayout(layouts.sequence, function () {}) }, 'active': true},
-        {"name": "stack", 'text': "3", 'action': function () { changeLayout(layouts.stack, function () {}) }},
-        {"name": "thaumatrope", 'text': "5", 'action': function () { changeLayout(layouts.thaumatrope, function () {}) }},
-        {"name": "lightbox", 'text': "4", 'action': function () { changeLayout(layouts.lightbox, function () {}) }},
-        {"name": "zoetrope", 'text': "1", 'action': function () { changeLayout(layouts.zoetrope, function () {}) }}
+        {"name": "sequence", 'text': "2", 'action': layoutCallback.bind({layout: layouts.sequence}), 'active': true},
+        {"name": "stack", 'text': "3", 'action': layoutCallback.bind({layout: layouts.stack})},
+        {"name": "thaumatrope", 'text': "5", 'action': layoutCallback.bind({layout: layouts.thaumatrope})},
+        {"name": "lightbox", 'text': "4", 'action': layoutCallback.bind({layout: layouts.lightbox})},
+        {"name": "zoetrope", 'text': "1", 'action': layoutCallback.bind({layout: layouts.zoetrope})}
     ];
 
     var radioLayout = ui.createRadioButtons("radio-layout", optionsLayout);
