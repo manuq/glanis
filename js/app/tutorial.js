@@ -2,7 +2,14 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
 
     var Scriptor = function (tutorial) {
         this.tutorial = tutorial;
+        this.buttonPressed = undefined;
     };
+
+    Scriptor.prototype.cancel = function () {
+        if (this.buttonPressed) {
+            this.buttonPressed.release();
+        }
+    }
 
     Scriptor.prototype.say = function (params) {
         var words = params[0];
@@ -26,6 +33,7 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
         var buttonName = params[0];
         var button = ui.getWidget(buttonName);
         button.press();
+        this.buttonPressed = button;
         this.tutorial.next();
     };
 
@@ -44,6 +52,7 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
             this.tutorial.next();
         }
         button.release();
+        this.buttonPressed = undefined;
         this.tutorial.next();
     };
 
@@ -87,6 +96,7 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
     };
 
     Tutorial.prototype.cancel = function () {
+        this.scriptor.cancel();
         this.script = [];
     };
 
