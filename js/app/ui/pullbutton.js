@@ -124,7 +124,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
     }
 
     PullButton.prototype.onDocTouchMove = function (event) {
-        this.drag(event.touches[0].x, event.touches[0].y);
+        this.drag(event.touches[0].clientX, event.touches[0].clientY);
     }
 
     PullButton.prototype.onDocUp = function (event) {
