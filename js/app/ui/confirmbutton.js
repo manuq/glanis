@@ -10,10 +10,12 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.action = options['action'];
         this.controls = new bg.ConfirmControls(this);
 
-        this.onButtonMouseDown = this.onButtonMouseDown.bind(this);
-        this.onButtonMouseUp = this.onButtonMouseUp.bind(this);
+        this.onButtonDown = this.onButtonDown.bind(this);
+        this.onButtonUp = this.onButtonUp.bind(this);
         this.onDocMouseMove = this.onDocMouseMove.bind(this);
+        this.onDocTouchMove = this.onDocTouchMove.bind(this);
         this.onDocMouseUp = this.onDocMouseUp.bind(this);
+        this.onDocTouchUp = this.onDocTouchUp.bind(this);
 
         this.enable();
     }
@@ -43,12 +45,12 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.action();
     }
 
-    ConfirmButton.prototype.checkPressConfirm = function () {
+    ConfirmButton.prototype.checkPressConfirm = function (x, y) {
         if (!(this.pressed)) {
             return;
         }
 
-        var hit = this.controls.update(event.x, event.y);
+        var hit = this.controls.update(x, y);
         if (hit) {
             this.pressConfirm();
         }
@@ -58,11 +60,11 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.controls.hide();
     }
 
-    ConfirmButton.prototype.onButtonMouseDown = function (event) {
+    ConfirmButton.prototype.onButtonDown = function (event) {
         this.press();
     }
 
-    ConfirmButton.prototype.onButtonMouseUp = function (event) {
+    ConfirmButton.prototype.onButtonUp = function (event) {
         this.release();
     }
 
@@ -70,22 +72,39 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.drag(event.x, event.y);
     }
 
+    ConfirmButton.prototype.onDocTouchMove = function (event) {
+        this.drag(event.touches[0].clientX, event.touches[0].clientY);
+    }
+
     ConfirmButton.prototype.onDocMouseUp = function (event) {
-        this.checkPressConfirm();
+        this.checkPressConfirm(event.x, event.y);
+    }
+
+    ConfirmButton.prototype.onDocTouchUp = function (event) {
+        this.checkPressConfirm(event.changedTouches[0].clientX,
+                               event.changedTouches[0].clientY);
     }
 
     ConfirmButton.prototype.enable = function () {
-        this.button.addEventListener("mousedown", this.onButtonMouseDown);
-        this.button.addEventListener("mouseup", this.onButtonMouseUp);
+        this.button.addEventListener("mousedown", this.onButtonDown);
+        this.button.addEventListener("touchstart", this.onButtonDown);
+        this.button.addEventListener("mouseup", this.onButtonUp);
+        this.button.addEventListener("touchend", this.onButtonUp);
         document.documentElement.addEventListener("mousemove", this.onDocMouseMove);
+        document.documentElement.addEventListener("touchmove", this.onDocTouchMove);
         document.documentElement.addEventListener("mouseup", this.onDocMouseUp);
+        document.documentElement.addEventListener("touchend", this.onDocTouchUp);
     }
 
     ConfirmButton.prototype.disable = function () {
-        this.button.removeEventListener("mousedown", this.onButtonMouseDown);
-        this.button.removeEventListener("mouseup", this.onButtonMouseUp);
+        this.button.removeEventListener("mousedown", this.onButtonDown);
+        this.button.removeEventListener("touchstart", this.onButtonDown);
+        this.button.removeEventListener("mouseup", this.onButtonUp);
+        this.button.removeEventListener("touchend", this.onButtonUp);
         document.documentElement.removeEventListener("mousemove", this.onDocMouseMove);
+        document.documentElement.removeEventListener("touchmove", this.onDocTouchMove);
         document.documentElement.removeEventListener("mouseup", this.onDocMouseUp);
+        document.documentElement.removeEventListener("touchend", this.onDocTouchUp);
     }
 
     return ConfirmButton;
