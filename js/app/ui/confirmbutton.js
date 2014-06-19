@@ -89,7 +89,6 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.button.addEventListener("mousedown", this.onButtonDown);
         this.button.addEventListener("touchstart", this.onButtonDown);
         this.button.addEventListener("mouseup", this.onButtonUp);
-        this.button.addEventListener("touchend", this.onButtonUp);
         document.documentElement.addEventListener("mousemove", this.onDocMouseMove);
         document.documentElement.addEventListener("touchmove", this.onDocTouchMove);
         document.documentElement.addEventListener("mouseup", this.onDocMouseUp);
@@ -100,7 +99,6 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.button.removeEventListener("mousedown", this.onButtonDown);
         this.button.removeEventListener("touchstart", this.onButtonDown);
         this.button.removeEventListener("mouseup", this.onButtonUp);
-        this.button.removeEventListener("touchend", this.onButtonUp);
         document.documentElement.removeEventListener("mousemove", this.onDocMouseMove);
         document.documentElement.removeEventListener("touchmove", this.onDocTouchMove);
         document.documentElement.removeEventListener("mouseup", this.onDocMouseUp);
