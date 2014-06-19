@@ -34,10 +34,11 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
             this.setPullValue(options["initial"], false);
         };
 
-        this.onButtonMouseDown = this.onButtonMouseDown.bind(this);
-        this.onButtonMouseUp = this.onButtonMouseUp.bind(this);
+        this.onButtonDown = this.onButtonDown.bind(this);
+        this.onButtonUp = this.onButtonUp.bind(this);
         this.onDocMouseMove = this.onDocMouseMove.bind(this);
-        this.onDocMouseUp = this.onDocMouseUp.bind(this);
+        this.onDocTouchMove = this.onDocTouchMove.bind(this);
+        this.onDocUp = this.onDocUp.bind(this);
 
         this.enable();
     }
@@ -110,11 +111,11 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         }
     }
 
-    PullButton.prototype.onButtonMouseDown = function (event) {
+    PullButton.prototype.onButtonDown = function (event) {
         this.press();
     }
 
-    PullButton.prototype.onButtonMouseUp = function (event) {
+    PullButton.prototype.onButtonUp = function (event) {
         this.release();
     }
 
@@ -122,22 +123,34 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.drag(event.x, event.y);
     }
 
-    PullButton.prototype.onDocMouseUp = function (event) {
+    PullButton.prototype.onDocTouchMove = function (event) {
+        this.drag(event.touches[0].x, event.touches[0].y);
+    }
+
+    PullButton.prototype.onDocUp = function (event) {
         this.release();
     }
 
     PullButton.prototype.enable = function () {
-        this.button.addEventListener("mousedown", this.onButtonMouseDown);
-        this.button.addEventListener("mouseup", this.onButtonMouseUp);
+        this.button.addEventListener("mousedown", this.onButtonDown);
+        this.button.addEventListener("touchstart", this.onButtonDown);
+        this.button.addEventListener("mouseup", this.onButtonUp);
+        this.button.addEventListener("touchend", this.onButtonUp);
         document.documentElement.addEventListener("mousemove", this.onDocMouseMove);
-        document.documentElement.addEventListener("mouseup", this.onDocMouseUp);
+        document.documentElement.addEventListener("touchmove", this.onDocTouchMove);
+        document.documentElement.addEventListener("mouseup", this.onDocUp);
+        document.documentElement.addEventListener("touchend", this.onDocUp);
     }
 
     PullButton.prototype.disable = function () {
-        this.button.removeEventListener("mousedown", this.onButtonMouseDown);
-        this.button.removeEventListener("mouseup", this.onButtonMouseUp);
+        this.button.removeEventListener("mousedown", this.onButtonDown);
+        this.button.removeEventListener("touchstart", this.onButtonDown);
+        this.button.removeEventListener("mouseup", this.onButtonUp);
+        this.button.removeEventListener("touchend", this.onButtonUp);
         document.documentElement.removeEventListener("mousemove", this.onDocMouseMove);
-        document.documentElement.removeEventListener("mouseup", this.onDocMouseUp);
+        document.documentElement.removeEventListener("touchmove", this.onDocTouchMove);
+        document.documentElement.removeEventListener("mouseup", this.onDocUp);
+        document.documentElement.removeEventListener("touchend", this.onDocUp);
     }
 
     return PullButton;

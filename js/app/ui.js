@@ -56,19 +56,20 @@ function(doc,
 
         button.style.backgroundImage = "url('images/icons/" + options.name + ".svg')";
         button.style.color = "transparent";
-        button.addEventListener("mousedown", function (event) {
+        var press = function (event) {
             action();
             this.pressed = true;
             this.classList.toggle('active');
-        });
-        button.addEventListener("mouseup", function (event) {
+        }
+        var release = function (event) {
             this.pressed = false;
             this.classList.toggle('active');
-        });
-        button.addEventListener("mouseout", function (event) {
-            this.pressed = false;
-            this.classList.remove('active');
-        });
+        }
+        button.addEventListener("mousedown", press);
+        button.addEventListener("touchstart", press);
+        button.addEventListener("mouseup", release);
+        button.addEventListener("touchend", release);
+        button.addEventListener("mouseout", release);
 
         var widget = {domElement: button};
         return widget;
