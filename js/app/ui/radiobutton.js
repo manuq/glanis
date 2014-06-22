@@ -72,7 +72,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         for (var butName in this.buttons) {
             var button = this.buttons[butName];
             var onClick = this.callbacks[butName];
-            button.addEventListener("click", onClick);
+            button.addEventListener("mousedown", onClick);
             button.addEventListener("touchstart", onClick);
         }
         this.isEnabled = true;
@@ -83,7 +83,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         for (var butName in this.buttons) {
             var button = this.buttons[butName];
             var onClick = this.callbacks[butName];
-            button.removeEventListener("click", onClick);
+            button.removeEventListener("mousedown", onClick);
             button.removeEventListener("touchstart", onClick);
         }
         this.isEnabled = false;
