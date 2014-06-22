@@ -16,6 +16,11 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
                 elem.offsetTop + elem.parentElement.offsetTop + 28];
     }
 
+    function getPosSimple(elem) {
+        return [elem.offsetLeft + elem.parentElement.offsetLeft + 25,
+                elem.offsetTop + elem.parentElement.offsetTop + 25];
+    }
+
     function getPosRadio(elem) {
         return [elem.offsetLeft + elem.parentElement.offsetLeft + elem.parentElement.parentElement.offsetLeft + 25,
                 elem.offsetTop + elem.parentElement.offsetTop + elem.parentElement.parentElement.offsetTop + 25];
@@ -36,6 +41,43 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
         paper.view.viewSize = [window.innerWidth, window.innerHeight];
     }
 
+    bg.SimpleControls = function (button) {
+        this.button = button;
+        this.playing = false;
+        this.tween = undefined;
+        this.path = undefined;
+    }
+
+    bg.SimpleControls.prototype.play = function () {
+        if (this.playing) {
+            this.tween.stop();
+        }
+        this.playing = true;
+
+        var pos = getPosSimple(this.button);
+
+        this.tween = new TWEEN.Tween({p: 1}).to({p: 0}, 500);
+        var that = this;
+        this.tween.onUpdate(function () {
+            if (that.path) {
+                that.path.remove();
+            }
+            that.path = new paper.Path.Circle(new paper.Point(0, 0), BIG_RADIUS / 2);
+            that.path.position = new paper.Point(pos[0], pos[1]);
+            that.path.visible = true;
+            that.path.style = {
+                fillColor: FILL_COLOR,
+            };
+
+            that.path.scale(this.p);
+            paper.view.draw();
+        });
+
+        this.tween.start().onComplete(function () {
+            that.playing = false;
+        });
+    }
+
     bg.RadioControls = function (radioButton) {
         this.radioButton = radioButton;
         this.playing = false;
@@ -43,7 +85,7 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
         this.path = undefined;
     }
 
-    bg.RadioControls.prototype.play = function (radioButton) {
+    bg.RadioControls.prototype.play = function () {
         if (this.playing) {
             this.tween.stop();
         }

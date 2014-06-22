@@ -1,7 +1,7 @@
 define(["domReady!",
-        "app/ui/bg", "app/ui/pullbutton", "app/ui/confirmbutton", "app/ui/radiobutton"],
+        "app/ui/bg", "app/ui/simplebutton", "app/ui/pullbutton", "app/ui/confirmbutton", "app/ui/radiobutton"],
 function(doc,
-         bg, PullButton, ConfirmButton, RadioButton) {
+         bg, SimpleButton, PullButton, ConfirmButton, RadioButton) {
 
     var ui = {};
     var domElement;
@@ -44,35 +44,10 @@ function(doc,
     }
 
     ui.createButton = function (options) {
+        var but = new SimpleButton(options);
         var name = options['name'];
-        var action = options['action'];
-
-        var button = document.createElement('button');
-        button.enable = function () {};
-        button.disable = function () {};
-        widgets[name] = button;
-
-        button.innerText = options['text'];
-
-        button.style.backgroundImage = "url('images/icons/" + options.name + ".svg')";
-        button.style.color = "transparent";
-        var press = function (event) {
-            action();
-            this.pressed = true;
-            this.classList.toggle('active');
-        }
-        var release = function (event) {
-            this.pressed = false;
-            this.classList.toggle('active');
-        }
-        button.addEventListener("mousedown", press);
-        button.addEventListener("touchstart", press);
-        button.addEventListener("mouseup", release);
-        button.addEventListener("touchend", release);
-        button.addEventListener("mouseout", release);
-
-        var widget = {domElement: button};
-        return widget;
+        widgets[name] = but;
+        return but;
     }
 
     ui.addButton = function (options) {

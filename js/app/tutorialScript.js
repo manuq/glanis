@@ -1,5 +1,6 @@
 define([], function() {
     tutorialScript = [
+        ['wait', 200],
         ['say', 'hola mundo?'],
         ['pressRadio', 'radio-layout', 'sequence'],
         ['pressRadio', 'radio-number-of-frames', '7'],

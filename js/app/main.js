@@ -860,6 +860,10 @@ function checkInputEvents() {
                 ui.getWidget("prev-frame").release();
             }
         };
+        if (keyboard.pressed("?")) {
+//            console.log(ui.getWidget("help"));
+            ui.getWidget("help").press();
+        };
     }
 
     if (keyboard.pressed("escape")) {

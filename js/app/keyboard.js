@@ -9,7 +9,8 @@ define([], function() {
         'pageup': 33,
         'pagedown': 34,
         'tab': 9,
-        'escape': 27
+        'escape': 27,
+        '?': 191,
     };
 
     var Keyboard = function () {
