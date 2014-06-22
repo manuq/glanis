@@ -843,9 +843,9 @@ function checkInputEvents() {
         if (keyboard.pressed("s")) {
             ui.getWidget("radio-draw").press("pencil");
         };
-        if (keyboard.pressed("d")) {
-            ui.getWidget("clear-draw").pressConfirm();
-        };
+        // if (keyboard.pressed("d")) {
+        //     ui.getWidget("clear-draw").pressConfirm();
+        // };
         if (keyboard.pressed("right")) {
             ui.getWidget("next-frame").press();
         } else {
@@ -861,7 +861,6 @@ function checkInputEvents() {
             }
         };
         if (keyboard.pressed("?")) {
-//            console.log(ui.getWidget("help"));
             ui.getWidget("help").press();
         };
     }
