@@ -583,11 +583,6 @@ function changeFrame(direction) {
         ui.getWidget("radio-number-of-frames").disable();
     }
 
-    // if (soundEnabled) {
-    //     var audio = new Audio('sounds/paper2.wav');
-    //     audio.play();
-    // }
-
     var callback = function () {
         changingFrames = false;
         if (!ignoreUI) {
@@ -1027,6 +1022,7 @@ function main() {
     createShadow();
     createFramesList(15);
     changeNumberOfFrames(7);
+    ui.getWidget("radio-draw").disable();
     update();
 }
 
