@@ -585,10 +585,6 @@ function changeFrame(direction) {
 
     var callback = function () {
         changingFrames = false;
-        if (!ignoreUI) {
-            ui.getWidget("radio-layout").enable();
-            ui.getWidget("radio-number-of-frames").enable();
-        }
     }
 
     if (currentLayout == layouts.zoetrope) {
@@ -941,6 +937,10 @@ function createUi() {
     var radioLayout = ui.createRadioButtons("radio-layout", optionsLayout);
 
     function unSync() {
+        if (!ignoreUI) {
+            ui.getWidget("radio-layout").enable();
+            ui.getWidget("radio-number-of-frames").enable();
+        }
         inSync = false;
     }
 
