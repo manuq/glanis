@@ -884,8 +884,8 @@ function updateWidgets() {
     if (ui.getWidget("opacity").pressed) {
         setOpacityProportional(ui.getWidget("opacity").pullValue);
     };
-    if (ui.getWidget("radius").pressed) {
-        setRadius(ui.getWidget("radius").pullValue);
+    if (ui.getWidget("color").pressed) {
+        // setRadius(ui.getWidget("color").pullValue);
     };
 }
 
@@ -920,8 +920,10 @@ function createUi() {
         if (!ignoreUI) {
             if ([layouts.sequence, layouts.lightbox, layouts.thaumatrope].indexOf(this.layout) != -1) {
                 ui.getWidget("radio-draw").enable();
+                ui.getWidget("color").enable();
             } else {
                 ui.getWidget("radio-draw").disable();
+                ui.getWidget("color").disable();
             }
         }
 
@@ -958,7 +960,7 @@ function createUi() {
                                               'action': function () { clearFrames() }});
 
     var pullOpacity = ui.createPullButton({"name": "opacity", "text": "o"});
-    var pullRadius = ui.createPullButton({"name": "radius"});
+    var pullColor = ui.createPullButton({"name": "color"});
 
     var optionsNumberOfFrames = [
         {"name": "2", 'text': "2", 'action': function () { changeNumberOfFrames(2) }},
@@ -973,8 +975,8 @@ function createUi() {
     ui.addRow([radioLayout, {domElement: ui.createSpace()}, buttonHelp]);
     ui.addRow([radioNumberOfFrames]);
     ui.addRow([pullPrevFrame, pullNextFrame], 1);
-    ui.addRow([radioDraw, buttonClear]);
-    ui.addRow([pullOpacity, pullRadius], 1);
+    ui.addRow([radioDraw, pullColor]);
+    ui.addRow([pullOpacity, buttonClear], 1);
 }
 
 function onWindowResize() {
@@ -1025,6 +1027,7 @@ function main() {
     createFramesList(15);
     changeNumberOfFrames(7);
     ui.getWidget("radio-draw").disable();
+    ui.getWidget("color").disable();
     update();
 }
 
