@@ -924,6 +924,14 @@ function createUi() {
             }
         }
 
+        if (!ignoreUI) {
+            if ([layouts.sequence, layouts.lightbox, layouts.thaumatrope].indexOf(this.layout) != -1) {
+                ui.getWidget("radio-draw").enable();
+            } else {
+                ui.getWidget("radio-draw").disable();
+            }
+        }
+
         changeLayout(this.layout, function () {});
     }
 

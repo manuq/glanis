@@ -86,6 +86,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
     }
 
     ConfirmButton.prototype.enable = function () {
+        this.button.classList.remove('disabled');
         this.button.addEventListener("mousedown", this.onButtonDown);
         this.button.addEventListener("touchstart", this.onButtonDown);
         this.button.addEventListener("mouseup", this.onButtonUp);
@@ -96,6 +97,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
     }
 
     ConfirmButton.prototype.disable = function () {
+        this.button.classList.add('disabled');
         this.button.removeEventListener("mousedown", this.onButtonDown);
         this.button.removeEventListener("touchstart", this.onButtonDown);
         this.button.removeEventListener("mouseup", this.onButtonUp);

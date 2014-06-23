@@ -71,6 +71,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         var that = this;
         for (var butName in this.buttons) {
             var button = this.buttons[butName];
+            button.classList.remove('disabled');
             var onClick = this.callbacks[butName];
             button.addEventListener("mousedown", onClick);
             button.addEventListener("touchstart", onClick);
@@ -82,6 +83,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         var that = this;
         for (var butName in this.buttons) {
             var button = this.buttons[butName];
+            button.classList.add('disabled');
             var onClick = this.callbacks[butName];
             button.removeEventListener("mousedown", onClick);
             button.removeEventListener("touchstart", onClick);

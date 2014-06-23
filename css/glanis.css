@@ -49,6 +49,7 @@ canvas.frame {
 }
 
 #ui button {
+  transition: background-color 350ms;
   border: 3px solid #eee;
   background-color: #fff;
   width: 50px;
@@ -58,6 +59,14 @@ canvas.frame {
   outline: none;
   pointer-events: auto;
   background-position: center;
+}
+
+#ui button.disabled {
+  border-width: 3px;
+  background-color: #ccc;
+  width: 44px;
+  height: 44px;
+  margin: 6px;
 }
 
 #ui button.active {
