@@ -893,12 +893,24 @@ function createTutorial() {
     tutorial = new Tutorial();
 }
 
+function cancelTutorial(event) {
+    tutorial.cancel();
+}
+
 function startTutorial() {
     ignoreUI = true;
     ui.disable()
+
+    setTimeout(function () {
+        document.documentElement.addEventListener("mousedown", cancelTutorial);
+        document.documentElement.addEventListener("touchstart", cancelTutorial);
+    }, 300);
+
     endCallback = function () {
         ignoreUI = false;
         ui.enable()
+        document.documentElement.removeEventListener("mousedown", cancelTutorial);
+        document.documentElement.removeEventListener("touchstart", cancelTutorial);
     }
     tutorial.start(endCallback);
 }

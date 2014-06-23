@@ -3,11 +3,15 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
     var Scriptor = function (tutorial) {
         this.tutorial = tutorial;
         this.buttonPressed = undefined;
+        this.tween = undefined;
     };
 
     Scriptor.prototype.cancel = function () {
         if (this.buttonPressed) {
             this.buttonPressed.release();
+        }
+        if (this.tween) {
+            this.tween.stop();
         }
     }
 
@@ -21,11 +25,12 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
         var duration = params[0];
 
         var x = 0;
-        var tween = new TWEEN.Tween(x).to(0, duration);
+        this.tween = new TWEEN.Tween(x).to(0, duration);
 
         var that = this;
-        tween.start().onComplete(function () {
+        this.tween.start().onComplete(function () {
             that.tutorial.next();
+            that.tween = undefined;
         });
     };
 
@@ -69,15 +74,16 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
             var percentEnd = params[2];
             var duration = params[3];
 
-            var tween = new TWEEN.Tween({p: percent}).to({p: percentEnd}, duration);
+            this.tween = new TWEEN.Tween({p: percent}).to({p: percentEnd}, duration);
 
             var that = this;
-            tween.onUpdate(function () {
+            this.tween.onUpdate(function () {
                 button.dragPercent(this.p);
             });
 
-            tween.start().onComplete(function () {
+            this.tween.start().onComplete(function () {
                 that.tutorial.next();
+                that.tween = undefined;
             });
         }
     };
@@ -98,6 +104,7 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
     Tutorial.prototype.cancel = function () {
         this.scriptor.cancel();
         this.script = [];
+        this.endCallback();
     };
 
     Tutorial.prototype.next = function () {
