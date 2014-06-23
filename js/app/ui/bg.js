@@ -7,6 +7,7 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
 
     const STROKE_COLOR = '#07eaff';
     const FILL_COLOR = 'rgba(7, 234, 255, 0.3)';
+    const PRESS_COLOR = 'rgba(7, 234, 255, 0.6)';
     const HIT_FILL_COLOR = 'rgba(7, 234, 255, 0.8)';
     const HIT_STROKE_COLOR = '#fff';
 
@@ -66,7 +67,7 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
             that.path.position = new paper.Point(pos[0], pos[1]);
             that.path.visible = true;
             that.path.style = {
-                fillColor: FILL_COLOR,
+                fillColor: PRESS_COLOR,
             };
 
             that.path.scale(this.p);
@@ -103,7 +104,7 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
             that.path.position = new paper.Point(pos[0], pos[1]);
             that.path.visible = true;
             that.path.style = {
-                fillColor: FILL_COLOR,
+                fillColor: PRESS_COLOR,
             };
 
             that.path.scale(this.p);
