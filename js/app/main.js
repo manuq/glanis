@@ -812,16 +812,16 @@ function checkInputEvents() {
     if (!ignoreUI) {
         if (ui.getWidget("radio-layout").isEnabled) {
             if (keyboard.pressed("1")) {
-                ui.getWidget("radio-layout").press("sequence");
-            };
-            if (keyboard.pressed("2")) {
                 ui.getWidget("radio-layout").press("stack");
             };
+            if (keyboard.pressed("2")) {
+                ui.getWidget("radio-layout").press("sequence");
+            };
             if (keyboard.pressed("3")) {
-                ui.getWidget("radio-layout").press("thaumatrope");
+                ui.getWidget("radio-layout").press("lightbox");
             };
             if (keyboard.pressed("4")) {
-                ui.getWidget("radio-layout").press("lightbox");
+                ui.getWidget("radio-layout").press("thaumatrope");
             };
             if (keyboard.pressed("5")) {
                 ui.getWidget("radio-layout").press("zoetrope");
@@ -928,11 +928,11 @@ function createUi() {
     }
 
     var optionsLayout = [
-        {"name": "sequence", 'text': "2", 'action': layoutCallback.bind({layout: layouts.sequence}), 'active': true},
-        {"name": "stack", 'text': "3", 'action': layoutCallback.bind({layout: layouts.stack})},
-        {"name": "thaumatrope", 'text': "5", 'action': layoutCallback.bind({layout: layouts.thaumatrope})},
-        {"name": "lightbox", 'text': "4", 'action': layoutCallback.bind({layout: layouts.lightbox})},
-        {"name": "zoetrope", 'text': "1", 'action': layoutCallback.bind({layout: layouts.zoetrope})}
+        {"name": "stack", 'text': "1", 'action': layoutCallback.bind({layout: layouts.stack})},
+        {"name": "sequence", 'text': "2", 'action': layoutCallback.bind({layout: layouts.sequence, 'active': true})},
+        {"name": "lightbox", 'text': "3", 'action': layoutCallback.bind({layout: layouts.lightbox})},
+        {"name": "thaumatrope", 'text': "4", 'action': layoutCallback.bind({layout: layouts.thaumatrope})},
+        {"name": "zoetrope", 'text': "5", 'action': layoutCallback.bind({layout: layouts.zoetrope})}
     ];
 
     var radioLayout = ui.createRadioButtons("radio-layout", optionsLayout);
@@ -1013,7 +1013,7 @@ function initThreeJs () {
 
 function main() {
     initThreeJs();
-    currentLayout = layouts.sequence;
+    currentLayout = layouts.stack;
     createTutorial();
     createUi();
     createShadow();
