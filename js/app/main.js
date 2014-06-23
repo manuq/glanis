@@ -25,6 +25,9 @@ var drawings = [];
 var soundEnabled = true;
 var tutorial;
 
+var curNumberOfFrames;
+var prevNumberOfFrames;
+
 var lastCalledTime;
 var frameRate;
 var inSync = false;
@@ -750,6 +753,7 @@ function calcFrameRate(time) {
 }
 
 function changeNumberOfFrames(number) {
+    curNumberOfFrames = number;
     frames = allFrames.slice(0, number);
     otherFrames = allFrames.slice(number);
 
@@ -910,6 +914,16 @@ function createUi() {
     ui.init();
 
     function layoutCallback() {
+        if (this.layout == layouts.thaumatrope && curNumberOfFrames != 2) {
+            prevNumberOfFrames = curNumberOfFrames;
+            ui.getWidget("radio-number-of-frames").press("2");
+        } else {
+            if (prevNumberOfFrames !== undefined) {
+                ui.getWidget("radio-number-of-frames").press(prevNumberOfFrames.toString());
+                prevNumberOfFrames = undefined;
+            }
+        }
+
         changeLayout(this.layout, function () {});
     }
 
