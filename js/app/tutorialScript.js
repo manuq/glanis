@@ -18,6 +18,7 @@ define([], function() {
         ['drag', 'next-frame', 0.3],
         ['wait', 2000],
         ['drag', 'next-frame', 0.3, 1.0, 10000],
+        ['say', 'wee!'],
         ['wait', 5000],
         ['drag', 'next-frame', 1.0, 0.3, 5000],
         ['release', 'next-frame'],

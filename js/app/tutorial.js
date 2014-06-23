@@ -1,5 +1,13 @@
 define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, TWEEN) {
 
+    var language = window.navigator.userLanguage || window.navigator.language;
+    var helpText = document.getElementById('help-text');
+    if (language.indexOf('es') == 0) {
+        document.body.lang = 'es-ar';
+    } else {
+        document.body.lang = 'en-us';
+    }
+
     var Scriptor = function (tutorial) {
         this.tutorial = tutorial;
         this.buttonPressed = undefined;
@@ -16,8 +24,7 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
     }
 
     Scriptor.prototype.say = function (params) {
-        var words = params[0];
-        console.log(words);
+        helpText.innerText = params[0];
         this.tutorial.next();
     };
 
