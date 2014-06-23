@@ -832,15 +832,17 @@ function checkInputEvents() {
                 ui.getWidget("radio-number-of-frames").press("15");
             };
         }
-        if (keyboard.pressed("a")) {
-            ui.getWidget("radio-draw").press("eraser");
-        };
-        if (keyboard.pressed("s")) {
-            ui.getWidget("radio-draw").press("pencil");
-        };
-        // if (keyboard.pressed("d")) {
-        //     ui.getWidget("clear-draw").pressConfirm();
-        // };
+        if (ui.getWidget("radio-draw").isEnabled) {
+            if (keyboard.pressed("a")) {
+                ui.getWidget("radio-draw").press("eraser");
+            };
+            if (keyboard.pressed("s")) {
+                ui.getWidget("radio-draw").press("pencil");
+            };
+            // if (keyboard.pressed("d")) {
+            //     ui.getWidget("clear-draw").pressConfirm();
+            // };
+        }
         if (keyboard.pressed("right")) {
             ui.getWidget("next-frame").press();
         } else {
