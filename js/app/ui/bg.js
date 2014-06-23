@@ -180,10 +180,16 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
             dashArray: [4, 3]
         };
 
-        this.confirmPath = new paper.Path.Circle(new paper.Point(BIG_RADIUS, 0), SMALL_RADIUS);
+        this.confirmPath = new paper.Path.Circle(new paper.Point(BIG_RADIUS, -3), SMALL_RADIUS);
         this.confirmPath.style = {
             strokeColor: STROKE_COLOR,
             fillColor: FILL_COLOR,
+            strokeWidth: 2
+        };
+
+        this.pressPath = new paper.Path.Circle(new paper.Point(BIG_RADIUS / 2 -3, -3), SMALL_RADIUS);
+        this.pressPath.style = {
+            strokeColor: STROKE_COLOR,
             strokeWidth: 2
         };
 
@@ -193,7 +199,7 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
         confirmLine.style = {
             strokeColor: STROKE_COLOR,
             strokeWidth: 3,
-            dashArray: [4, 3]
+            dashArray: [4, 6]
         };
 
         confirmTick = new paper.Path([
@@ -206,8 +212,8 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
             strokeWidth: 4
         };
 
-        this.group = new paper.Group([maxPath, this.confirmPath, confirmLine,
-                                      confirmTick])
+        this.group = new paper.Group([maxPath, this.confirmPath, this.pressPath,
+                                      confirmLine, confirmTick])
         this.group.visible = false;
     }
 
@@ -225,10 +231,18 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
 
     bg.ConfirmControls.prototype.update = function (pointerX, pointerY) {
         var x = pointerX - this.group.position.x - BIG_RADIUS + 12;
-        var y = pointerY - this.group.position.y;
 
-        var squared_dist = Math.pow(x, 2) + Math.pow(y, 2);
-        var hit = squared_dist <= Math.pow(SMALL_RADIUS, 2);
+        var pressX = pointerX;
+        if (pointerX - this.group.position.x < 0) {
+            pressX = this.group.position.x -3;
+        } else {
+            if (pointerX - this.group.position.x > BIG_RADIUS - 12) {
+                pressX = this.group.position.x + BIG_RADIUS - 12;
+            }
+        }
+        this.pressPath.position = new paper.Point(pressX, this.group.position.y - 3);
+
+        var hit = pointerX - this.group.position.x > BIG_RADIUS - SMALL_RADIUS + 12;
 
         var fillColor;
         if (hit) {
