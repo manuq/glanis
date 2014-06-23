@@ -730,6 +730,18 @@ function clearFrames() {
     });
 }
 
+function enableDrawings() {
+    drawings.forEach(function (drawing) {
+        drawing.enable();
+    });
+}
+
+function disableDrawings() {
+    drawings.forEach(function (drawing) {
+        drawing.disable();
+    });
+}
+
 function calcFrameRate(time) {
     if(!lastCalledTime) {
         lastCalledTime = time;
@@ -931,9 +943,11 @@ function createUi() {
 
         if (!ignoreUI) {
             if ([layouts.sequence, layouts.lightbox, layouts.thaumatrope].indexOf(this.layout) != -1) {
+                enableDrawings();
                 ui.getWidget("radio-draw").enable();
                 ui.getWidget("color").enable();
             } else {
+                disableDrawings();
                 ui.getWidget("radio-draw").disable();
                 ui.getWidget("color").disable();
             }
@@ -1040,6 +1054,7 @@ function main() {
     changeNumberOfFrames(7);
     ui.getWidget("radio-draw").disable();
     ui.getWidget("color").disable();
+    disableDrawings();
     update();
 }
 

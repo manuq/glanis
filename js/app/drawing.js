@@ -10,20 +10,13 @@ define(["app/config"], function(config) {
         this.isDrawing = false;
         this.brushColor = "black";
         this.brushSize = config.brushSize;
-        var that = this;
 
-        canvas.addEventListener("mousemove", function (event) {
-            that.onMouseMove(event);
-        });
-        canvas.addEventListener("mousedown", function (event) {
-            that.onMouseDown(event);
-        });
-        canvas.addEventListener("mouseup", function (event) {
-            that.onMouseUp(event);
-        });
-        canvas.addEventListener("mouseover", function (event) {
-            that.onMouseOver(event);
-        });
+        this.onMouseMove = this.onMouseMove.bind(this);
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onMouseUp = this.onMouseUp.bind(this);
+        this.onMouseOver = this.onMouseOver.bind(this);
+
+        this.enable();
     }
 
     Drawing.prototype.setColor = function (colorName) {
@@ -101,6 +94,20 @@ define(["app/config"], function(config) {
     Drawing.prototype.onMouseOver = function (event) {
         var pos = this.getTransformedPosition(event.clientX, event.clientY);
         this.ctx.moveTo(pos.x, pos.y);
+    }
+
+    Drawing.prototype.enable = function () {
+        this.canvas.addEventListener("mousemove", this.onMouseMove);
+        this.canvas.addEventListener("mousedown", this.onMouseDown);
+        this.canvas.addEventListener("mouseup", this.onMouseUp);
+        this.canvas.addEventListener("mouseover", this.onMouseOver);
+    }
+
+    Drawing.prototype.disable = function () {
+        this.canvas.removeEventListener("mousemove", this.onMouseMove);
+        this.canvas.removeEventListener("mousedown", this.onMouseDown);
+        this.canvas.removeEventListener("mouseup", this.onMouseUp);
+        this.canvas.removeEventListener("mouseover", this.onMouseOver);
     }
 
     return Drawing;
