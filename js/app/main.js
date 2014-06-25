@@ -941,16 +941,14 @@ function createUi() {
             }
         }
 
-        if (!ignoreUI) {
-            if ([layouts.sequence, layouts.lightbox, layouts.thaumatrope].indexOf(this.layout) != -1) {
-                enableDrawings();
-                ui.getWidget("radio-draw").enable();
-                ui.getWidget("color").enable();
-            } else {
-                disableDrawings();
-                ui.getWidget("radio-draw").disable();
-                ui.getWidget("color").disable();
-            }
+        if ([layouts.sequence, layouts.lightbox, layouts.thaumatrope].indexOf(this.layout) != -1) {
+            enableDrawings();
+            ui.getWidget("radio-draw").enable();
+            ui.getWidget("color").enable();
+        } else {
+            disableDrawings();
+            ui.getWidget("radio-draw").disable();
+            ui.getWidget("color").disable();
         }
 
         changeLayout(this.layout, function () {});
