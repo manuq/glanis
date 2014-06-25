@@ -1,43 +1,77 @@
 define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, TWEEN) {
 
-    var language = window.navigator.userLanguage || window.navigator.language;
     var helpText = document.getElementById('help-text');
-    if (language.indexOf('es') == 0) {
-        document.body.lang = 'es-ar';
-    } else {
-        document.body.lang = 'en-us';
+    var lang;
+
+    function setLang() {
+        var language = window.navigator.userLanguage || window.navigator.language;
+
+        if (language.indexOf('es') == 0) {
+            lang = 'es-AR';
+        } else {
+            lang = 'en-US';
+        }
+
+        helpText.lang = lang;
     }
+    setLang();
 
     var Scriptor = function (tutorial) {
         this.tutorial = tutorial;
         this.buttonPressed = undefined;
-        this.tween = undefined;
+        this.tweens = [];
     };
 
     Scriptor.prototype.cancel = function () {
+        this.shutUp();
+
         if (this.buttonPressed) {
             this.buttonPressed.release();
         }
-        if (this.tween) {
-            this.tween.stop();
-        }
+
+        for (var i=0; i<this.tweens.length; i++) {
+            this.tweens[i].stop();
+        };
+
+        this.tweens = [];
     }
 
     Scriptor.prototype.say = function (params) {
-        helpText.innerText = params[0];
+        if (lang == 'es-AR') {
+            helpText.innerText = params[0];
+        } else {
+            helpText.innerText = params[1];
+        }
+        helpText.classList.remove('disabled');
+
+        var duration = params[2];
+
+        var x = 0;
+        var tween = new TWEEN.Tween(x).to(0, duration);
+        this.tweens.push(tween);
+
+        var that = this;
+        tween.start().onComplete(function () {
+            that.shutUp();
+        });
+
         this.tutorial.next();
+    };
+
+    Scriptor.prototype.shutUp = function () {
+        helpText.classList.add('disabled');
     };
 
     Scriptor.prototype.wait = function (params) {
         var duration = params[0];
 
         var x = 0;
-        this.tween = new TWEEN.Tween(x).to(0, duration);
+        var tween = new TWEEN.Tween(x).to(0, duration);
+        this.tweens.push(tween);
 
         var that = this;
-        this.tween.start().onComplete(function () {
+        tween.start().onComplete(function () {
             that.tutorial.next();
-            that.tween = undefined;
         });
     };
 
@@ -81,16 +115,16 @@ define(["app/ui", "app/tutorialScript", "tween"], function(ui, tutorialScript, T
             var percentEnd = params[2];
             var duration = params[3];
 
-            this.tween = new TWEEN.Tween({p: percent}).to({p: percentEnd}, duration);
+            var tween = new TWEEN.Tween({p: percent}).to({p: percentEnd}, duration);
+            this.tweens.push(tween);
 
             var that = this;
-            this.tween.onUpdate(function () {
+            tween.onUpdate(function () {
                 button.dragPercent(this.p);
             });
 
-            this.tween.start().onComplete(function () {
+            tween.start().onComplete(function () {
                 that.tutorial.next();
-                that.tween = undefined;
             });
         }
     };

@@ -121,6 +121,12 @@ canvas.frame {
   width: 300px;
   margin-right: -150px;
   z-index: 2;
+  transition: opacity 300ms;
+  opacity: 1;
+}
+
+#help-text.disabled {
+  opacity: 0;
 }
 
 #go-home {
