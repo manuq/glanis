@@ -984,7 +984,7 @@ function createUi() {
                                               'action': function () { clearFrames() }});
 
     var pullOpacity = ui.createPullButton({"name": "opacity", "text": "o"});
-    var pullColor = ui.createPullButton({"name": "color"});
+    var pullColor = ui.createColorButton({"name": "color"});
 
     var optionsNumberOfFrames = [
         {"name": "2", 'text': "2", 'action': function () { changeNumberOfFrames(2) }},

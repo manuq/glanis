@@ -1,7 +1,7 @@
 define(["domReady!",
-        "app/ui/bg", "app/ui/simplebutton", "app/ui/pullbutton", "app/ui/confirmbutton", "app/ui/radiobutton"],
+        "app/ui/bg", "app/ui/simplebutton", "app/ui/pullbutton", "app/ui/colorbutton", "app/ui/confirmbutton", "app/ui/radiobutton"],
 function(doc,
-         bg, SimpleButton, PullButton, ConfirmButton, RadioButton) {
+         bg, SimpleButton, PullButton, ColorButton, ConfirmButton, RadioButton) {
 
     var ui = {};
     var domElement;
@@ -67,6 +67,13 @@ function(doc,
         var name = options['name'];
         widgets[name] = pull;
         return pull;
+    }
+
+    ui.createColorButton = function (options) {
+        var color = new ColorButton(options);
+        var name = options['name'];
+        widgets[name] = color;
+        return color;
     }
 
     ui.addPullButton = function (options) {

@@ -11,6 +11,8 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
     const HIT_FILL_COLOR = 'rgba(7, 234, 255, 0.8)';
     const HIT_STROKE_COLOR = '#fff';
 
+    const COLORS = ['#000', '#f00', '#0f0', '#00f'];
+
 
     function getPos(elem) {
         return [elem.offsetLeft + elem.parentElement.offsetLeft + 28,
@@ -166,6 +168,61 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
             strokeWidth: 2
         };
         this.curPath.position = this.maxPath.position;
+        this.curPath.scale(value);
+        paper.view.draw();
+    }
+
+    bg.ColorControls = function (colorButton) {
+        this.colorButton = colorButton;
+
+        this.group = new paper.Group();
+        this.group.opacity = 0.5;
+        this.group.visible = false;
+
+        var that = this;
+        var slice = (BIG_RADIUS - SMALL_RADIUS) / COLORS.length;
+        COLORS.forEach(function (col, i) {
+            var n = COLORS.length - i - 1;
+
+            var radius = SMALL_RADIUS + slice + n * slice;
+            var path = new paper.Path.Circle(new paper.Point(0, 0), radius);
+            path.style = {
+                fillColor: COLORS[n]
+            };
+            that.group.addChild(path);
+        });
+
+        this.curPath = new paper.Path.Circle(new paper.Point(0, 0), BIG_RADIUS);
+        this.curPath.style = {
+            strokeColor: STROKE_COLOR,
+            strokeWidth: 2
+        };
+        this.curPath.visible = false;
+    }
+
+    bg.ColorControls.prototype.show = function () {
+        var pos = getPos(this.colorButton.domElement);
+        this.group.position = new paper.Point(pos[0], pos[1]);
+        this.group.position = new paper.Point(pos[0], pos[1]);
+        this.group.visible = true;
+        this.curPath.visible = true;
+        paper.view.draw();
+    }
+
+    bg.ColorControls.prototype.hide = function () {
+        this.group.visible = false;
+        this.curPath.visible = false;
+        paper.view.draw();
+    }
+
+    bg.ColorControls.prototype.updateCurrent = function (value) {
+        this.curPath.remove();
+        this.curPath = new paper.Path.Circle(new paper.Point(0, 0), BIG_RADIUS);
+        this.curPath.style = {
+            strokeColor: STROKE_COLOR,
+            strokeWidth: 2
+        };
+        this.curPath.position = this.group.position;
         this.curPath.scale(value);
         paper.view.draw();
     }
