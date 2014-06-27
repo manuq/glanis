@@ -713,8 +713,9 @@ function setVelocityProportional(value) {
 }
 
 function setPencil() {
+    var color = ui.getWidget("color").color;
     drawings.forEach(function (drawing) {
-        drawing.setColor("black");
+        drawing.setColor(color);
     });
 }
 
@@ -851,9 +852,6 @@ function checkInputEvents() {
             if (keyboard.pressed("s")) {
                 ui.getWidget("radio-draw").press("pencil");
             };
-            // if (keyboard.pressed("d")) {
-            //     ui.getWidget("clear-draw").pressConfirm();
-            // };
         }
         if (keyboard.pressed("right")) {
             ui.getWidget("next-frame").press();
@@ -897,7 +895,8 @@ function updateWidgets() {
         setOpacityProportional(ui.getWidget("opacity").pullValue);
     };
     if (ui.getWidget("color").pressed) {
-        // setRadius(ui.getWidget("color").pullValue);
+        ui.getWidget("radio-draw").press("pencil");
+        setPencil();
     };
 }
 
