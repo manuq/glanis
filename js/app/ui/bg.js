@@ -225,6 +225,9 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
         this.curPath.position = this.group.position;
         this.curPath.scale(value);
         paper.view.draw();
+
+        var n = Math.floor((value * COLORS.length) - 0.42);
+        return COLORS[n];
     }
 
     bg.ConfirmControls = function (confirmButton) {

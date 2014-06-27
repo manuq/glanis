@@ -24,6 +24,7 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.initialCoords;
         this.curCoords;
 
+        this.color = "#000";
         this.pullValue = 0;
 
         this.onRelease = null;
@@ -52,7 +53,12 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         }
 
         this.pullValue = value;
-        this.controls.updateCurrent(this.pullValue);
+        var color = this.controls.updateCurrent(this.pullValue);
+        if (color != this.color) {
+            this.color = color;
+            this.colorDiv.style.backgroundColor = color;
+        }
+
         if (!visible) {
             if (!this.pressed) {
                 this.controls.hide();
