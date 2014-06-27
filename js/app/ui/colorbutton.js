@@ -141,6 +141,8 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
     }
 
     ColorButton.prototype.enable = function () {
+        this.colorDiv.style.backgroundColor = this.color;
+
         this.button.classList.remove('disabled');
         this.button.addEventListener("mousedown", this.onButtonDown);
         this.button.addEventListener("touchstart", this.onButtonDown);
@@ -153,6 +155,8 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
     }
 
     ColorButton.prototype.disable = function () {
+        this.colorDiv.style.backgroundColor = "#666";
+
         this.button.classList.add('disabled');
         this.button.removeEventListener("mousedown", this.onButtonDown);
         this.button.removeEventListener("touchstart", this.onButtonDown);
