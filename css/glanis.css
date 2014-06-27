@@ -73,6 +73,28 @@ canvas.frame {
   border-color: #07eaff;
 }
 
+#ui button.color {
+  position: relative;
+}
+
+#ui button.color .inside {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 7px;
+  left: 7px;
+  border-radius: 15px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: #000;
+}
+
+#ui button.color.disabled .inside {
+  top: 4px;
+  left: 4px;
+}
+
 #bg-ui {
   position: absolute;
   top: 0;

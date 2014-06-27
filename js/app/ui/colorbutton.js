@@ -13,9 +13,12 @@ define(["domReady!", "app/ui/bg"], function(doc, bg) {
         this.domElement.className = "widget";
         this.button = document.createElement('button');
         this.button.innerText = options['text'];
-        this.button.style.backgroundImage = "url('images/icons/" + options.name + ".svg')";
         this.button.style.color = "transparent";
+        this.button.className = "color";
         this.domElement.appendChild(this.button);
+        this.colorDiv = document.createElement('div');
+        this.colorDiv.className = "inside";
+        this.button.appendChild(this.colorDiv);
 
         this.pressed = false;
         this.initialCoords;
