@@ -136,16 +136,18 @@ canvas.frame {
 }
 
 #help-text {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 5px;
+  background-color: rgba(239, 255, 119, 0.9);
+  padding: 5px 5px 20px 5px;
+  margin: 0;
   position: fixed;
-  bottom: 10px;
-  right: 50%;
-  width: 300px;
-  margin-right: -150px;
+  bottom: 0;
+  width: 100%;
   z-index: 2;
   transition: opacity 300ms;
   opacity: 1;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 25px;
+  text-align: center;
 }
 
 #help-text.disabled {
