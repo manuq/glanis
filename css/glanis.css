@@ -63,6 +63,7 @@ canvas.frame {
 
 #ui button.disabled {
   border-width: 3px;
+  border-color: #c9dddb;
   background-color: #c9dddb;
   width: 44px;
   height: 44px;
