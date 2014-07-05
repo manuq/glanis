@@ -11,7 +11,7 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
     const HIT_FILL_COLOR = 'rgba(7, 234, 255, 0.8)';
     const HIT_STROKE_COLOR = '#fff';
 
-    const COLORS = ['#000', '#f00', '#0f0', '#00f'];
+    const COLORS = ['#000', '#ec4800', '#f6fd2e', '#a7ea27', '#3c96db', '#9a4869'];
 
 
     function getPos(elem) {
@@ -176,7 +176,7 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
         this.colorButton = colorButton;
 
         this.group = new paper.Group();
-        this.group.opacity = 0.5;
+        this.group.opacity = 0.8;
         this.group.visible = false;
 
         var that = this;
