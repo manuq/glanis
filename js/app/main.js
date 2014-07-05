@@ -44,7 +44,7 @@ function createFrame(frameName, groupObject) {
     drawings.push(drawing);
 
     if (frameName != null) {
-        drawing.load('images/test/' + frameName + '.png');
+        drawing.load('images/bounce/' + frameName + '.png');
     }
 
     return frame;
