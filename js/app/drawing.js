@@ -12,8 +12,12 @@ define(["app/config"], function(config) {
         this.brushSize = config.brushSize;
 
         this.onMouseMove = this.onMouseMove.bind(this);
+        this.onTouchMove = this.onTouchMove.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
+        this.onTouchStart = this.onTouchStart.bind(this);
         this.onMouseUp = this.onMouseUp.bind(this);
+        this.onTouchEnd = this.onTouchEnd.bind(this);
+        this.onDocUp = this.onDocUp.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
 
         this.enable();
@@ -65,7 +69,7 @@ define(["app/config"], function(config) {
 
     }
 
-    Drawing.prototype.onMouseDown = function (event) {
+    Drawing.prototype.penDown = function (x, y) {
         this.isDrawing = true;
         this.ctx.beginPath();
         this.ctx.lineWidth = this.brushSize;
@@ -75,20 +79,48 @@ define(["app/config"], function(config) {
         this.ctx.shadowBlur = this.brushSize;
         this.ctx.shadowColor = this.brushColor;
 
-        var pos = this.getTransformedPosition(event.clientX, event.clientY);
+        var pos = this.getTransformedPosition(x, y);
         this.ctx.moveTo(pos.x, pos.y);
     }
 
-    Drawing.prototype.onMouseMove = function (event) {
+    Drawing.prototype.penMove = function (x, y) {
         if (this.isDrawing) {
-            var pos = this.getTransformedPosition(event.clientX, event.clientY);
+            var pos = this.getTransformedPosition(x, y);
             this.ctx.lineTo(pos.x, pos.y);
             this.ctx.stroke();
         }
     }
 
-    Drawing.prototype.onMouseUp = function (event) {
+    Drawing.prototype.penUp = function () {
         this.isDrawing = false;
+    }
+
+    Drawing.prototype.onMouseDown = function (event) {
+        this.penDown(event.clientX, event.clientY);
+    }
+
+    Drawing.prototype.onTouchStart = function (event) {
+        this.penDown(event.touches[0].clientX, event.touches[0].clientY);
+    }
+
+    Drawing.prototype.onMouseMove = function (event) {
+        this.penMove(event.clientX, event.clientY);
+    }
+
+    Drawing.prototype.onTouchMove = function (event) {
+        this.penMove(event.touches[0].clientX, event.touches[0].clientY);
+    }
+
+    Drawing.prototype.onMouseUp = function (event) {
+        this.penUp();
+    }
+
+    Drawing.prototype.onTouchEnd = function (event) {
+        this.penUp();
+    }
+
+    Drawing.prototype.onDocUp = function (event) {
+        this.penUp();
     }
 
     Drawing.prototype.onMouseOver = function (event) {
@@ -98,15 +130,23 @@ define(["app/config"], function(config) {
 
     Drawing.prototype.enable = function () {
         this.canvas.addEventListener("mousemove", this.onMouseMove);
+        this.canvas.addEventListener("touchmove", this.onTouchMove);
         this.canvas.addEventListener("mousedown", this.onMouseDown);
+        this.canvas.addEventListener("touchstart", this.onTouchStart);
         this.canvas.addEventListener("mouseup", this.onMouseUp);
+        this.canvas.addEventListener("touchend", this.onTouchEnd);
+        document.documentElement.addEventListener("mouseup", this.onDocUp);
         this.canvas.addEventListener("mouseover", this.onMouseOver);
     }
 
     Drawing.prototype.disable = function () {
         this.canvas.removeEventListener("mousemove", this.onMouseMove);
+        this.canvas.removeEventListener("touchmove", this.onTouchMove);
         this.canvas.removeEventListener("mousedown", this.onMouseDown);
+        this.canvas.removeEventListener("touchstart", this.onTouchStart);
         this.canvas.removeEventListener("mouseup", this.onMouseUp);
+        this.canvas.removeEventListener("touchend", this.onTouchEnd);
+        document.documentElement.removeEventListener("mouseup", this.onDocUp);
         this.canvas.removeEventListener("mouseover", this.onMouseOver);
     }
 
