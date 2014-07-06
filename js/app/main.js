@@ -1,7 +1,7 @@
-define(["domReady!", "three", "tween", "app/keyboard",
+define(["domReady!", "three", "tween", "gif", "app/keyboard",
         "app/drawing", "app/config", "app/ui", "app/layouts", "app/tutorial",
         "CSS3DRenderer", "TrackballControls"],
-function(doc, THREE, TWEEN,
+function(doc, THREE, TWEEN, GIF,
          Keyboard, Drawing, config, ui, layouts, Tutorial) {
 
 var scene;
@@ -811,6 +811,23 @@ function updateFramePulls(buttonName) {
     });
 };
 
+function exportAnimatedGif() {
+    var gif = new GIF({
+        workers: 2,
+        quality: 10
+    });
+
+    frames.forEach(function (frame, i) {
+        gif.addFrame(frame.element, {delay: 83});
+    });
+
+    gif.on('finished', function(blob) {
+        window.open(URL.createObjectURL(blob), '_blank');
+    });
+
+    gif.render();
+}
+
 function checkInputEvents() {
     // controls.update();
     if (!ignoreUI) {
@@ -876,6 +893,9 @@ function checkInputEvents() {
         if (tutorial !== undefined) {
             tutorial.cancel();
         }
+    };
+    if (keyboard.pressed("n")) {
+        exportAnimatedGif();
     };
 }
 

@@ -15,6 +15,9 @@ requirejs.config({
             deps: ['three'],
             exports: 'THREE.TrackballControls'
         },
+        'gif': {
+            exports: 'GIF'
+        },
         'tween': {
             exports: 'TWEEN'
         },
