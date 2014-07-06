@@ -5,7 +5,7 @@ function() {
         frameHeight: 312,
         space: 60,
         maxDuration: 1500,
-        brushSize: 5,
+        brushSize: 2,
         eraserSize: 15,
     };
 
