@@ -24,9 +24,9 @@ define([], function() {
         ['say', 'El chiste está en pasarlos rápido.', 'The thing is, you have to pass them fast.', 8000],
         ['drag', 'next-frame', 0.3, 1.0, 10000],
         ['wait', 2000],
-        ['say', '¡Muy rápido!', 'Very fast!.', 3000],
+        ['say', 'Muy rápido.', 'Very fast.', 3000],
         ['wait', 4000],
-        ['say', 'Tan rápido que engaña a nuestros ojos.', 'So fast it fakes our eyes.', 5000],
+        ['say', 'Tan rápido que engaña a los ojos.', 'So fast it cheats the eyes.', 5000],
         ['wait', 3000],
         ['drag', 'next-frame', 1.0, 0.3, 5000],
         ['release', 'next-frame'],
@@ -76,7 +76,7 @@ define([], function() {
         ['release', 'prev-frame'],
         ['say', 'Podés dibujar acá adentro. ¡Probalo ahora!', 'You can draw inside. Try it now!', 5000],
         ['wait', 6000],
-        ['say', 'Adiós.', 'Bye.', 3000],
+        ['say', 'Nos vemos.', 'Bye.', 3000],
         ['wait', 4000],
     ];
 
