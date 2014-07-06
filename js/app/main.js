@@ -894,9 +894,6 @@ function checkInputEvents() {
             tutorial.cancel();
         }
     };
-    if (keyboard.pressed("n")) {
-        exportAnimatedGif();
-    };
 }
 
 
@@ -1014,8 +1011,9 @@ function createUi() {
 
     var radioNumberOfFrames = ui.createRadioButtons("radio-number-of-frames", optionsNumberOfFrames);
     var buttonHelp = ui.createButton({"name": "help", "action": function () { startTutorial() }});
+    var buttonExport = ui.createButton({"name": "export", "action": function () { exportAnimatedGif() }});
 
-    ui.addRow([radioLayout, {domElement: ui.createSpace()}, buttonHelp]);
+    ui.addRow([radioLayout, {domElement: ui.createSpace()}, buttonHelp, buttonExport]);
     ui.addRow([radioNumberOfFrames]);
     ui.addRow([pullPrevFrame, pullNextFrame], 1);
     ui.addRow([radioDraw, pullColor]);

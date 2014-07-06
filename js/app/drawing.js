@@ -8,7 +8,7 @@ define(["app/config"], function(config) {
         this.projector = projector;
         this.ctx = this.canvas.getContext("2d");
         this.isDrawing = false;
-        this.brushColor = "black";
+        this.brushColor = "#202020";
         this.brushSize = config.brushSize;
 
         this.onMouseMove = this.onMouseMove.bind(this);

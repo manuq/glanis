@@ -11,7 +11,7 @@ define(["domReady!", "paper", "tween"], function(doc, paper, TWEEN) {
     const HIT_FILL_COLOR = 'rgba(7, 234, 255, 0.8)';
     const HIT_STROKE_COLOR = '#fff';
 
-    const COLORS = ['#000', '#ec4800', '#f6fd2e', '#a7ea27', '#3c96db', '#9a4869'];
+    const COLORS = ['#202020', '#ec4800', '#f6fd2e', '#a7ea27', '#3c96db', '#9a4869'];
 
 
     function getPos(elem) {
